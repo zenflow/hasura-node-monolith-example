@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "dependencies": {
+    "@apollo/react-hooks": "^3.1.5",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link-http": "^1.5.17",
+    "graphql": "^14.7.0",
+    "graphql-tag": "^2.10.4",
+    "next": "^9.4.4",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "babel-plugin-graphql-tag": "^2.5.0"
+  }
+}
