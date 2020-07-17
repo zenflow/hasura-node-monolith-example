@@ -1,23 +1,25 @@
-// TODO: What if port 8080 is taken?
-
 const { spawnSync } = require('child_process')
 const { startCompositeService, onceTcpPortUsed, configureHttpGateway } = require('composite-service')
 
 const {
   NODE_ENV,
   DOCKER_ENGINE_HOST,
-  // DOCKER_HOST_HOST,
+  DOCKER_HOST_HOST,
   PORT,
-  HASURA_GRAPHQL_DATABASE_URL,
+  DATABASE_URL,
   HASURA_GRAPHQL_ADMIN_SECRET,
+  NEXTAUTH_URL,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  AUTH_JWT_SECRET,
 } = process.env
 
 const dev = NODE_ENV !== 'production'
 
 if (dev) {
   function exec (command, ...args) {
-    console.log('>', command, ...args)
-    spawnSync(command, args, {stdio: 'inherit'})
+    process.stdout.write(['>', command, ...args].join(' ') + '\n')
+    spawnSync(command, args, { stdio: 'inherit' })
   }
   // Kill docker container in case it didn't receive a ctrl+c and therefore continues to run even though `docker run` exited
   exec('docker', 'kill', 'hnme_hasura_1')
@@ -25,12 +27,12 @@ if (dev) {
 }
 
 const hasuraHost = dev ? DOCKER_ENGINE_HOST : 'localhost'
-const [hasuraPort, webPort] = [8080, 8081]
+const [hasuraPort, authPort, webPort] = [8080, 8081, 8082]
 
 const hasuraEnv = {
-  HASURA_GRAPHQL_DATABASE_URL,
+  HASURA_GRAPHQL_DATABASE_URL: DATABASE_URL,
   HASURA_GRAPHQL_ADMIN_SECRET,
-  // HASURA_GRAPHQL_AUTH_HOOK: `http://${dev ? DOCKER_HOST_HOST : 'localhost'}:${authPort}/auth-hook`,
+  HASURA_GRAPHQL_AUTH_HOOK: `http://${dev ? DOCKER_HOST_HOST : 'localhost'}:${authPort}/hasura-auth-hook`,
 }
 
 const HASURA_GRAPHQL_ENDPOINT = `http://${hasuraHost}:${hasuraPort}`
@@ -45,6 +47,7 @@ startCompositeService({
             --env PORT
             --env HASURA_GRAPHQL_DATABASE_URL
             --env HASURA_GRAPHQL_ADMIN_SECRET
+            --env HASURA_GRAPHQL_AUTH_HOOK
             --publish ${hasuraPort}:${hasuraPort}
             --rm
             --interactive
@@ -54,6 +57,20 @@ startCompositeService({
         ? { ...process.env, PORT: hasuraPort, ...hasuraEnv }
         : hasuraEnv,
       ready: ctx => onceTcpPortUsed(hasuraPort, hasuraHost),
+    },
+    auth: {
+      cwd: `${__dirname}/../auth`,
+      // TODO: make `nodemon server.js` work here (when `!!dev`)
+      command: 'node server.js',
+      env: {
+        PORT: authPort,
+        DATABASE_URL,
+        NEXTAUTH_URL,
+        GOOGLE_CLIENT_ID,
+        GOOGLE_CLIENT_SECRET,
+        AUTH_JWT_SECRET,
+      },
+      ready: ctx => onceTcpPortUsed(authPort)
     },
     web: {
       cwd: `${__dirname}/../web`,
@@ -68,10 +85,11 @@ startCompositeService({
       ready: ctx => onceTcpPortUsed(webPort),
     },
     gateway: configureHttpGateway({
-      dependencies: ['hasura', 'web'],
+      dependencies: ['hasura', 'auth', 'web'],
       port: PORT,
       proxies: [
         [hasuraPaths, { target: HASURA_GRAPHQL_ENDPOINT, ws: true }],
+        ['/api/auth', { target: `http://localhost:${authPort}` }],
         ['/', { target: `http://localhost:${webPort}` }]
       ]
     })

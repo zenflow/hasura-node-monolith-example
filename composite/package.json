@@ -1,6 +1,6 @@
 {
   "private": true,
   "dependencies": {
-    "composite-service": "0.1.1"
+    "composite-service": "^0.2.1"
   }
 }

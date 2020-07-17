@@ -1,1 +1,72 @@
-[]
+- table:
+    schema: public
+    name: accounts
+  object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+- table:
+    schema: public
+    name: sessions
+  object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+- table:
+    schema: public
+    name: users
+  array_relationships:
+  - name: accounts
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          schema: public
+          name: accounts
+  - name: sessions
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          schema: public
+          name: sessions
+  select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - id
+      - name
+      - email
+      - email_verified
+      - image
+      - created_at
+      - updated_at
+      - is_moderator
+      filter: {}
+      allow_aggregations: true
+  - role: moderator
+    permission:
+      columns:
+      - id
+      - name
+      - email
+      - email_verified
+      - image
+      - created_at
+      - updated_at
+      - is_moderator
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+      - id
+      - name
+      - email
+      - email_verified
+      - image
+      - created_at
+      - updated_at
+      - is_moderator
+      filter: {}
+      allow_aggregations: true

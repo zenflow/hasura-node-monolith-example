@@ -8,6 +8,7 @@
     "graphql": "^14.7.0",
     "graphql-tag": "^2.10.4",
     "next": "^9.4.4",
+    "next-auth": "3.0.0-beta.19",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
