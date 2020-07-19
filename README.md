@@ -4,6 +4,9 @@ Example of a monolithic web application using Hasura GraphQL Engine + Express.js
 
 ## TODO
 
+- change role to be a computed property of users
+- replace `useSession` with `useCurrentUser`, using gql connection only (no GET /api/auth/session)
+- not hard-code 'http://docker-machine:8080' in apolloClient.js
 - ui integration
 - use composite-service only for production mode, not development mode, for better/specialized control (npm package `concurrently`, or `gulp`)
 - next-auth

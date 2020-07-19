@@ -4,7 +4,7 @@ import NextAuthClient from 'next-auth/client'
 import { initializeApollo } from '../lib/apolloClient'
 
 export default function MyApp({ Component, pageProps, session, apolloClient, initialApolloState }) {
-  apolloClient = apolloClient || initializeApollo(session?.accessToken, initialApolloState)
+  apolloClient = apolloClient || initializeApollo(null, initialApolloState)
   return (
     <NextAuthClient.Provider session={session} options={{
       // clientMaxAge: 60 // Re-fetch session if cache is older than 60 seconds
@@ -19,7 +19,7 @@ export default function MyApp({ Component, pageProps, session, apolloClient, ini
 MyApp.getInitialProps = async (ctx) => {
   const session = await NextAuthClient.getSession({ req: ctx.ctx.req })
   ctx.ctx.session = ctx.session = session
-  const apolloClient = initializeApollo(session?.accessToken)
+  const apolloClient = initializeApollo(ctx.ctx.req)
   apolloClient.toJSON = () => null
   ctx.ctx.apolloClient = ctx.apolloClient = apolloClient
   const appProps = await App.getInitialProps(ctx)

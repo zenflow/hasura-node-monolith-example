@@ -1,7 +1,8 @@
 // TODO: learn & use 'debug' package
-const DEBUG = false
+const DEBUG = true
 
-const { getUserByAccessToken } = require('../db')
+const { getToken } = require('next-auth/jwt')
+const { getUserByEmail } = require('../db')
 
 module.exports = app => {
   app.use((req, res, next) => {
@@ -19,25 +20,27 @@ const debug = DEBUG
   : () => {}
 
 async function handleHasuraAuthHook(req, res, next) {
-  debug({ headers: req.headers, cookies: req.cookies })
-  // TODO: http header 'Cookie' not passed through by Hasura?
-  // const sessionToken = req.cookies['next-auth.session-token']
-  const accessToken = req.get('access-token')
-  if (!accessToken) {
+  debug({ headers: req.headers })
+
+  const token = await getToken({
+    req,
+    secret: process.env.AUTH_JWT_SECRET,
+  })
+  debug({ token })
+  if (!token) {
     respondWithVariables(res)
     return
   }
 
   let user
   try {
-    user = await getUserByAccessToken(accessToken)
+    user = await getUserByEmail(token.email)
   } catch (error) {
     next(error)
     return
   }
-
   if (!user) {
-    res.status(401).send('Invalid access token')
+    next(new Error(`User with email ${token.email} not found`))
     return
   }
 
@@ -48,7 +51,7 @@ function respondWithVariables (res, user = null) {
   const response = {
     'X-Hasura-Role': user ? (user.is_moderator ? 'moderator' : 'user' ) : 'anonymous',
     'X-Hasura-User-Id': user ? String(user.id) : undefined,
-    'Cache-Control': 'no-cache', // no cache because demo allows you to change roles
+    'Cache-Control': 'max-age=3', // cache for only 3 seconds because demo allows you to change roles
   }
   debug({ response })
   res.json(response)

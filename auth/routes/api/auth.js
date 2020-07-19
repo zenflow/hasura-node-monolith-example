@@ -10,16 +10,12 @@ const options = {
     }),
   ],
   database: process.env.DATABASE_URL,
-  // sessions: { jwt: true },
-  // jwt: { secret: process.env.AUTH_JWT_SECRET },
-  callbacks: {
-    async session (session) {
-      return {
-        ...session,
-        userInfo: await getUserByAccessToken(session.accessToken),
-      }
-    }
-  }
+  session: {
+    jwt: true,
+  },
+  jwt: {
+    secret: process.env.AUTH_JWT_SECRET,
+  },
 }
 
 

@@ -2,15 +2,13 @@ import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 
-function createApolloClient(accessToken, initialState) {
+function createApolloClient(req, initialState) {
   const client = new ApolloClient({
     ssrMode: !process.browser,
     link: new HttpLink({
       uri: `${process.browser ? window.location.origin : process.env.HASURA_URL}/v1/graphql`,
       credentials: 'same-origin',
-      headers: accessToken
-        ? { 'access-token': accessToken }
-        : {},
+      headers: req && req.headers.cookie ? { cookie: req.headers.cookie } : {},
     }),
     cache: new InMemoryCache(),
   })
@@ -22,14 +20,15 @@ function createApolloClient(accessToken, initialState) {
 
 let globalApolloClient
 
-export function initializeApollo(accessToken, initialState) {
+export function initializeApollo(req, initialState) {
   if (process.browser) {
-    // TODO: new client when new accessToken
+    // TODO: new client when auth state changes
     if (!globalApolloClient) {
-      globalApolloClient = createApolloClient(accessToken, initialState)
+      globalApolloClient = createApolloClient(null, initialState)
     }
     return globalApolloClient
   } else {
-    return createApolloClient(accessToken, initialState)
+    if (!req) throw new Error('Request object required server-side')
+    return createApolloClient(req, initialState)
   }
 }

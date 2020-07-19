@@ -14,7 +14,7 @@ function AuthSpan () {
     </>}
     {session && <>
       Signed in as {session.user.name}
-      {session.userInfo.is_moderator ? <em>(moderator)</em> : null}
+      {/* session.userInfo?.is_moderator ? <em>(moderator)</em> : null */}
       <button onClick={signout}>Sign out</button>
     </>}
   </>

@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "dev-install": "cd composite && yarn && cd ../web && yarn && cd ..",
     "db": "docker run --name hnme_postgres_1 --env POSTGRES_PASSWORD=postgrespassword --volume hnme_postgres_data:/var/lib/postgresql/data --publish 5432:5432 --rm --interactive --tty postgres:12",
+    "dev-install": "cd composite && yarn && cd ../web && yarn && cd ..",
     "dev": "dotenv -- node composite/server.js",
     "hasura-console": "hasura console --project hasura --endpoint http://localhost:3000 --admin-secret admin_secret",
     "start": "dotenv -- node local-prod-server.js"
