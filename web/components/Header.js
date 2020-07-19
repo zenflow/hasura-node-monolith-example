@@ -1,23 +1,20 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { useSession, signin, signout } from 'next-auth/client'
+import { signin, signout } from 'next-auth/client'
+import { useAuth } from '../lib/auth'
 
 function AuthSpan () {
-  const [ session, loading ] = useSession()
-  if (!session && loading) {
-    return <>Loading...</>
-  }
-  return <>
-    {!session && <>
-      Not signed in <br/>
-      <button onClick={signin}>Sign in</button>
-    </>}
-    {session && <>
-      Signed in as {session.user.name}
+  const auth = useAuth()
+  return auth.user
+    ? (<>
+      Signed in as {auth.user.name}
       {/* session.userInfo?.is_moderator ? <em>(moderator)</em> : null */}
       <button onClick={signout}>Sign out</button>
-    </>}
-  </>
+    </>)
+    : (<>
+      Not signed in
+      <button onClick={signin}>Sign in</button>
+    </>)
 }
 export default function Header() {
   const { pathname } = useRouter()

@@ -1,5 +1,5 @@
 // TODO: learn & use 'debug' package
-const DEBUG = true
+const DEBUG = false
 
 const { getToken } = require('next-auth/jwt')
 const { getUserByEmail } = require('../db')
