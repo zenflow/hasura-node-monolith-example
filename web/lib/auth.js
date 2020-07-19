@@ -6,6 +6,8 @@ const AUTH_QUERY = gql`
     auth {
       user {
         name
+        email
+        image
         is_moderator
       }
     }

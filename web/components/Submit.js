@@ -2,20 +2,21 @@ import { useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import { ALL_POSTS_QUERY, allPostsQueryVars } from './PostList'
 
-const CREATE_POST_MUTATION = gql`
-  mutation createPost($title: String!, $url: String!) {
-    createPost(title: $title, url: $url) {
+const INSERT_POST_MUTATION = gql`
+  mutation ($title: String!, $url: String!) {
+    insert_posts_one(object: {title: $title, url: $url}) {
       id
       title
-      votes
       url
-      createdAt
+      user {
+        name
+      }
     }
   }
 `
 
 export default function Submit() {
-  const [createPost, { loading }] = useMutation(CREATE_POST_MUTATION)
+  const [insertPost, { loading }] = useMutation(INSERT_POST_MUTATION)
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -25,19 +26,19 @@ export default function Submit() {
     const url = formData.get('url')
     form.reset()
 
-    createPost({
+    insertPost({
       variables: { title, url },
-      update: (proxy, { data: { createPost } }) => {
+      update: (proxy, { data: { insert_posts_one } }) => {
         const data = proxy.readQuery({
           query: ALL_POSTS_QUERY,
           variables: allPostsQueryVars,
         })
-        // Update the cache with the new post at the top of the
         proxy.writeQuery({
           query: ALL_POSTS_QUERY,
           data: {
             ...data,
-            allPosts: [createPost, ...data.allPosts],
+            posts: [insert_posts_one, ...data.posts],
+            posts_aggregate: { aggregate: { count: data.posts_aggregate.aggregate.count + 1 } }
           },
           variables: allPostsQueryVars,
         })

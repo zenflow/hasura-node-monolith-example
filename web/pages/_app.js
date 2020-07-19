@@ -2,12 +2,15 @@ import App from 'next/app'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { initializeApollo } from '../lib/apolloClient'
 import { getAuth } from '../lib/auth'
+import { Layout } from '../components/Layout'
 
 export default function MyApp({ Component, pageProps, apolloClient, initialApolloState }) {
   apolloClient = apolloClient || initializeApollo(null, initialApolloState)
   return (
     <ApolloProvider client={apolloClient}>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </ApolloProvider>
   )
 }

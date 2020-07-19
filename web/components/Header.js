@@ -3,44 +3,74 @@ import Link from 'next/link'
 import { signin, signout } from 'next-auth/client'
 import { useAuth } from '../lib/auth'
 
-function AuthSpan () {
-  const auth = useAuth()
-  return auth.user
-    ? (<>
-      Signed in as {auth.user.name}
-      {/* session.userInfo?.is_moderator ? <em>(moderator)</em> : null */}
-      <button onClick={signout}>Sign out</button>
-    </>)
-    : (<>
-      Not signed in
-      <button onClick={signin}>Sign in</button>
-    </>)
-}
-export default function Header() {
-  const { pathname } = useRouter()
-
+function AuthSection () {
+  const { user } = useAuth()
   return (
-    <header>
+    <div>
+      {
+        user
+          ? <>
+            Signed in as{' '}
+            <Link href="/profile">
+              <a>{user.name}</a>
+            </Link>
+            {user.is_moderator ? <em>(moderator)</em> : null}
+            <button onClick={signout}>Sign out</button>
+          </>
+          : <>
+            Not signed in
+            <button onClick={signin}>Sign in</button>
+          </>
+      }
+      <style jsx>{`
+        div {
+          margin-bottom: 10px;
+        }
+        button {
+          display: inline-block;
+          margin-left: 10px;
+        }
+      `}</style>
+    </div>
+  )
+}
+
+function MenuSection () {
+  const { pathname } = useRouter()
+  const { user } = useAuth()
+  return (
+    <div>
       <Link href="/">
         <a className={pathname === '/' ? 'is-active' : ''}>Home</a>
       </Link>
       <Link href="/about">
         <a className={pathname === '/about' ? 'is-active' : ''}>About</a>
       </Link>
-      <AuthSpan/>
+      {user && (
+        <Link href="/profile">
+          <a className={pathname === '/profile' ? 'is-active' : ''}>Profile</a>
+        </Link>
+      )}
       <style jsx>{`
-        header {
-          margin-bottom: 25px;
+        div {
+          margin-bottom: 16px;
         }
         a {
-          font-size: 14px;
           margin-right: 15px;
-          text-decoration: none;
         }
         .is-active {
-          text-decoration: underline;
+          text-decoration: underline
         }
       `}</style>
+    </div>
+  )
+}
+
+export function Header() {
+  return (
+    <header>
+      <AuthSection/>
+      <MenuSection/>
     </header>
   )
 }

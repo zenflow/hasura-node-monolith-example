@@ -12,6 +12,33 @@
   - name: user
     using:
       foreign_key_constraint_on: user_id
+  insert_permissions:
+  - role: anonymous
+    permission:
+      check: {}
+      columns:
+      - title
+      - url
+      backend_only: false
+  - role: moderator
+    permission:
+      check: {}
+      set:
+        user_id: x-hasura-User-Id
+      columns:
+      - is_hidden
+      - title
+      - url
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      set:
+        user_id: X-Hasura-User-Id
+      columns:
+      - title
+      - url
+      backend_only: false
   select_permissions:
   - role: anonymous
     permission:

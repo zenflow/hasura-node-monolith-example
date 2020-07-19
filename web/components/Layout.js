@@ -1,6 +1,10 @@
-export default function App({ children }) {
+import { Header } from './Header';
+
+
+export function Layout({ children }) {
   return (
     <main>
+      <Header/>
       {children}
       <style jsx global>{`
         * {
@@ -14,6 +18,7 @@ export default function App({ children }) {
         }
         a {
           color: #22bad9;
+          text-decoration: none;
         }
         p {
           font-size: 14px;

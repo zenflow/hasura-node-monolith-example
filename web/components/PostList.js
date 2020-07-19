@@ -5,7 +5,7 @@ import ErrorMessage from './ErrorMessage'
 // import PostUpvoter from './PostUpvoter'
 
 export const ALL_POSTS_QUERY = gql`
-  query posts($limit: Int!, $offset: Int!) {
+  query ($limit: Int!, $offset: Int!) {
     posts(
       order_by: {created_at: desc},
       limit: $limit,
@@ -14,7 +14,9 @@ export const ALL_POSTS_QUERY = gql`
       id
       title
       url
-      created_at
+      user {
+        name
+      }
     }
     posts_aggregate {
       aggregate {
@@ -26,7 +28,7 @@ export const ALL_POSTS_QUERY = gql`
 
 export const allPostsQueryVars = {
   offset: 0,
-  limit: 2,
+  limit: 5,
 }
 
 export default function PostList() {
@@ -77,6 +79,7 @@ export default function PostList() {
             <div>
               <span>{index + 1}. </span>
               <a target="_blank" href={post.url}>{post.title}</a>
+              <span>by {post.user ? post.user.name : 'anonymous'}</span>
               {/* <PostUpvoter id={post.id} votes={post.votes} /> */}
             </div>
           </li>
