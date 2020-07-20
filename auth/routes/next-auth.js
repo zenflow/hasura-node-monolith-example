@@ -1,6 +1,5 @@
 const NextAuth = require('next-auth').default
 const Providers = require('next-auth/providers')
-const { getUserByAccessToken } = require('../db')
 
 const options = {
   providers: [
@@ -9,13 +8,11 @@ const options = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET
     }),
   ],
-  database: process.env.DATABASE_URL,
+  database: process.env.HASURA_GRAPHQL_DATABASE_URL,
   session: {
     jwt: true,
   },
-  jwt: {
-    secret: process.env.AUTH_JWT_SECRET,
-  },
+  secret: process.env.AUTH_JWT_SECRET,
 }
 
 const baseUrl = '/api/auth/'

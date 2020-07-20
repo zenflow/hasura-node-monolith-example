@@ -28,15 +28,10 @@ if (dev) {
 
 const [hasuraPort, authPort, webPort] = [8080, 8081, 8082]
 
-const mainHost = dev ? DOCKER_HOST_HOST : 'localhost'
 const hasuraHost = dev ? DOCKER_ENGINE_HOST : 'localhost'
-const hasuraEnv = {
-  HASURA_GRAPHQL_DATABASE_URL,
-  HASURA_GRAPHQL_ADMIN_SECRET,
-  HASURA_GRAPHQL_AUTH_HOOK: `http://${mainHost}:${authPort}/hasura-auth-hook`,
-  AUTH_BASE_URL: `http://${mainHost}:${authPort}`,
-}
 const HASURA_URL = `http://${hasuraHost}:${hasuraPort}`
+
+const AUTH_BASE_URL = `http://${(dev ? DOCKER_HOST_HOST : 'localhost')}:${authPort}`
 
 startCompositeService({
   services: {
@@ -54,16 +49,21 @@ startCompositeService({
             --interactive
             hnme_hasura`
         : `graphql-engine serve --server-port ${hasuraPort}`,
-      env: dev
-        ? { ...process.env, PORT: hasuraPort, ...hasuraEnv }
-        : hasuraEnv,
+      env: {
+        ...process.env, // Includes env vars needed to run docker
+        PORT: hasuraPort,
+        HASURA_GRAPHQL_DATABASE_URL,
+        HASURA_GRAPHQL_ADMIN_SECRET,
+        HASURA_GRAPHQL_AUTH_HOOK: `${AUTH_BASE_URL}/hasura-auth-hook`,
+        AUTH_BASE_URL,
+      },
       ready: ctx => onceTcpPortUsed(hasuraPort, hasuraHost),
     },
     auth: {
       cwd: `${__dirname}/../auth`,
-      // TODO: make `nodemon server.js` work here (when `!!dev`)
-      command: 'node server.js',
+      command: `${dev ? 'nodemon' : 'node'} server.js`,
       env: {
+        ...process.env, // Includes some env var(s) needed for nodemon to work properly
         PORT: authPort,
         HASURA_GRAPHQL_DATABASE_URL,
         NEXTAUTH_URL,
@@ -75,8 +75,8 @@ startCompositeService({
     },
     web: {
       cwd: `${__dirname}/../web`,
-      /* Note we are unable to call the 'next' command directly here
-        since the production docker image from scratch won't let us execute shell scripts.
+      /* Note we are unable to call the 'next' command directly here since
+        the production docker image from scratch doesn't seem to let us execute shell scripts.
         E.g. calling `/path/to/node_modules/.bin/next start` will error saying the `next` file is not found
         and `RUN chmod a+x /path/to/node_modules/.bin/next` does not seem to help. */
       command: `node node_modules/next/dist/bin/next ${dev ? 'dev' : 'start'} --port ${webPort}`,

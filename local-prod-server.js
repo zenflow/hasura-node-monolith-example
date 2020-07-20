@@ -39,10 +39,9 @@ startCompositeService({
           --interactive
           hnme_app
       `,
-      env: {
-        ...process.env,
-      },
-      ready: ctx => onceTcpPortUsed(PORT, DOCKER_ENGINE_HOST)
+      env: process.env,
+      ready: ctx => onceTcpPortUsed(PORT, DOCKER_ENGINE_HOST),
+      onCrash: ctx => Promise.reject('Crash'),
     },
     gateway: configureHttpGateway({
       dependencies: ['app'],

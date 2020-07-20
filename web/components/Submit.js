@@ -1,5 +1,6 @@
 import { useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
+import { produce } from 'immer'
 import { ALL_POSTS_QUERY, allPostsQueryVars } from './PostList'
 
 const INSERT_POST_MUTATION = gql`
@@ -35,12 +36,11 @@ export default function Submit() {
         })
         proxy.writeQuery({
           query: ALL_POSTS_QUERY,
-          data: {
-            ...data,
-            posts: [insert_posts_one, ...data.posts],
-            posts_aggregate: { aggregate: { count: data.posts_aggregate.aggregate.count + 1 } }
-          },
           variables: allPostsQueryVars,
+          data: produce(data, data => {
+            data.posts.unshift(insert_posts_one)
+            data.posts_aggregate.aggregate.count++
+          }),
         })
       },
     })

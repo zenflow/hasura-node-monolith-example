@@ -21,6 +21,8 @@ WORKDIR /app/web
 ADD web/package.json web/yarn.lock ./
 RUN yarn install --frozen-lockfile
 ADD web/ ./
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
 RUN yarn next build
 RUN yarn install --prod
 
@@ -46,7 +48,8 @@ COPY --from=auth-package /app/auth /app/auth
 # Copy web package
 COPY --from=web-package /app/web /app/web
 
-# set env vars used in metadata, preventing errors on cli-migrations-v2 startup
+# Set env vars used in metadata, preventing errors on cli-migrations-v2 startup.
+# This env var is actually defined in composite/server.js.
 ENV AUTH_BASE_URL foo
 
 # Set env var to signal production mode

@@ -4,11 +4,11 @@
     "db": "docker run --name hnme_postgres_1 --env POSTGRES_PASSWORD=postgrespassword --volume hnme_postgres_data:/var/lib/postgresql/data --publish 5432:5432 --rm --interactive --tty postgres:12",
     "dev-install": "cd composite && yarn && cd ../web && yarn && cd ..",
     "dev": "dotenv -- node composite/server.js",
-    "hasura-console": "hasura console --project hasura --endpoint http://localhost:3000 --admin-secret admin_secret",
+    "hasura-console": "hasura console --project hasura --endpoint http://docker-machine:8080 --admin-secret admin_secret",
     "start": "dotenv -- node local-prod-server.js"
   },
   "devDependencies": {
-    "composite-service": "^0.2.1",
+    "composite-service": "^0.3.0",
     "dotenv-cli": "^3.2.0",
     "hasura-cli": "1.3.0-beta.4"
   }
