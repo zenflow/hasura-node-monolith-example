@@ -1,2 +1,12 @@
+type Query {
+  auth : AuthQueryOutput
+}
 
+
+
+
+type AuthQueryOutput {
+  user_id : Int
+  role : String
+}
 

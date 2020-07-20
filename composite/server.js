@@ -6,7 +6,7 @@ const {
   DOCKER_ENGINE_HOST,
   DOCKER_HOST_HOST,
   PORT,
-  DATABASE_URL,
+  HASURA_GRAPHQL_DATABASE_URL,
   HASURA_GRAPHQL_ADMIN_SECRET,
   NEXTAUTH_URL,
   GOOGLE_CLIENT_ID,
@@ -26,13 +26,15 @@ if (dev) {
   exec('docker', 'build', '--tag', 'hnme_hasura', `${__dirname}/../hasura`)
 }
 
-const hasuraHost = dev ? DOCKER_ENGINE_HOST : 'localhost'
 const [hasuraPort, authPort, webPort] = [8080, 8081, 8082]
 
+const mainHost = dev ? DOCKER_HOST_HOST : 'localhost'
+const hasuraHost = dev ? DOCKER_ENGINE_HOST : 'localhost'
 const hasuraEnv = {
-  HASURA_GRAPHQL_DATABASE_URL: DATABASE_URL,
+  HASURA_GRAPHQL_DATABASE_URL,
   HASURA_GRAPHQL_ADMIN_SECRET,
-  HASURA_GRAPHQL_AUTH_HOOK: `http://${dev ? DOCKER_HOST_HOST : 'localhost'}:${authPort}/hasura-auth-hook`,
+  HASURA_GRAPHQL_AUTH_HOOK: `http://${mainHost}:${authPort}/hasura-auth-hook`,
+  AUTH_BASE_URL: `http://${mainHost}:${authPort}`,
 }
 const HASURA_URL = `http://${hasuraHost}:${hasuraPort}`
 
@@ -46,6 +48,7 @@ startCompositeService({
             --env HASURA_GRAPHQL_DATABASE_URL
             --env HASURA_GRAPHQL_ADMIN_SECRET
             --env HASURA_GRAPHQL_AUTH_HOOK
+            --env AUTH_BASE_URL
             --publish ${hasuraPort}:${hasuraPort}
             --rm
             --interactive
@@ -62,7 +65,7 @@ startCompositeService({
       command: 'node server.js',
       env: {
         PORT: authPort,
-        DATABASE_URL,
+        HASURA_GRAPHQL_DATABASE_URL,
         NEXTAUTH_URL,
         GOOGLE_CLIENT_ID,
         GOOGLE_CLIENT_SECRET,

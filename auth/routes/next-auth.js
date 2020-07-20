@@ -1,6 +1,6 @@
 const NextAuth = require('next-auth').default
 const Providers = require('next-auth/providers')
-const { getUserByAccessToken } = require('../../db')
+const { getUserByAccessToken } = require('../db')
 
 const options = {
   providers: [
@@ -18,24 +18,15 @@ const options = {
   },
 }
 
-
-module.exports = app => {
-  const baseUrl = '/api/auth/'
-  // Do *not* `app.use(baseUrl, ...)` because this changes `req.url` to be relative to `baseUrl`.
-  app.use((req, res, next) => {
-    if (!req.url.startsWith(baseUrl)) {
-      next()
-      return
-    }
+const baseUrl = '/api/auth/'
+module.exports = {
+  match: req => req.url.startsWith(baseUrl),
+  handle (req, res) {
     // Fill in the "nextauth" [catch all route parameter](https://nextjs.org/docs/routing/dynamic-routes#catch-all-routes)
     req.query.nextauth = req.url
       .slice(baseUrl.length)
       .replace(/\?.*/, '')
       .split('/')
-    try {
-      NextAuth(req, res, options)
-    } catch (error) {
-      next(error)
-    }
-  })
+    NextAuth(req, res, options)
+  }
 }

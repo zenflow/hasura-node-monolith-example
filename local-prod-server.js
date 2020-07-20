@@ -10,16 +10,6 @@
 const { spawnSync } = require('child_process')
 const { startCompositeService, onceTcpPortUsed, configureHttpGateway } = require('composite-service')
 
-const envVarKeys = [
-  'PORT',
-  'DATABASE_URL',
-  'HASURA_GRAPHQL_ADMIN_SECRET',
-  'NEXTAUTH_URL',
-  'GOOGLE_CLIENT_ID',
-  'GOOGLE_CLIENT_SECRET',
-  'AUTH_JWT_SECRET',
-]
-
 function exec (command, ...args) {
   process.stdout.write(['>', command, ...args].join(' ') + '\n')
   spawnSync(command, args, { stdio: 'inherit' })
@@ -38,16 +28,19 @@ startCompositeService({
         docker run
           --name hnme_app_1
           --publish ${PORT}:${PORT}
-          ${envVarKeys.map(key => `--env ${key}`).join(' ')}
+          --env PORT
+          --env HASURA_GRAPHQL_DATABASE_URL
+          --env HASURA_GRAPHQL_ADMIN_SECRET
+          --env NEXTAUTH_URL
+          --env GOOGLE_CLIENT_ID
+          --env GOOGLE_CLIENT_SECRET
+          --env AUTH_JWT_SECRET
           --rm
           --interactive
           hnme_app
       `,
       env: {
         ...process.env,
-        ...Object.fromEntries(
-          envVarKeys.map(key => [key, process.env[key]])
-        )
       },
       ready: ctx => onceTcpPortUsed(PORT, DOCKER_ENGINE_HOST)
     },

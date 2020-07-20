@@ -46,6 +46,11 @@ COPY --from=auth-package /app/auth /app/auth
 # Copy web package
 COPY --from=web-package /app/web /app/web
 
-# Start composite server
+# set env vars used in metadata, preventing errors on cli-migrations-v2 startup
+ENV AUTH_BASE_URL foo
+
+# Set env var to signal production mode
 ENV NODE_ENV production
+
+# Start composite server
 CMD node /app/composite/server.js

@@ -3,11 +3,10 @@
 Example of a monolithic web application using Hasura GraphQL Engine + Express.js + Next.js
 
 ## TODO
-
-- change role to be a computed property of users
 - replace `useSession` with `useCurrentUser`, using gql connection only (no GET /api/auth/session)
-- not hard-code 'http://docker-machine:8080' in apolloClient.js
 - ui integration
+- not hard-code 'http://docker-machine:8080' in apolloClient.js
+- FAIL if session token is invalid
 - use composite-service only for production mode, not development mode, for better/specialized control (npm package `concurrently`, or `gulp`)
 - next-auth
     - as per [the "Note" here](https://next-auth-docs-git-v3.iaincollins.vercel.app/configuration/databases#what-is-a-database-used-for)
