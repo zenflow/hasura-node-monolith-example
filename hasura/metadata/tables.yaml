@@ -7,6 +7,61 @@
       foreign_key_constraint_on: user_id
 - table:
     schema: public
+    name: posts
+  object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+  select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - id
+      - user_id
+      - title
+      - url
+      - created_at
+      - updated_at
+      - is_hidden
+      filter:
+        is_hidden:
+          _eq: false
+      allow_aggregations: true
+  - role: moderator
+    permission:
+      columns:
+      - is_hidden
+      - id
+      - user_id
+      - title
+      - url
+      - created_at
+      - updated_at
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+      - is_hidden
+      - id
+      - user_id
+      - title
+      - url
+      - created_at
+      - updated_at
+      filter:
+        is_hidden:
+          _eq: false
+      allow_aggregations: true
+  update_permissions:
+  - role: moderator
+    permission:
+      columns:
+      - is_hidden
+      filter: {}
+      check: {}
+- table:
+    schema: public
     name: sessions
   object_relationships:
   - name: user
@@ -23,6 +78,13 @@
         table:
           schema: public
           name: accounts
+  - name: posts
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          schema: public
+          name: posts
   - name: sessions
     using:
       foreign_key_constraint_on:

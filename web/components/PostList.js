@@ -2,26 +2,31 @@ import { useQuery } from '@apollo/react-hooks'
 import { NetworkStatus } from 'apollo-client'
 import gql from 'graphql-tag'
 import ErrorMessage from './ErrorMessage'
-import PostUpvoter from './PostUpvoter'
+// import PostUpvoter from './PostUpvoter'
 
 export const ALL_POSTS_QUERY = gql`
-  query allPosts($first: Int!, $skip: Int!) {
-    allPosts(orderBy: createdAt_DESC, first: $first, skip: $skip) {
+  query posts($limit: Int!, $offset: Int!) {
+    posts(
+      order_by: {created_at: desc},
+      limit: $limit,
+      offset: $offset
+    ) {
       id
       title
-      votes
       url
-      createdAt
+      created_at
     }
-    _allPostsMeta {
-      count
+    posts_aggregate {
+      aggregate {
+        count
+      }
     }
   }
 `
 
 export const allPostsQueryVars = {
-  skip: 0,
-  first: 10,
+  offset: 0,
+  limit: 2,
 }
 
 export default function PostList() {
@@ -41,16 +46,16 @@ export default function PostList() {
   const loadMorePosts = () => {
     fetchMore({
       variables: {
-        skip: allPosts.length,
+        offset: posts.length,
       },
-      updateQuery: (previousResult, { fetchMoreResult }) => {
+      updateQuery: (previous, { fetchMoreResult }) => {
         if (!fetchMoreResult) {
-          return previousResult
+          return previous
         }
-        return Object.assign({}, previousResult, {
-          // Append the new posts results to the old one
-          allPosts: [...previousResult.allPosts, ...fetchMoreResult.allPosts],
-        })
+        return {
+          ...previous,
+          posts: [...previous.posts, ...fetchMoreResult.posts],
+        }
       },
     })
   }
@@ -58,18 +63,21 @@ export default function PostList() {
   if (error) return <ErrorMessage message="Error loading posts." />
   if (loading && !loadingMorePosts) return <div>Loading</div>
 
-  const { allPosts, _allPostsMeta } = data
-  const areMorePosts = allPosts.length < _allPostsMeta.count
+  const { posts, posts_aggregate: { aggregate: { count }} } = data
+  const areMorePosts = posts.length < count
 
   return (
     <section>
+      <span>
+        Showing {posts.length} of {count} posts:
+      </span>
       <ul>
-        {allPosts.map((post, index) => (
+        {posts.map((post, index) => (
           <li key={post.id}>
             <div>
               <span>{index + 1}. </span>
-              <a href={post.url}>{post.title}</a>
-              <PostUpvoter id={post.id} votes={post.votes} />
+              <a target="_blank" href={post.url}>{post.title}</a>
+              {/* <PostUpvoter id={post.id} votes={post.votes} /> */}
             </div>
           </li>
         ))}

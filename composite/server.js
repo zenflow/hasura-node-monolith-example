@@ -34,9 +34,7 @@ const hasuraEnv = {
   HASURA_GRAPHQL_ADMIN_SECRET,
   HASURA_GRAPHQL_AUTH_HOOK: `http://${dev ? DOCKER_HOST_HOST : 'localhost'}:${authPort}/hasura-auth-hook`,
 }
-
-const HASURA_GRAPHQL_ENDPOINT = `http://${hasuraHost}:${hasuraPort}`
-const hasuraPaths = ['/v1/graphql', '/v1alpha1/graphql', '/v1beta1/relay', '/v1/query', '/v1/version', '/healthz', '/v1alpha1/pg_dump', '/v1alpha1/config', '/v1/graphql/explain']
+const HASURA_URL = `http://${hasuraHost}:${hasuraPort}`
 
 startCompositeService({
   services: {
@@ -80,7 +78,7 @@ startCompositeService({
         and `RUN chmod a+x /path/to/node_modules/.bin/next` does not seem to help. */
       command: `node node_modules/next/dist/bin/next ${dev ? 'dev' : 'start'} --port ${webPort}`,
       env: {
-        HASURA_GRAPHQL_ENDPOINT,
+        HASURA_URL,
       },
       ready: ctx => onceTcpPortUsed(webPort),
     },
@@ -88,7 +86,10 @@ startCompositeService({
       dependencies: ['hasura', 'auth', 'web'],
       port: PORT,
       proxies: [
-        [hasuraPaths, { target: HASURA_GRAPHQL_ENDPOINT, ws: true }],
+        [
+          ['/v1', '/v1alpha1', '/v1beta1', '/healthz'],
+          { target: HASURA_URL, ws: true }
+        ],
         ['/api/auth', { target: `http://localhost:${authPort}` }],
         ['/', { target: `http://localhost:${webPort}` }]
       ]

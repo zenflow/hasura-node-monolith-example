@@ -1,38 +1,35 @@
-import { useMemo } from 'react'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 
-let apolloClient
-
-function createApolloClient() {
-  return new ApolloClient({
-    ssrMode: typeof window === 'undefined',
+function createApolloClient(accessToken, initialState) {
+  const client = new ApolloClient({
+    ssrMode: !process.browser,
     link: new HttpLink({
-      uri: 'https://api.graph.cool/simple/v1/cixmkt2ul01q00122mksg82pn', // Server URL (must be absolute)
-      credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
+      uri: `${process.browser ? window.location.origin : process.env.HASURA_URL}/v1/graphql`,
+      credentials: 'same-origin',
+      headers: accessToken
+        ? { 'access-token': accessToken }
+        : {},
     }),
     cache: new InMemoryCache(),
   })
-}
-
-export function initializeApollo(initialState = null) {
-  const _apolloClient = apolloClient ?? createApolloClient()
-
-  // If your page has Next.js data fetching methods that use Apollo Client, the initial state
-  // gets hydrated here
   if (initialState) {
-    _apolloClient.cache.restore(initialState)
+    client.cache.restore(initialState)
   }
-  // For SSG and SSR always create a new Apollo Client
-  if (typeof window === 'undefined') return _apolloClient
-  // Create the Apollo Client once in the client
-  if (!apolloClient) apolloClient = _apolloClient
-
-  return _apolloClient
+  return client
 }
 
-export function useApollo(initialState) {
-  const store = useMemo(() => initializeApollo(initialState), [initialState])
-  return store
+let globalApolloClient
+
+export function initializeApollo(accessToken, initialState) {
+  if (process.browser) {
+    // TODO: new client when new accessToken
+    if (!globalApolloClient) {
+      globalApolloClient = createApolloClient(accessToken, initialState)
+    }
+    return globalApolloClient
+  } else {
+    return createApolloClient(accessToken, initialState)
+  }
 }

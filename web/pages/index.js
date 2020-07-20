@@ -11,26 +11,17 @@ import { initializeApollo } from '../lib/apolloClient'
 const IndexPage = () => (
   <App>
     <Header />
-    <InfoBox>ℹ️ This page shows how to use SSG with Apollo.</InfoBox>
+    <InfoBox>ℹ️ TODO: info here.</InfoBox>
     <Submit />
     <PostList />
   </App>
 )
-
-export async function getStaticProps() {
-  const apolloClient = initializeApollo()
-
+IndexPage.getInitialProps = async ({ apolloClient }) => {
   await apolloClient.query({
     query: ALL_POSTS_QUERY,
     variables: allPostsQueryVars,
   })
-
-  return {
-    props: {
-      initialApolloState: apolloClient.cache.extract(),
-    },
-    unstable_revalidate: 1,
-  }
+  return { _stop_nextjs_from_complaining: true }
 }
 
 export default IndexPage
