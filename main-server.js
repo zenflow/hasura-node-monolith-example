@@ -8,22 +8,19 @@ const {
   PORT,
   HASURA_GRAPHQL_DATABASE_URL,
   HASURA_GRAPHQL_ADMIN_SECRET,
+  DEBUG,
   NEXTAUTH_URL,
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
   AUTH_JWT_SECRET,
+  START_HASURA_CONSOLE,
 } = process.env
 
 const dev = NODE_ENV !== 'production'
 
 if (dev) {
-  function exec (command, ...args) {
-    process.stdout.write(['>', command, ...args].join(' ') + '\n')
-    spawnSync(command, args, { stdio: 'inherit' })
-  }
   // Kill docker container in case it didn't receive a ctrl+c and therefore continues to run even though `docker run` exited
-  exec('docker', 'kill', 'hnme_hasura_1')
-  exec('docker', 'build', '--tag', 'hnme_hasura', `${__dirname}/../hasura`)
+  spawnSync('docker', ['kill', 'hnme_hasura_1'], { stdio: 'inherit' })
 }
 
 const [hasuraPort, authPort, webPort] = [8080, 8081, 8082]
@@ -60,12 +57,13 @@ startCompositeService({
       ready: ctx => onceTcpPortUsed(hasuraPort, hasuraHost),
     },
     auth: {
-      cwd: `${__dirname}/../auth`,
+      cwd: `${__dirname}/auth`,
       command: `${dev ? 'nodemon' : 'node'} server.js`,
       env: {
         ...process.env, // Includes some env var(s) needed for nodemon to work properly
         PORT: authPort,
         HASURA_GRAPHQL_DATABASE_URL,
+        DEBUG,
         NEXTAUTH_URL,
         GOOGLE_CLIENT_ID,
         GOOGLE_CLIENT_SECRET,
@@ -74,7 +72,7 @@ startCompositeService({
       ready: ctx => onceTcpPortUsed(authPort)
     },
     web: {
-      cwd: `${__dirname}/../web`,
+      cwd: `${__dirname}/web`,
       /* Note we are unable to call the 'next' command directly here since
         the production docker image from scratch doesn't seem to let us execute shell scripts.
         E.g. calling `/path/to/node_modules/.bin/next start` will error saying the `next` file is not found
@@ -96,6 +94,16 @@ startCompositeService({
         ['/api/auth', { target: `http://localhost:${authPort}` }],
         ['/', { target: `http://localhost:${webPort}` }]
       ]
-    })
+    }),
+    console: START_HASURA_CONSOLE === 'true' && {
+      dependencies: ['hasura'],
+      cwd: `${__dirname}/hasura`,
+      command: `
+        hasura console
+          --endpoint ${HASURA_URL}
+          --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET}
+      `
+    }
   },
 })
+

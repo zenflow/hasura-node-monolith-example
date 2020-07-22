@@ -1,12 +1,12 @@
 # Import `node` runtime
 FROM astefanutti/scratch-node:14.5.0 as node-runtime
 
-# Prepare composite package
-FROM node:14.5.0 as composite-package
-WORKDIR /app/composite
-ADD composite/package.json composite/yarn.lock ./
+# Prepare main package
+FROM node:14.5.0 as main-package
+WORKDIR /app
+ADD package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --prod
-ADD composite/ ./
+ADD main-server.js ./
 
 # Prepare auth package
 FROM node:14.5.0 as auth-package
@@ -39,8 +39,8 @@ RUN cat /tmp/node_etc_passwd >> /etc/passwd
 COPY hasura/metadata /hasura-metadata/
 COPY hasura/migrations /hasura-migrations/
 
-# Copy composite package
-COPY --from=composite-package /app/composite /app/composite
+# Copy main package
+COPY --from=main-package /app /app
 
 # Copy auth package
 COPY --from=auth-package /app/auth /app/auth
@@ -55,5 +55,5 @@ ENV AUTH_BASE_URL foo
 # Set env var to signal production mode
 ENV NODE_ENV production
 
-# Start composite server
-CMD node /app/composite/server.js
+# Start main server
+CMD node /app/main-server.js

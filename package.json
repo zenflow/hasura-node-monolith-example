@@ -2,13 +2,18 @@
   "private": true,
   "scripts": {
     "db": "docker run --name hnme_postgres_1 --env POSTGRES_PASSWORD=postgrespassword --volume hnme_postgres_data:/var/lib/postgresql/data --publish 5432:5432 --rm --interactive --tty postgres:12",
-    "dev-install": "cd composite && yarn && cd ../web && yarn && cd ..",
-    "dev": "dotenv -- node composite/server.js",
-    "hasura-console": "hasura console --project hasura --endpoint http://docker-machine:8080 --admin-secret admin_secret",
-    "start": "dotenv -- node local-prod-server.js"
+    "dev-prepare": "concurrently \"docker build --tag hnme_hasura hasura\" \"cd auth && yarn --silent\" \"cd web && yarn --silent\"",
+    "dev-only": "dotenv -- node main-server.js",
+    "dev": "yarn dev-prepare && yarn dev-only",
+    "start-prepare": "docker build --tag hnme_app .",
+    "start-only": "dotenv -- node local-prod-server.js",
+    "start": "yarn start-prepare && yarn start-only"
+  },
+  "dependencies": {
+    "composite-service": "^0.3.0"
   },
   "devDependencies": {
-    "composite-service": "^0.3.0",
+    "concurrently": "^5.2.0",
     "dotenv-cli": "^3.2.0",
     "hasura-cli": "1.3.0"
   }

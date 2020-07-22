@@ -1,6 +1,5 @@
 # TODO
-- deploy
-- upgrade hasura
+
 - upgrade apollo
 - batch graphql requests
 - useAuth should use a subscription on client
