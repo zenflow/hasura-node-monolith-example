@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import ErrorMessage from './ErrorMessage'
 // import PostUpvoter from './PostUpvoter'
 
+// TODO: should use a graphql fragment for result fields, same as in Submit.js
 export const ALL_POSTS_QUERY = gql`
   query ($limit: Int!, $offset: Int!) {
     posts(

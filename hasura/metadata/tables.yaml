@@ -20,16 +20,6 @@
       - title
       - url
       backend_only: false
-  - role: moderator
-    permission:
-      check: {}
-      set:
-        user_id: x-hasura-User-Id
-      columns:
-      - is_hidden
-      - title
-      - url
-      backend_only: false
   - role: user
     permission:
       check: {}
@@ -43,50 +33,25 @@
   - role: anonymous
     permission:
       columns:
-      - id
-      - user_id
-      - title
-      - url
       - created_at
-      - updated_at
-      - is_hidden
-      filter:
-        is_hidden:
-          _eq: false
-      allow_aggregations: true
-  - role: moderator
-    permission:
-      columns:
-      - is_hidden
       - id
-      - user_id
       - title
-      - url
-      - created_at
       - updated_at
+      - url
+      - user_id
       filter: {}
       allow_aggregations: true
   - role: user
     permission:
       columns:
-      - is_hidden
-      - id
-      - user_id
-      - title
-      - url
       - created_at
+      - id
+      - title
       - updated_at
-      filter:
-        is_hidden:
-          _eq: false
-      allow_aggregations: true
-  update_permissions:
-  - role: moderator
-    permission:
-      columns:
-      - is_hidden
+      - url
+      - user_id
       filter: {}
-      check: {}
+      allow_aggregations: true
 - table:
     schema: public
     name: sessions
@@ -123,39 +88,24 @@
   - role: anonymous
     permission:
       columns:
-      - id
-      - name
+      - created_at
       - email
       - email_verified
-      - image
-      - created_at
-      - updated_at
-      - is_moderator
-      filter: {}
-      allow_aggregations: true
-  - role: moderator
-    permission:
-      columns:
       - id
-      - name
-      - email
-      - email_verified
       - image
-      - created_at
+      - name
       - updated_at
-      - is_moderator
       filter: {}
       allow_aggregations: true
   - role: user
     permission:
       columns:
-      - id
-      - name
+      - created_at
       - email
       - email_verified
+      - id
       - image
-      - created_at
+      - name
       - updated_at
-      - is_moderator
       filter: {}
       allow_aggregations: true

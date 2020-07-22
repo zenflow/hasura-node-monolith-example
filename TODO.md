@@ -1,12 +1,12 @@
 # TODO
 
-- upgrade apollo
+- "actions" service
 - batch graphql requests
 - useAuth should use a subscription on client
+- upgrade apollo
 - typescript & prettier/eslint?
 - upvotes/downvotes
-- let users make themselves moderators, to see hidden posts and make posts hidden or unhiddenr
-- FAIL if session token is invalid
+- FAIL if session token is invalid?
 - document
 - use composite-service only for production mode, not development mode, for better/specialized control (npm package `concurrently`, or `gulp`)
 - next-auth
@@ -20,6 +20,7 @@
         - actual: next-auth.session-token cookie is 64-character token/key matching `user.session_token`.
         next-auth.session-token is now just a reference to entity in database.
         requests to `GET /api/auth/session` require database access (TODO: make sure)
+    - add minimum of user id to JWT token
     - log out action doesn't work (doesn't refresh page or session)
     when page is already on next-auth.callback-url
     - express-compatible handler

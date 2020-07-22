@@ -5,10 +5,10 @@ const AUTH_QUERY = gql`
   query {
     auth {
       user {
+        id
         name
         email
         image
-        is_moderator
       }
     }
   }

@@ -15,9 +15,12 @@ export default () => {
         <dd>{user.email}</dd>
         <dt>Image</dt>
         <dd><img src={user.image}/></dd>
-        <dt>Is Moderator?</dt>
-        <dd>{user.is_moderator ? 'Yes' : 'No'}</dd>
       </dl>
+      <style jsx>{`
+        img {
+          width: 16rem;
+        }
+      `}</style>
     </div>
   )
 }

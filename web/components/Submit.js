@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 import { produce } from 'immer'
 import { ALL_POSTS_QUERY, allPostsQueryVars } from './PostList'
 
+// TODO: should use a graphql fragment for result fields, same as in PostList.js
 const INSERT_POST_MUTATION = gql`
   mutation ($title: String!, $url: String!) {
     insert_posts_one(object: {title: $title, url: $url}) {

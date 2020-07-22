@@ -14,9 +14,8 @@ module.exports = {
     const user = token && await getUserByEmail(token.email)
     debug('user: %o', user)
     const response = {
-      'X-Hasura-Role': user ? (user.is_moderator ? 'moderator' : 'user' ) : 'anonymous',
+      'X-Hasura-Role': user ? 'user' : 'anonymous',
       'X-Hasura-User-Id': user ? String(user.id) : undefined,
-      'Cache-Control': 'max-age=3', // cache for only 3 seconds because demo allows you to change roles
     }
     res.json(response)
     debug('response: %o', response)
@@ -30,7 +29,7 @@ const pool = new Pool({
 async function getUserByEmail (email) {
   const { rows: [user] } = await pool.query({
     text: `
-      SELECT id, is_moderator
+      SELECT id
       FROM users
       WHERE email = $1
       LIMIT 1

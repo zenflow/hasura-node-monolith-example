@@ -5,7 +5,6 @@ actions:
     handler: '{{AUTH_BASE_URL}}/hasura-auth-query'
   permissions:
   - role: anonymous
-  - role: moderator
   - role: user
 custom_types:
   enums: []

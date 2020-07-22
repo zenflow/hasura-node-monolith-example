@@ -14,7 +14,6 @@ function AuthSection () {
             <Link href="/profile">
               <a>{user.name}</a>
             </Link>
-            {user.is_moderator ? <em>(moderator)</em> : null}
             <button onClick={signout}>Sign out</button>
           </>
           : <>
