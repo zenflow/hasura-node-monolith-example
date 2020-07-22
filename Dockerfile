@@ -27,7 +27,7 @@ RUN yarn next build
 RUN yarn install --prod
 
 # Base this image on hasura graphql engine (CLI migrations version)
-FROM hasura/graphql-engine:v1.3.0-beta.4.cli-migrations-v2
+FROM hasura/graphql-engine:v1.3.0.cli-migrations-v2
 
 # Install `node` runtime
 COPY --from=node-runtime /bin/node /bin/node
