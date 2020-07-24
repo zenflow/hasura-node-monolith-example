@@ -1,11 +1,10 @@
 # TODO
 
-- batch graphql requests
-- upgrade apollo
 - typescript & prettier/eslint?
-- FAIL if session token is invalid?
 - document
-- use composite-service only for production mode, not development mode, for better/specialized control (npm package `concurrently`, or `gulp`)
+- issues
+    - 'Cache-Control': 'max-age=300' in Hasura auth hook response doesn't seem to work.
+    Hook is run twice when executing `session` & `posts` graphql queries in parallel.
 - next-auth
     - as per [the "Note" here](https://next-auth-docs-git-v3.iaincollins.vercel.app/configuration/databases#what-is-a-database-used-for)
         - > If you do specify a database then database sessions are be enabled by default, unless you explicitly enable JSON Web Tokens for sessions by passing the option sessions { jwt: true }
@@ -25,9 +24,9 @@
     - add postgres up.sql to docs
         - schema for https://next-auth-docs-git-v3.iaincollins.vercel.app/schemas/postgres#verification-request
 - hasura
-    - not passing 'Cookie' header, violating docs:
-    hasura.io/docs/1.0/graphql/manual/auth/authentication/webhook.html#get-request
     - Can still access protected subscription (but not query) after role has been changed to anonymous? (using http auth hook)
     - Computed fields can be accessed by any user without being assigned that permission
+- apollo
+    - version 3 breaks SSR *only in production mode*. `initialApolloState` is populated but hooks render as "loading" both server-side & client-side
 - outreach
     - https://github.com/aaronhayes/awesome-hasura

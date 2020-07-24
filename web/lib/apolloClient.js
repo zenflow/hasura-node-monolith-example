@@ -1,15 +1,16 @@
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
+import { BatchHttpLink } from 'apollo-link-batch-http'
 
 function createApolloClient(req, initialState) {
+  const uri = `${process.browser ? window.location.origin : process.env.HASURA_URL}/v1/graphql`
+  const headers = req && req.headers.cookie ? { cookie: req.headers.cookie } : {}
   const client = new ApolloClient({
     ssrMode: !process.browser,
-    link: new HttpLink({
-      uri: `${process.browser ? window.location.origin : process.env.HASURA_URL}/v1/graphql`,
-      credentials: 'same-origin',
-      headers: req && req.headers.cookie ? { cookie: req.headers.cookie } : {},
-    }),
+    link: process.browser
+      ? new HttpLink({ uri, headers })
+      : new BatchHttpLink({ uri, headers }),
     cache: new InMemoryCache(),
   })
   if (initialState) {

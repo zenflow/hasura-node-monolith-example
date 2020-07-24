@@ -36,8 +36,5 @@ async function getUserByEmail (email) {
     `,
     values: [email],
   })
-  if (!user) {
-    throw new Error(`User not found by email ${JSON.stringify(email)}`)
-  }
   return user
 }
