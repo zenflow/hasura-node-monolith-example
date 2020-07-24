@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
-import { useAuth } from '../lib/auth'
+import { useSession } from '../lib/session'
 
 const VOTE_MUTATION = gql`
   mutation ($post_id: Int!, $value: smallint!) {
@@ -20,7 +20,7 @@ const VOTE_MUTATION = gql`
 `
 
 export default function PostVoteButton({ post, value, children }) {
-  const { user } = useAuth()
+  const { user } = useSession()
   const [voteMutation] = useMutation(VOTE_MUTATION)
   const vote = value => {
     voteMutation({

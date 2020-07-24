@@ -1,6 +1,6 @@
 const express = require('express')
 const actions = {
-  auth: require('./actions/auth'),
+  session: require('./actions/session'),
   vote: require('./actions/vote'),
 }
 

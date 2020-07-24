@@ -1,8 +1,8 @@
-import { useAuth } from '../lib/auth'
+import { useSession } from '../lib/session'
 import { signin, signout } from 'next-auth/client'
 
 export function AuthSection () {
-  const { user } = useAuth()
+  const { user } = useSession()
   return (
     <div>
       {

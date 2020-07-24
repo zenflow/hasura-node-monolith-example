@@ -1,5 +1,5 @@
 type Query {
-  auth : AuthQueryOutput
+  session : SessionOutput
 }
 
 
@@ -13,7 +13,7 @@ type Mutation {
 
 
 
-type AuthQueryOutput {
+type SessionOutput {
   user_id : Int
   role : String
 }

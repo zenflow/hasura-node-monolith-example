@@ -1,11 +1,8 @@
 # TODO
 
-- rename "auth" action & react context to "current user"
 - batch graphql requests
-- useAuth should use a subscription on client
 - upgrade apollo
 - typescript & prettier/eslint?
-- upvotes/downvotes
 - FAIL if session token is invalid?
 - document
 - use composite-service only for production mode, not development mode, for better/specialized control (npm package `concurrently`, or `gulp`)
