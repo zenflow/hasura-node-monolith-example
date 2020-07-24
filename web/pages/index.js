@@ -1,14 +1,18 @@
-import InfoBox from '../components/InfoBox'
-import Submit from '../components/Submit'
+import PostSubmit from '../components/PostSubmit'
 import PostList, {
   ALL_POSTS_QUERY,
   allPostsQueryVars,
 } from '../components/PostList'
+import { AuthSection } from '../components/AuthSection'
 
 const IndexPage = () => (
   <>
-    <InfoBox>ℹ️ TODO: info here.</InfoBox>
-    <Submit />
+    <p>ℹ️ TODO: info here.</p>
+    <hr/>
+    <AuthSection/>
+    <hr/>
+    <PostSubmit />
+    <hr/>
     <PostList />
   </>
 )

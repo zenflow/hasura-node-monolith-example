@@ -5,10 +5,7 @@ const AUTH_QUERY = gql`
   query {
     auth {
       user {
-        id
         name
-        email
-        image
       }
     }
   }
@@ -23,5 +20,3 @@ export const getAuth = async apolloClient => {
   const { data } = await apolloClient.query({ query: AUTH_QUERY })
   return data.auth
 }
-
-

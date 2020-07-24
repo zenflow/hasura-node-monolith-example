@@ -13,11 +13,13 @@ const INSERT_POST_MUTATION = gql`
       user {
         name
       }
+      vote_total
+      my_vote_value
     }
   }
 `
 
-export default function Submit() {
+export default function PostSubmit() {
   const [insertPost, { loading }] = useMutation(INSERT_POST_MUTATION)
 
   const handleSubmit = (event) => {
@@ -49,21 +51,13 @@ export default function Submit() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h1>Submit</h1>
+      <h3>Submit Post</h3>
       <input placeholder="title" name="title" type="text" required />
       <input placeholder="url" name="url" type="url" required />
       <button type="submit" disabled={loading}>
         Submit
       </button>
       <style jsx>{`
-        form {
-          border-bottom: 1px solid #ececec;
-          padding-bottom: 20px;
-          margin-bottom: 20px;
-        }
-        h1 {
-          font-size: 20px;
-        }
         input {
           display: block;
           margin-bottom: 10px;

@@ -1,7 +1,7 @@
 export default () => (
   <>
     <article>
-      <h1>The Idea Behind This Example</h1>
+      <h3>The Idea Behind This Example</h3>
       <p>
         <a href="https://www.apollographql.com/client/">Apollo</a> is a GraphQL
         client that allows you to easily query the exact data you need from a
@@ -35,5 +35,11 @@ export default () => (
         its GraphQL backend.
       </p>
     </article>
+    <style jsx>{`
+      article {
+        margin: 0 auto;
+        max-width: 650px;
+      }
+    `}</style>
   </>
 )

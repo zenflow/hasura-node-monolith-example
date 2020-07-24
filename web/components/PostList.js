@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/react-hooks'
 import { NetworkStatus } from 'apollo-client'
 import gql from 'graphql-tag'
 import ErrorMessage from './ErrorMessage'
-// import PostUpvoter from './PostUpvoter'
+import PostVoteButton from './PostVoteButton'
 
 // TODO: should use a graphql fragment for result fields, same as in Submit.js
 export const ALL_POSTS_QUERY = gql`
@@ -18,6 +18,8 @@ export const ALL_POSTS_QUERY = gql`
       user {
         name
       }
+      vote_total
+      my_vote_value
     }
     posts_aggregate {
       aggregate {
@@ -71,9 +73,9 @@ export default function PostList() {
 
   return (
     <section>
-      <span>
-        Showing {posts.length} of {count} posts:
-      </span>
+      <h3>
+        Posts ({posts.length} of {count})
+      </h3>
       <ul>
         {posts.map((post, index) => (
           <li key={post.id}>
@@ -81,7 +83,19 @@ export default function PostList() {
               <span>{index + 1}. </span>
               <a target="_blank" href={post.url}>{post.title}</a>
               <span>by {post.user ? post.user.name : 'anonymous'}</span>
-              {/* <PostUpvoter id={post.id} votes={post.votes} /> */}
+            </div>
+            <div>
+              <span>&nbsp;&nbsp;</span>
+              <span>Score:</span>
+              <span className="post-vote-total">
+                {post.vote_total}
+              </span>
+              <PostVoteButton post={post} value={-1}>
+                -1
+              </PostVoteButton>
+              <PostVoteButton post={post} value={+1}>
+                +1
+              </PostVoteButton>
             </div>
           </li>
         ))}
@@ -92,27 +106,26 @@ export default function PostList() {
         </button>
       )}
       <style jsx>{`
-        section {
-          padding-bottom: 20px;
-        }
         li {
           display: block;
-          margin-bottom: 10px;
         }
         div {
+          margin: .5rem 0;
           align-items: center;
           display: flex;
         }
         a {
-          font-size: 14px;
-          margin-right: 10px;
+          margin-right: .5rem;
           text-decoration: none;
           padding-bottom: 0;
           border: 0;
         }
         span {
-          font-size: 14px;
-          margin-right: 5px;
+          margin-right: .5rem;
+        }
+        span.post-vote-total {
+          min-width: 3rem;
+          text-align: right;
         }
         ul {
           margin: 0;

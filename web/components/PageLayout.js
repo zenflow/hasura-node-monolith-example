@@ -1,10 +1,11 @@
 import { Header } from './Header';
 
 
-export function Layout({ children }) {
+export function PageLayout({ children }) {
   return (
     <main>
       <Header/>
+      <hr/>
       {children}
       <style jsx global>{`
         * {
@@ -20,13 +21,13 @@ export function Layout({ children }) {
           color: #22bad9;
           text-decoration: none;
         }
-        p {
-          font-size: 14px;
-          line-height: 24px;
-        }
-        article {
-          margin: 0 auto;
-          max-width: 650px;
+        hr {
+          border-style: solid;
+          border-color: #ececec;
+          border-width: 0;
+          border-top-width: 1px;
+          margin-top: 1rem;
+          margin-bottom: 1rem;
         }
         button {
           align-items: center;
@@ -35,13 +36,15 @@ export function Layout({ children }) {
           color: white;
           display: flex;
           padding: 5px 7px;
-          transition: background-color 0.3s;
+          transition: all 0.3s;
+          cursor: pointer;
         }
         button:active {
           background-color: #1b9db7;
         }
         button:disabled {
-          background-color: #b5bebf;
+          opacity: 0.4;
+          cursor: not-allowed;
         }
         button:focus {
           outline: none;
