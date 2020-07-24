@@ -3,10 +3,22 @@ type Query {
 }
 
 
+type Mutation {
+  vote (
+    post_id: Int!
+    value: smallint!
+  ): VoteOutput!
+}
+
+
 
 
 type AuthQueryOutput {
   user_id : Int
   role : String
+}
+
+type VoteOutput {
+  vote_id : Int!
 }
 

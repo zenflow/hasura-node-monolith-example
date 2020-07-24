@@ -6,6 +6,12 @@ actions:
   permissions:
   - role: anonymous
   - role: user
+- name: vote
+  definition:
+    kind: synchronous
+    handler: '{{ACTIONS_URL}}'
+  permissions:
+  - role: user
 custom_types:
   enums: []
   input_objects: []
@@ -19,4 +25,13 @@ custom_types:
       type: object
       field_mapping:
         user_id: id
+  - name: VoteOutput
+    relationships:
+    - remote_table:
+        schema: public
+        name: votes
+      name: vote
+      type: object
+      field_mapping:
+        vote_id: id
   scalars: []

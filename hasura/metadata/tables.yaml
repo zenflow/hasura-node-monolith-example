@@ -12,6 +12,29 @@
   - name: user
     using:
       foreign_key_constraint_on: user_id
+  array_relationships:
+  - name: votes
+    using:
+      foreign_key_constraint_on:
+        column: post_id
+        table:
+          schema: public
+          name: votes
+  computed_fields:
+  - name: vote_total
+    definition:
+      function:
+        schema: public
+        name: get_post_vote_total
+    comment: ""
+  - name: my_vote_value
+    definition:
+      function:
+        schema: public
+        name: get_post_my_vote_value
+      table_argument: post_row
+      session_argument: hasura_session
+    comment: ""
   insert_permissions:
   - role: anonymous
     permission:
@@ -39,6 +62,9 @@
       - updated_at
       - url
       - user_id
+      computed_fields:
+      - my_vote_value
+      - vote_total
       filter: {}
       allow_aggregations: true
   - role: user
@@ -50,6 +76,9 @@
       - updated_at
       - url
       - user_id
+      computed_fields:
+      - my_vote_value
+      - vote_total
       filter: {}
       allow_aggregations: true
 - table:
@@ -84,6 +113,13 @@
         table:
           schema: public
           name: sessions
+  - name: votes
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          schema: public
+          name: votes
   select_permissions:
   - role: anonymous
     permission:
@@ -106,6 +142,39 @@
       - id
       - image
       - name
+      - updated_at
+      filter: {}
+      allow_aggregations: true
+- table:
+    schema: public
+    name: votes
+  object_relationships:
+  - name: post
+    using:
+      foreign_key_constraint_on: post_id
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+  select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - id
+      - created_at
+      - updated_at
+      - user_id
+      - post_id
+      - value
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+      - value
+      - id
+      - post_id
+      - user_id
+      - created_at
       - updated_at
       filter: {}
       allow_aggregations: true

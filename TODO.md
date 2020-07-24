@@ -31,5 +31,6 @@
     - not passing 'Cookie' header, violating docs:
     hasura.io/docs/1.0/graphql/manual/auth/authentication/webhook.html#get-request
     - Can still access protected subscription (but not query) after role has been changed to anonymous? (using http auth hook)
+    - Computed fields can be accessed by any user without being assigned that permission
 - outreach
     - https://github.com/aaronhayes/awesome-hasura

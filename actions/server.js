@@ -1,6 +1,7 @@
 const express = require('express')
 const actions = {
   auth: require('./actions/auth'),
+  vote: require('./actions/vote'),
 }
 
 const app = express()
