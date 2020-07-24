@@ -3,7 +3,6 @@ const cookieParser = require('cookie-parser')
 const routes = [
   require('./routes/next-auth'),
   require('./routes/hasura-auth-hook'),
-  require('./routes/hasura-auth-query'),
 ]
 
 const app = express()

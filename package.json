@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "db": "docker run --name hnme_postgres_1 --env POSTGRES_PASSWORD=postgrespassword --volume hnme_postgres_data:/var/lib/postgresql/data --publish 5432:5432 --rm --interactive --tty postgres:12",
-    "dev-prepare": "concurrently \"docker build --tag hnme_hasura hasura\" \"cd auth && yarn --silent\" \"cd web && yarn --silent\"",
+    "dev-prepare": "concurrently \"docker build --tag hnme_hasura hasura\" \"cd auth && yarn --silent\" \"cd actions && yarn --silent\" \"cd web && yarn --silent\"",
     "dev-only": "dotenv -- node main-server.js",
     "dev": "yarn dev-prepare && yarn dev-only",
     "start-prepare": "docker build --tag hnme_app .",

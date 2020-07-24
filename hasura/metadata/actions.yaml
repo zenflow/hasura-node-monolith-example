@@ -2,7 +2,7 @@ actions:
 - name: auth
   definition:
     kind: ""
-    handler: '{{AUTH_BASE_URL}}/hasura-auth-query'
+    handler: '{{ACTIONS_URL}}'
   permissions:
   - role: anonymous
   - role: user

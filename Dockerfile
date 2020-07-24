@@ -15,6 +15,13 @@ ADD auth/package.json auth/yarn.lock ./
 RUN yarn install --frozen-lockfile --prod
 ADD auth/ ./
 
+# Prepare actions package
+FROM node:14.5.0 as actions-package
+WORKDIR /app/actions
+ADD actions/package.json actions/yarn.lock ./
+RUN yarn install --frozen-lockfile --prod
+ADD actions/ ./
+
 # Prepare web package
 FROM node:14.5.0 as web-package
 WORKDIR /app/web
@@ -45,12 +52,15 @@ COPY --from=main-package /app /app
 # Copy auth package
 COPY --from=auth-package /app/auth /app/auth
 
+# Copy actions package
+COPY --from=actions-package /app/actions /app/actions
+
 # Copy web package
 COPY --from=web-package /app/web /app/web
 
 # Set env vars used in metadata, preventing errors on cli-migrations-v2 startup.
-# This env var is actually defined in composite/server.js.
-ENV AUTH_BASE_URL foo
+# This env var is actually defined in main-server.js.
+ENV ACTIONS_URL foo
 
 # Set env var to signal production mode
 ENV NODE_ENV production

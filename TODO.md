@@ -1,6 +1,6 @@
 # TODO
 
-- "actions" service
+- rename "auth" action & react context to "current user"
 - batch graphql requests
 - useAuth should use a subscription on client
 - upgrade apollo
