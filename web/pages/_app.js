@@ -19,16 +19,19 @@ export default function MyApp({
     </ApolloProvider>
   );
 }
+
 MyApp.getInitialProps = async (ctx) => {
   const apolloClient = initializeApollo(ctx.ctx.req);
   apolloClient.toJSON = () => null;
   ctx.ctx.apolloClient = ctx.apolloClient = apolloClient;
-  const auth = await getSession(apolloClient);
-  ctx.ctx.auth = ctx.auth = auth;
+
+  const sessionPromise = getSession(apolloClient);
+  ctx.ctx.session = ctx.session = async () => sessionPromise;
+
   const appProps = await App.getInitialProps(ctx);
-  return {
-    ...appProps,
-    apolloClient,
-    initialApolloState: !process.browser && apolloClient.cache.extract(),
-  };
+
+  await sessionPromise;
+  const initialApolloState = !process.browser && apolloClient.cache.extract();
+
+  return { ...appProps, apolloClient, initialApolloState };
 };
