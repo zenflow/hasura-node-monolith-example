@@ -64,7 +64,7 @@ startCompositeService({
       command: dev // --tty
         ? `docker run
             --name hnme_hasura_1
-            --env PORT
+            --env HASURA_GRAPHQL_SERVER_PORT
             --env HASURA_GRAPHQL_DATABASE_URL
             --env HASURA_GRAPHQL_ADMIN_SECRET
             --env HASURA_GRAPHQL_AUTH_HOOK
@@ -73,10 +73,10 @@ startCompositeService({
             --rm
             --interactive
             hnme_hasura`
-        : `graphql-engine serve --server-port ${hasuraPort}`,
+        : `graphql-engine serve`,
       env: {
         ...process.env, // Includes env vars needed to run docker
-        PORT: hasuraPort,
+        HASURA_GRAPHQL_SERVER_PORT: hasuraPort,
         HASURA_GRAPHQL_DATABASE_URL,
         HASURA_GRAPHQL_ADMIN_SECRET,
         HASURA_GRAPHQL_AUTH_HOOK: `http://${
