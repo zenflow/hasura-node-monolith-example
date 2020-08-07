@@ -1,16 +1,16 @@
-import { useRouter } from 'next/router'
-import Link from 'next/link'
+import { useRouter } from "next/router";
+import Link from "next/link";
 
-export function Header () {
-  const { pathname } = useRouter()
+export function Header() {
+  const { pathname } = useRouter();
   return (
     <header>
       <h2>zenflow/hasura-node-monolith-example</h2>
       <Link href="/">
-        <a className={pathname === '/' ? 'is-active' : ''}>Home</a>
+        <a className={pathname === "/" ? "is-active" : ""}>Home</a>
       </Link>
       <Link href="/about">
-        <a className={pathname === '/about' ? 'is-active' : ''}>About</a>
+        <a className={pathname === "/about" ? "is-active" : ""}>About</a>
       </Link>
       <style jsx>{`
         div {
@@ -21,9 +21,9 @@ export function Header () {
           font-size: 1.4rem;
         }
         .is-active {
-          text-decoration: underline
+          text-decoration: underline;
         }
       `}</style>
     </header>
-  )
+  );
 }

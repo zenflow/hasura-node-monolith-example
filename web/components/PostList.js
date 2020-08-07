@@ -1,17 +1,13 @@
-import { useQuery } from '@apollo/react-hooks'
-import { NetworkStatus } from 'apollo-client'
-import gql from 'graphql-tag'
-import ErrorMessage from './ErrorMessage'
-import PostVoteButton from './PostVoteButton'
+import { useQuery } from "@apollo/react-hooks";
+import { NetworkStatus } from "apollo-client";
+import gql from "graphql-tag";
+import ErrorMessage from "./ErrorMessage";
+import PostVoteButton from "./PostVoteButton";
 
 // TODO: should use a graphql fragment for result fields, same as in Submit.js
 export const ALL_POSTS_QUERY = gql`
-  query ($limit: Int!, $offset: Int!) {
-    posts(
-      order_by: {created_at: desc},
-      limit: $limit,
-      offset: $offset
-    ) {
+  query($limit: Int!, $offset: Int!) {
+    posts(order_by: { created_at: desc }, limit: $limit, offset: $offset) {
       id
       title
       url
@@ -27,12 +23,12 @@ export const ALL_POSTS_QUERY = gql`
       }
     }
   }
-`
+`;
 
 export const allPostsQueryVars = {
   offset: 0,
   limit: 5,
-}
+};
 
 export default function PostList() {
   const { loading, error, data, fetchMore, networkStatus } = useQuery(
@@ -44,9 +40,9 @@ export default function PostList() {
       // more data
       notifyOnNetworkStatusChange: true,
     }
-  )
+  );
 
-  const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
+  const loadingMorePosts = networkStatus === NetworkStatus.fetchMore;
 
   const loadMorePosts = () => {
     fetchMore({
@@ -55,21 +51,26 @@ export default function PostList() {
       },
       updateQuery: (previous, { fetchMoreResult }) => {
         if (!fetchMoreResult) {
-          return previous
+          return previous;
         }
         return {
           ...previous,
           posts: [...previous.posts, ...fetchMoreResult.posts],
-        }
+        };
       },
-    })
-  }
+    });
+  };
 
-  if (error) return <ErrorMessage message="Error loading posts." />
-  if (loading && !loadingMorePosts) return <div>Loading</div>
+  if (error) return <ErrorMessage message="Error loading posts." />;
+  if (loading && !loadingMorePosts) return <div>Loading</div>;
 
-  const { posts, posts_aggregate: { aggregate: { count }} } = data
-  const areMorePosts = posts.length < count
+  const {
+    posts,
+    posts_aggregate: {
+      aggregate: { count },
+    },
+  } = data;
+  const areMorePosts = posts.length < count;
 
   return (
     <section>
@@ -81,15 +82,15 @@ export default function PostList() {
           <li key={post.id}>
             <div>
               <span>{index + 1}. </span>
-              <a target="_blank" href={post.url}>{post.title}</a>
-              <span>by {post.user ? post.user.name : 'anonymous'}</span>
+              <a target="_blank" rel="noreferrer" href={post.url}>
+                {post.title}
+              </a>
+              <span>by {post.user ? post.user.name : "anonymous"}</span>
             </div>
             <div>
               <span>&nbsp;&nbsp;</span>
               <span>Score:</span>
-              <span className="post-vote-total">
-                {post.vote_total}
-              </span>
+              <span className="post-vote-total">{post.vote_total}</span>
               <PostVoteButton post={post} value={-1}>
                 -1
               </PostVoteButton>
@@ -102,7 +103,7 @@ export default function PostList() {
       </ul>
       {areMorePosts && (
         <button onClick={() => loadMorePosts()} disabled={loadingMorePosts}>
-          {loadingMorePosts ? 'Loading...' : 'Show More'}
+          {loadingMorePosts ? "Loading..." : "Show More"}
         </button>
       )}
       <style jsx>{`
@@ -110,18 +111,18 @@ export default function PostList() {
           display: block;
         }
         div {
-          margin: .5rem 0;
+          margin: 0.5rem 0;
           align-items: center;
           display: flex;
         }
         a {
-          margin-right: .5rem;
+          margin-right: 0.5rem;
           text-decoration: none;
           padding-bottom: 0;
           border: 0;
         }
         span {
-          margin-right: .5rem;
+          margin-right: 0.5rem;
         }
         span.post-vote-total {
           min-width: 3rem;
@@ -136,12 +137,12 @@ export default function PostList() {
           border-style: solid;
           border-width: 6px 4px 0 4px;
           border-color: #ffffff transparent transparent transparent;
-          content: '';
+          content: "";
           height: 0;
           margin-right: 5px;
           width: 0;
         }
       `}</style>
     </section>
-  )
+  );
 }

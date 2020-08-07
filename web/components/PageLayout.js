@@ -1,16 +1,15 @@
-import { Header } from './Header';
-
+import { Header } from "./Header";
 
 export function PageLayout({ children }) {
   return (
     <main>
-      <Header/>
-      <hr/>
+      <Header />
+      <hr />
       {children}
       <style jsx global>{`
         * {
-          font-family: Menlo, Monaco, 'Lucida Console', 'Liberation Mono',
-            'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New',
+          font-family: Menlo, Monaco, "Lucida Console", "Liberation Mono",
+            "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New",
             monospace, serif;
         }
         body {
@@ -51,5 +50,5 @@ export function PageLayout({ children }) {
         }
       `}</style>
     </main>
-  )
+  );
 }

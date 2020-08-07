@@ -1,9 +1,9 @@
-import { useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
-import { useSession } from '../lib/session'
+import { useMutation } from "@apollo/react-hooks";
+import gql from "graphql-tag";
+import { useSession } from "../lib/session";
 
 const VOTE_MUTATION = gql`
-  mutation ($post_id: Int!, $value: smallint!) {
+  mutation($post_id: Int!, $value: smallint!) {
     vote(post_id: $post_id, value: $value) {
       __typename
       vote {
@@ -17,22 +17,22 @@ const VOTE_MUTATION = gql`
       }
     }
   }
-`
+`;
 
 export default function PostVoteButton({ post, value, children }) {
-  const { user } = useSession()
-  const [voteMutation] = useMutation(VOTE_MUTATION)
-  const vote = value => {
+  const { user } = useSession();
+  const [voteMutation] = useMutation(VOTE_MUTATION);
+  const vote = (value) => {
     voteMutation({
       variables: { post_id: post.id, value },
       optimisticResponse: {
-        __typename: 'Mutation',
+        __typename: "Mutation",
         vote: {
-          __typename: 'VoteOutput',
+          __typename: "VoteOutput",
           vote: {
-            __typename: 'votes',
+            __typename: "votes",
             post: {
-              __typename: 'posts',
+              __typename: "posts",
               id: post.id,
               vote_total: post.vote_total - post.my_vote_value + value,
               my_vote_value: value,
@@ -40,13 +40,13 @@ export default function PostVoteButton({ post, value, children }) {
           },
         },
       },
-    })
-  }
+    });
+  };
   return (
     <>
       <button
         disabled={!user}
-        className={post.my_vote_value === value ? 'is-active' : ''}
+        className={post.my_vote_value === value ? "is-active" : ""}
         onClick={() => vote(post.my_vote_value === value ? 0 : value)}
       >
         {children}
@@ -62,10 +62,10 @@ export default function PostVoteButton({ post, value, children }) {
           background-color: #e4e4e4;
         }
         button.is-active {
-          box-shadow: 4px 4px 4px 0px rgba(0,0,0,0.75);
+          box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.75);
           transform: translateX(-4px) translateY(-4px);
         }
       `}</style>
     </>
-  )
+  );
 }

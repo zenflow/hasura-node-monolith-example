@@ -1,12 +1,12 @@
-import { useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
-import { produce } from 'immer'
-import { ALL_POSTS_QUERY, allPostsQueryVars } from './PostList'
+import { useMutation } from "@apollo/react-hooks";
+import gql from "graphql-tag";
+import { produce } from "immer";
+import { ALL_POSTS_QUERY, allPostsQueryVars } from "./PostList";
 
 // TODO: should use a graphql fragment for result fields, same as in PostList.js
 const INSERT_POST_MUTATION = gql`
-  mutation ($title: String!, $url: String!) {
-    insert_posts_one(object: {title: $title, url: $url}) {
+  mutation($title: String!, $url: String!) {
+    insert_posts_one(object: { title: $title, url: $url }) {
       id
       title
       url
@@ -17,18 +17,18 @@ const INSERT_POST_MUTATION = gql`
       my_vote_value
     }
   }
-`
+`;
 
 export default function PostSubmit() {
-  const [insertPost, { loading }] = useMutation(INSERT_POST_MUTATION)
+  const [insertPost, { loading }] = useMutation(INSERT_POST_MUTATION);
 
   const handleSubmit = (event) => {
-    event.preventDefault()
-    const form = event.target
-    const formData = new window.FormData(form)
-    const title = formData.get('title')
-    const url = formData.get('url')
-    form.reset()
+    event.preventDefault();
+    const form = event.target;
+    const formData = new window.FormData(form);
+    const title = formData.get("title");
+    const url = formData.get("url");
+    form.reset();
 
     insertPost({
       variables: { title, url },
@@ -36,18 +36,18 @@ export default function PostSubmit() {
         const data = proxy.readQuery({
           query: ALL_POSTS_QUERY,
           variables: allPostsQueryVars,
-        })
+        });
         proxy.writeQuery({
           query: ALL_POSTS_QUERY,
           variables: allPostsQueryVars,
-          data: produce(data, data => {
-            data.posts.unshift(insert_posts_one)
-            data.posts_aggregate.aggregate.count++
+          data: produce(data, (data) => {
+            data.posts.unshift(insert_posts_one);
+            data.posts_aggregate.aggregate.count++;
           }),
-        })
+        });
       },
-    })
-  }
+    });
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -64,5 +64,5 @@ export default function PostSubmit() {
         }
       `}</style>
     </form>
-  )
+  );
 }

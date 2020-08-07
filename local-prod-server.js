@@ -7,13 +7,17 @@
  *    you can run simply build the Dockerfile, start a container with `docker run` and access the app on localhost.
  */
 
-const { spawnSync } = require('child_process')
-const { startCompositeService, onceTcpPortUsed, configureHttpGateway } = require('composite-service')
+const { spawnSync } = require("child_process");
+const {
+  startCompositeService,
+  onceTcpPortUsed,
+  configureHttpGateway,
+} = require("composite-service");
 
 // Kill docker container in case it didn't receive a ctrl+c and therefore continues to run even though `docker run` exited
-spawnSync('docker', ['kill', 'hnme_app_1'], { stdio: 'inherit' })
+spawnSync("docker", ["kill", "hnme_app_1"], { stdio: "inherit" });
 
-const { PORT, DOCKER_ENGINE_HOST } = process.env
+const { PORT, DOCKER_ENGINE_HOST } = process.env;
 
 startCompositeService({
   services: {
@@ -35,13 +39,15 @@ startCompositeService({
           hnme_app
       `,
       env: process.env,
-      ready: ctx => onceTcpPortUsed(PORT, DOCKER_ENGINE_HOST),
-      onCrash: ctx => Promise.reject('Crash'),
+      ready: (ctx) => onceTcpPortUsed(PORT, DOCKER_ENGINE_HOST),
+      onCrash: (ctx) => Promise.reject("Crash"),
     },
     gateway: configureHttpGateway({
-      dependencies: ['app'],
+      dependencies: ["app"],
       port: PORT,
-      proxies: [['/', { target: `http://${DOCKER_ENGINE_HOST}:${PORT}`, ws: true }]]
+      proxies: [
+        ["/", { target: `http://${DOCKER_ENGINE_HOST}:${PORT}`, ws: true }],
+      ],
     }),
-  }
-})
+  },
+});

@@ -1,5 +1,5 @@
-import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/react-hooks";
 
 const SESSION_QUERY = gql`
   query {
@@ -9,14 +9,14 @@ const SESSION_QUERY = gql`
       }
     }
   }
-`
+`;
 
 export const useSession = () => {
-  const { data } = useQuery(SESSION_QUERY)
-  return data.session
-}
+  const { data } = useQuery(SESSION_QUERY);
+  return data.session;
+};
 
-export const getSession = async apolloClient => {
-  const { data } = await apolloClient.query({ query: SESSION_QUERY })
-  return data.session
-}
+export const getSession = async (apolloClient) => {
+  const { data } = await apolloClient.query({ query: SESSION_QUERY });
+  return data.session;
+};
