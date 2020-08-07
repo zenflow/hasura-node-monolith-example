@@ -1,5 +1,5 @@
 import App from "next/app";
-import { ApolloProvider } from "@apollo/react-hooks";
+import { ApolloProvider } from "@apollo/client";
 import { initializeApollo } from "../lib/apolloClient";
 import { getSession } from "../lib/session";
 import { PageLayout } from "../components/PageLayout";

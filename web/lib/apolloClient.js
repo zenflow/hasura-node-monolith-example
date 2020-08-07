@@ -1,7 +1,5 @@
-import { ApolloClient } from "apollo-client";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { HttpLink } from "apollo-link-http";
-import { BatchHttpLink } from "apollo-link-batch-http";
+import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
+import { BatchHttpLink } from "@apollo/client/link/batch-http";
 
 function createApolloClient(req, initialState) {
   const uri = `${
