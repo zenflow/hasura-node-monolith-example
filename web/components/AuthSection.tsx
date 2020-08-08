@@ -1,13 +1,14 @@
-import { useSession } from "../lib/session";
+import { FC } from "react";
 import { signin, signout } from "next-auth/client";
+import { useSessionQuery } from "../queries/sessionQuery";
 
-export function AuthSection() {
-  const { user } = useSession();
+export const AuthSection: FC<{}> = () => {
+  const { session } = useSessionQuery();
   return (
     <div>
-      {user ? (
+      {session.user ? (
         <>
-          Signed in as {user.name}
+          Signed in as {session.user.name}
           <button onClick={() => signout()}>Sign out</button>
         </>
       ) : (
@@ -27,4 +28,4 @@ export function AuthSection() {
       `}</style>
     </div>
   );
-}
+};

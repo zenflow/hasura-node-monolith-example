@@ -1,4 +1,5 @@
-export default function ErrorMessage({ message }) {
+import { FC } from "react";
+export const ErrorMessage: FC<{ message: string }> = ({ message }) => {
   return (
     <aside>
       {message}
@@ -12,4 +13,4 @@ export default function ErrorMessage({ message }) {
       `}</style>
     </aside>
   );
-}
+};

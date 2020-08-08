@@ -1,7 +1,8 @@
+import { FC } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-export function Header() {
+export const PageHeader: FC<{}> = () => {
   const { pathname } = useRouter();
   return (
     <header>
@@ -26,4 +27,4 @@ export function Header() {
       `}</style>
     </header>
   );
-}
+};

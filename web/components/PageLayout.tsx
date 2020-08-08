@@ -1,9 +1,10 @@
-import { Header } from "./Header";
+import { FC } from "react";
+import { PageHeader } from "./PageHeader";
 
-export function PageLayout({ children }) {
+export const PageLayout: FC<{}> = ({ children }) => {
   return (
     <main>
-      <Header />
+      <PageHeader />
       <hr />
       {children}
       <style jsx global>{`
@@ -51,4 +52,4 @@ export function PageLayout({ children }) {
       `}</style>
     </main>
   );
-}
+};
