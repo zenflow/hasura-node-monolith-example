@@ -22,12 +22,6 @@ export const PostSubmit: FC<{}> = () => {
       <button type="submit" disabled={loading}>
         Submit
       </button>
-      <style jsx>{`
-        input {
-          display: block;
-          margin-bottom: 10px;
-        }
-      `}</style>
     </form>
   );
 };

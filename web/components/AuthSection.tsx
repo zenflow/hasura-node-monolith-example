@@ -4,28 +4,15 @@ import { useSessionQuery } from "../queries/sessionQuery";
 
 export const AuthSection: FC<{}> = () => {
   const { session } = useSessionQuery();
-  return (
+  return session.user ? (
     <div>
-      {session.user ? (
-        <>
-          Signed in as {session.user.name}
-          <button onClick={() => signout()}>Sign out</button>
-        </>
-      ) : (
-        <>
-          Not signed in
-          <button onClick={() => signin("google")}>Sign in with Google</button>
-        </>
-      )}
-      <style jsx>{`
-        div {
-          margin-bottom: 10px;
-        }
-        button {
-          display: inline-block;
-          margin-left: 10px;
-        }
-      `}</style>
+      <span>Signed in as {session.user.name}</span>
+      <button onClick={() => signout()}>Sign out</button>
+    </div>
+  ) : (
+    <div>
+      <span>Not signed in</span>
+      <button onClick={() => signin("google")}>Sign in with Google</button>
     </div>
   );
 };

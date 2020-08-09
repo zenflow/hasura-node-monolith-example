@@ -6,23 +6,19 @@ export const PageHeader: FC<{}> = () => {
   const { pathname } = useRouter();
   return (
     <header>
-      <h2>zenflow/hasura-node-monolith-example</h2>
-      <Link href="/">
-        <a className={pathname === "/" ? "is-active" : ""}>Home</a>
-      </Link>
-      <Link href="/about">
-        <a className={pathname === "/about" ? "is-active" : ""}>About</a>
-      </Link>
+      <h1>zenflow/hasura-node-monolith-example</h1>
+      <nav>
+        <Link href="/">
+          <a className={pathname === "/" ? "is-active" : ""}>Home</a>
+        </Link>
+        {" / "}
+        <Link href="/about">
+          <a className={pathname === "/about" ? "is-active" : ""}>About</a>
+        </Link>
+      </nav>
       <style jsx>{`
-        div {
-          margin-bottom: 16px;
-        }
-        a {
-          margin-right: 15px;
-          font-size: 1.4rem;
-        }
         .is-active {
-          text-decoration: underline;
+          text-decoration: none;
         }
       `}</style>
     </header>

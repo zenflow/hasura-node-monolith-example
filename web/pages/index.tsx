@@ -28,7 +28,6 @@ function IndexPage() {
       <AuthSection />
       <hr />
       <PostSubmit />
-      <hr />
       <PostList />
     </>
   );

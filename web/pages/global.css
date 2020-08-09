@@ -1,0 +1,15 @@
+div > span {
+  margin-right: 0.5rem;
+}
+
+form > input {
+  margin-right: 0.5rem;
+}
+
+button {
+  transition: all 0.3s;
+}
+
+button:active {
+  background-color: cornflowerblue;
+}

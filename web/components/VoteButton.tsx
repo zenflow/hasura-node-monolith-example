@@ -23,10 +23,14 @@ export const VoteButton: FC<{ post: Post; value: -1 | 1 }> = (props) => {
       </button>
       <style jsx>{`
         button {
-          border: 1px solid #e4e4e4;
-          margin: 4px;
           background-color: white;
           color: black;
+          border: 0.1em solid #e4e4e4;
+          margin: 0.2em;
+        }
+        button:focus {
+          outline: none;
+          border-color: black;
         }
         button:active {
           background-color: #e4e4e4;

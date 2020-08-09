@@ -1,3 +1,5 @@
+import "@exampledev/new.css";
+import "./global.css";
 import App, { AppProps, AppInitialProps, AppContext } from "next/app";
 import {
   ApolloClient,
