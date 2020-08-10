@@ -1,7 +1,7 @@
 query Session {
   session {
     user {
-      name
+      ...UserInfo
     }
   }
 }

@@ -1,7 +1,7 @@
 import { FC, FormEvent } from "react";
 import { useInsertPostMutation } from "../graphql/InsertPostMutation";
 
-export const PostSubmit: FC<{}> = () => {
+export const PostForm: FC<{}> = () => {
   const [insertPost, { loading }] = useInsertPostMutation();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -16,7 +16,6 @@ export const PostSubmit: FC<{}> = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3>Submit Post</h3>
       <input placeholder="title" name="title" type="text" required />
       <input placeholder="url" name="url" type="url" required />
       <button type="submit" disabled={loading}>

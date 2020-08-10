@@ -3,7 +3,7 @@ fragment PostInfo on posts {
   title
   url
   user {
-    name
+    ...UserInfo
   }
   created_at
   vote_total

@@ -51,7 +51,11 @@ function createApolloClient(
       typePolicies: {
         Query: {
           fields: {
-            posts: offsetLimitPagination(),
+            posts: offsetLimitPagination((_, { variables = {} }) => {
+              // TODO: should this not be the default function provided by Apollo Client?
+              const { offset, limit, ...rest } = variables;
+              return JSON.stringify(rest);
+            }),
           },
         },
       },

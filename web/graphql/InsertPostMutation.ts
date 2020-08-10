@@ -1,40 +1,37 @@
-import { MutationResult, useMutation } from "@apollo/client";
-import { produce } from "immer";
+import { MutationResult } from "@apollo/client";
+import { useMutation, apolloCacheUpdateQuery } from "../lib/apollo-helpers";
 import {
-  InsertPostMutation,
-  InsertPostMutationVariables,
   InsertPostDocument,
-  AllPostsQuery,
-  AllPostsQueryVariables,
-  AllPostsDocument,
+  Posts_Bool_Exp,
+  PostsDocument,
 } from "../graphql-codegen";
-import { allPostsQueryVars } from "./AllPostsQuery";
+import { useSessionQuery } from "./SessionQuery";
+import { defaultPostsQueryVariables } from "./PostsQuery";
 
 export type InsertPostFunction = (title: string, url: string) => void;
 
 export function useInsertPostMutation(): [InsertPostFunction, MutationResult] {
-  const [mutationFunction, mutationResult] = useMutation<
-    InsertPostMutation,
-    InsertPostMutationVariables
-  >(InsertPostDocument);
+  const { user } = useSessionQuery();
+  const [mutationFunction, mutationResult] = useMutation(InsertPostDocument);
   const insertPostFunction: InsertPostFunction = (title, url) => {
     mutationFunction({
       variables: { title, url },
-      update: (proxy, { data: mutationData }) => {
-        if (!mutationData) return;
-        const data = proxy.readQuery<AllPostsQuery, AllPostsQueryVariables>({
-          query: AllPostsDocument,
-          variables: allPostsQueryVars,
-        });
+      update: (cache, { data }) => {
         if (!data) return;
-        proxy.writeQuery({
-          query: AllPostsDocument,
-          variables: allPostsQueryVars,
-          data: produce(data, (data) => {
-            data.posts.unshift(mutationData.insert_posts_one!);
-            data.posts_aggregate.aggregate!.count!++;
-          }),
-        });
+        const updatePostsQuery = (where: Posts_Bool_Exp) => {
+          apolloCacheUpdateQuery(cache, {
+            query: PostsDocument,
+            variables: { ...defaultPostsQueryVariables, where },
+            update(query) {
+              query.posts.unshift(data.insert_posts_one!);
+              query.posts_aggregate.aggregate!.count!++;
+            },
+          });
+        };
+        updatePostsQuery({});
+        if (user) {
+          updatePostsQuery({ user_id: { _eq: user.id } });
+        }
       },
     });
   };

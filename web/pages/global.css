@@ -6,6 +6,10 @@ form > input {
   margin-right: 0.5rem;
 }
 
+a {
+  font-weight: 600;
+}
+
 button {
   transition: all 0.3s;
 }

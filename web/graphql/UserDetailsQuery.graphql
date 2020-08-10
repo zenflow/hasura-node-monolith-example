@@ -1,0 +1,16 @@
+query UserDetails($id: Int!) {
+  users_by_pk(id: $id) {
+    ...UserInfo
+    created_at
+    upvotes_aggregate: votes_aggregate(where: { value: { _eq: 1 } }) {
+      aggregate {
+        count
+      }
+    }
+    downvotes_aggregate: votes_aggregate(where: { value: { _eq: -1 } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+}

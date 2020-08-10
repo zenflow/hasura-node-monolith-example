@@ -1,35 +1,35 @@
 import { FC } from "react";
 import { PostInfoFragment } from "../graphql-codegen";
-import { useSessionQuery } from "../graphql/SessionQuery";
 import { useVoteMutation } from "../graphql/VoteMutation";
 
 export const VoteButton: FC<{
   post: PostInfoFragment;
-  value: -1 | 1;
-}> = (props) => {
-  const { user } = useSessionQuery();
+  value: 1 | -1;
+}> = ({ post, value }) => {
   const [vote] = useVoteMutation();
-  const isMyCurrentVote = props.post.my_vote_value === props.value;
+  const isMyCurrentVote = post.my_vote_value === value;
 
   function handleClick() {
-    vote(props.post, isMyCurrentVote ? 0 : props.value);
+    vote(post, isMyCurrentVote ? 0 : value);
   }
 
   return (
     <>
       <button
-        disabled={!user}
         className={isMyCurrentVote ? "is-active" : ""}
         onClick={handleClick}
       >
-        {props.children}
+        {value === 1 ? "+1" : "-1"}
       </button>
       <style jsx>{`
         button {
+          display: inline-block;
+          width: 2em;
+          margin: 0.2em;
+          padding: 0.2em 0;
+          border: 0.1em solid #e4e4e4;
           background-color: white;
           color: black;
-          border: 0.1em solid #e4e4e4;
-          margin: 0.2em;
         }
         button:focus {
           outline: none;

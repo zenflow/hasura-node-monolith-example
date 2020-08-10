@@ -1,14 +1,20 @@
 import { NextPageContext } from "next";
 import { getApolloClient } from "../lib/apolloClient";
-import { doAllPostsQuery } from "../graphql/AllPostsQuery";
-import { PostSubmit } from "../components/PostSubmit";
-import { PostList } from "../components/PostList";
-import { AuthSection } from "../components/AuthSection";
+import { apolloClientQuery } from "../lib/apollo-helpers";
+import { Posts_Bool_Exp, PostsDocument } from "../graphql-codegen";
+import { defaultPostsQueryVariables } from "../graphql/PostsQuery";
+import { PostForm } from "../components/PostForm";
+import { PostsList } from "../components/PostsList";
+
+const where: Posts_Bool_Exp = {};
 
 IndexPage.getInitialProps = async (ctx: NextPageContext) => {
   const apolloClient = getApolloClient(ctx.req);
-  await doAllPostsQuery(apolloClient); // preload "all posts" query into cache
-  return { ok: true }; // stop next.js from warning: https://err.sh/vercel/next.js/empty-object-getInitialProps
+  await apolloClientQuery(apolloClient, {
+    query: PostsDocument,
+    variables: { ...defaultPostsQueryVariables, where },
+  });
+  return { ok: true };
 };
 
 function IndexPage() {
@@ -17,14 +23,14 @@ function IndexPage() {
       <p>
         <span role="img" aria-label="Info">
           ℹ
-        </span>
-        ️ TODO: info here.
+        </span>{" "}
+        Anonymous users can see everything & make anonymous posts, but cannot
+        vote. Sign in to vote.
       </p>
-      <hr />
-      <AuthSection />
-      <hr />
-      <PostSubmit />
-      <PostList />
+      <h3>Submit Post</h3>
+      <PostForm />
+      <h3>Posts</h3>
+      <PostsList where={where} />
     </>
   );
 }

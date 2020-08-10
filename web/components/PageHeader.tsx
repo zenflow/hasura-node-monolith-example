@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { AuthSection } from "./AuthSection";
 
 export const PageHeader: FC<{}> = () => {
   const { pathname } = useRouter();
@@ -15,9 +16,13 @@ export const PageHeader: FC<{}> = () => {
         <Link href="/about">
           <a className={pathname === "/about" ? "is-active" : ""}>About</a>
         </Link>
+        <AuthSection />
       </nav>
       <style jsx>{`
-        .is-active {
+        a {
+          font-size: 120%;
+        }
+        a.is-active {
           text-decoration: none;
         }
       `}</style>

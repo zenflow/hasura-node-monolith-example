@@ -1,0 +1,15 @@
+query Posts($where: posts_bool_exp!, $limit: Int!, $offset: Int!) {
+  posts(
+    where: $where
+    order_by: { created_at: desc }
+    limit: $limit
+    offset: $offset
+  ) {
+    ...PostInfo
+  }
+  posts_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
