@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { signin, signout } from "next-auth/client";
-import { useSessionQuery } from "../queries/sessionQuery";
+import { useSessionQuery } from "../graphql/SessionQuery";
 
 export const AuthSection: FC<{}> = () => {
-  const { session } = useSessionQuery();
-  return session.user ? (
+  const { user } = useSessionQuery();
+  return user ? (
     <div>
-      <span>Signed in as {session.user.name}</span>
+      <span>Signed in as {user.name}</span>
       <button onClick={() => signout()}>Sign out</button>
     </div>
   ) : (

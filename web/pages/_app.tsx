@@ -7,7 +7,7 @@ import {
   ApolloProvider,
 } from "@apollo/client";
 import { getApolloClient } from "../lib/apolloClient";
-import { sessionQuery } from "../queries/sessionQuery";
+import { doSessionQuery } from "../graphql/SessionQuery";
 import { PageLayout } from "../components/PageLayout";
 
 interface MyAppInitialProps extends AppInitialProps {
@@ -21,7 +21,7 @@ MyApp.getInitialProps = async (ctx: AppContext): Promise<MyAppInitialProps> => {
 
   const [appProps] = await Promise.all([
     App.getInitialProps(ctx),
-    apolloClient.query({ query: sessionQuery }), // preload session query
+    doSessionQuery(apolloClient), // preload session query into cache
   ]);
 
   const initialApolloState = process.browser

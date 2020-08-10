@@ -33,7 +33,7 @@ export function getApolloClient(
 
 const baseUri = process.browser
   ? window.location.origin
-  : process.env.HASURA_URL;
+  : process.env.HASURA_GRAPHQL_ENDPOINT;
 
 const uri = `${baseUri}/v1/graphql`;
 

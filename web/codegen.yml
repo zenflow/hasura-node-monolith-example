@@ -1,0 +1,24 @@
+overwrite: true
+schema:
+  - "${HASURA_GRAPHQL_ENDPOINT}/v1/graphql":
+      headers:
+        X-Hasura-Admin-Secret: ${HASURA_GRAPHQL_ADMIN_SECRET}
+        X-Hasura-Role: user
+documents: "graphql/**/*.graphql"
+generates:
+  graphql-codegen.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typed-document-node"
+    config:
+      scalars:
+        bigint: number
+        json: any
+        smallint: number
+        timestamptz: string
+        uuid: string
+hooks:
+  afterOneFileWrite:
+    # TODO: write to graphql-codegen.ts *once* to avoid triggering next.js rebuild twice on every update
+    - eslint --fix

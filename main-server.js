@@ -12,12 +12,10 @@ const {
   PORT,
   HASURA_GRAPHQL_DATABASE_URL,
   HASURA_GRAPHQL_ADMIN_SECRET,
-  DEBUG,
   NEXTAUTH_URL,
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
   AUTH_JWT_SECRET,
-  START_HASURA_CONSOLE,
 } = process.env;
 
 const dev = NODE_ENV !== "production";
@@ -30,7 +28,7 @@ if (dev) {
 const [authPort, actionsPort, hasuraPort, webPort] = [8080, 8081, 8082, 8083];
 
 const hasuraHost = dev ? DOCKER_ENGINE_HOST : "localhost";
-const HASURA_URL = `http://${hasuraHost}:${hasuraPort}`;
+const HASURA_GRAPHQL_ENDPOINT = `http://${hasuraHost}:${hasuraPort}`;
 
 startCompositeService({
   services: {
@@ -41,11 +39,11 @@ startCompositeService({
         ...(dev ? process.env : {}), // Includes some env var(s) needed for nodemon to work properly
         PORT: authPort,
         HASURA_GRAPHQL_DATABASE_URL,
-        DEBUG,
         NEXTAUTH_URL,
         GOOGLE_CLIENT_ID,
         GOOGLE_CLIENT_SECRET,
         AUTH_JWT_SECRET,
+        DEBUG: dev ? "auth:*" : undefined,
       },
       ready: (ctx) => onceTcpPortUsed(authPort),
     },
@@ -99,7 +97,7 @@ startCompositeService({
         dev ? "dev" : "start"
       } --port ${webPort}`,
       env: {
-        HASURA_URL,
+        HASURA_GRAPHQL_ENDPOINT,
       },
       ready: (ctx) => onceTcpPortUsed(webPort),
     },
@@ -110,19 +108,29 @@ startCompositeService({
         ["/api/auth", { target: `http://localhost:${authPort}` }],
         [
           ["/v1", "/v1alpha1", "/v1beta1", "/healthz"],
-          { target: HASURA_URL, ws: true },
+          { target: HASURA_GRAPHQL_ENDPOINT, ws: true },
         ],
         ["/", { target: `http://localhost:${webPort}` }],
       ],
     }),
-    console: START_HASURA_CONSOLE === "true" && {
+    // dev-time services
+    console: dev && {
       dependencies: ["hasura"],
       cwd: `${__dirname}/hasura`,
-      command: `
-        hasura console
-          --endpoint ${HASURA_URL}
-          --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET}
-      `,
+      command: `hasura console`,
+      env: {
+        HASURA_GRAPHQL_ENDPOINT,
+        HASURA_GRAPHQL_ADMIN_SECRET,
+      },
+    },
+    codegen: dev && {
+      dependencies: ["hasura"],
+      cwd: `${__dirname}/web`,
+      command: `graphql-codegen --watch`,
+      env: {
+        HASURA_GRAPHQL_ENDPOINT,
+        HASURA_GRAPHQL_ADMIN_SECRET,
+      },
     },
   },
 });

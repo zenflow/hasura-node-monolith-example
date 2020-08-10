@@ -3,13 +3,16 @@
 - network error handling (test offline)
 - heroku no insecure sessions!
 - try (main-server -> dev-server & prod-server)
-- fix repetition of Post fields in queries using a fragment
-- "My Votes" view
+- /user/:id
 - info header for index page
 - about page
 - document
 - Github Template repositories let users generate new repositories with the same directory structure and file
 
+- https://github.com/dotansimha/graphql-typed-document-node
+    - apollo-client-3 demo broken
+        - https://the-guild.dev/blog/typed-document-node
+        - https://codesandbox.io/s/github/dotansimha/graphql-typed-document-node/tree/master/examples/apollo-client-3
 - next-auth
     - "User object" passed to `jwt` callback has wrong `id` property
     - log out action doesn't work (doesn't refresh page or session) when page is already on next-auth.callback-url

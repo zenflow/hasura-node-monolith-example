@@ -1,5 +1,5 @@
 import { FC, FormEvent } from "react";
-import { useInsertPostMutation } from "../queries/insertPostMutation";
+import { useInsertPostMutation } from "../graphql/InsertPostMutation";
 
 export const PostSubmit: FC<{}> = () => {
   const [insertPost, { loading }] = useInsertPostMutation();

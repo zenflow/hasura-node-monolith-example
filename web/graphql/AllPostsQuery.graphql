@@ -1,0 +1,10 @@
+query AllPosts($limit: Int!, $offset: Int!) {
+  posts(order_by: { created_at: desc }, limit: $limit, offset: $offset) {
+    ...PostInfo
+  }
+  posts_aggregate {
+    aggregate {
+      count
+    }
+  }
+}

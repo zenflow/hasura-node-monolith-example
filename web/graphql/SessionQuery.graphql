@@ -1,0 +1,7 @@
+query Session {
+  session {
+    user {
+      name
+    }
+  }
+}

@@ -1,0 +1,14 @@
+mutation Vote($post_id: Int!, $value: smallint!) {
+  vote(post_id: $post_id, value: $value) {
+    __typename
+    vote {
+      __typename
+      post {
+        __typename
+        id
+        vote_total
+        my_vote_value
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+mutation InsertPost($title: String!, $url: String!) {
+  insert_posts_one(object: { title: $title, url: $url }) {
+    ...PostInfo
+  }
+}

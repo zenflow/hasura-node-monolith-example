@@ -1,10 +1,13 @@
 import { FC } from "react";
-import { Post } from "../queries/allPostsQuery";
-import { useSessionQuery } from "../queries/sessionQuery";
-import { useVoteMutation } from "../queries/voteMutation";
+import { PostInfoFragment } from "../graphql-codegen";
+import { useSessionQuery } from "../graphql/SessionQuery";
+import { useVoteMutation } from "../graphql/VoteMutation";
 
-export const VoteButton: FC<{ post: Post; value: -1 | 1 }> = (props) => {
-  const { session } = useSessionQuery();
+export const VoteButton: FC<{
+  post: PostInfoFragment;
+  value: -1 | 1;
+}> = (props) => {
+  const { user } = useSessionQuery();
   const [vote] = useVoteMutation();
   const isMyCurrentVote = props.post.my_vote_value === props.value;
 
@@ -15,7 +18,7 @@ export const VoteButton: FC<{ post: Post; value: -1 | 1 }> = (props) => {
   return (
     <>
       <button
-        disabled={!session.user}
+        disabled={!user}
         className={isMyCurrentVote ? "is-active" : ""}
         onClick={handleClick}
       >

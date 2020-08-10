@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { VoteButton } from "./VoteButton";
-import { useAllPostsQuery } from "../queries/allPostsQuery";
+import { useAllPostsQuery } from "../graphql/AllPostsQuery";
 
 export const PostList: FC<{}> = () => {
   const {
@@ -31,9 +31,10 @@ export const PostList: FC<{}> = () => {
               <span>
                 <a target="_blank" rel="noreferrer" href={post.url}>
                   {post.title}
-                </a>{" "}
-                by {post.user ? post.user.name : "anonymous"}
+                </a>
               </span>
+              <span>by {post.user ? post.user.name : "anonymous"}</span>
+              <span>on {new Date(post.created_at).toDateString()}</span>
             </div>
             <div>
               <span>Score:</span>

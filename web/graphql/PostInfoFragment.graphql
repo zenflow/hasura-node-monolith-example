@@ -1,0 +1,11 @@
+fragment PostInfo on posts {
+  id
+  title
+  url
+  user {
+    name
+  }
+  created_at
+  vote_total
+  my_vote_value
+}
