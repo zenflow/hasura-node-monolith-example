@@ -22,7 +22,7 @@ export const UserReference: FC<{
     throw new Error("Expected name & image properties");
   const base = (
     <span>
-      <img src={user.image} /> <span>{user.name}</span>
+      <img alt={user.name} src={user.image} /> <span>{user.name}</span>
       <style jsx>{`
         img {
           vertical-align: middle;

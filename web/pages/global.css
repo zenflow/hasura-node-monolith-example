@@ -8,6 +8,8 @@ form > input {
 
 a {
   font-weight: 600;
+  /* Bump contrast ratio from 4.28 to >4.5 to satisfy lighthouse check (TODO: PR for new.css) */
+  color: var(--nc-lk-2);
 }
 
 button {

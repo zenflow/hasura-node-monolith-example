@@ -1,10 +1,14 @@
 # TODO
 
-- websockets fast
 - test incompatible schemas for different roles
 - network error handling (test offline)
 - heroku no insecure sessions!
 - try (main-server -> dev-server & prod-server)
+
+- tests with cypress
+- react-admin wooo
+- css modules
+- websockets fast
 
 - about page
 - document
@@ -35,5 +39,3 @@
     - Computed fields can be accessed by any user without being assigned that permission
 - outreach
     - https://github.com/aaronhayes/awesome-hasura
-- future
-    - in query hooks code, let generic types be implicit, when apollo client supports TypedDocumentNode

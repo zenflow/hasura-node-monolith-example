@@ -26,9 +26,9 @@ function IndexPage() {
         Anonymous users can see everything & make anonymous posts, but cannot
         vote. Sign in to vote.
       </p>
-      <h3>Submit Post</h3>
+      <h2>Submit Post</h2>
       <PostForm />
-      <h3>Posts</h3>
+      <h2>Posts</h2>
       <PostsList where={where} />
     </>
   );

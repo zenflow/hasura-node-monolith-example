@@ -1,16 +1,16 @@
 import "@exampledev/new.css";
 import "nprogress/nprogress.css";
 import "./global.css";
-import App, { AppProps, AppInitialProps, AppContext } from "next/app";
+import App, { AppContext, AppInitialProps, AppProps } from "next/app";
 import {
   ApolloClient,
-  NormalizedCacheObject,
   ApolloProvider,
+  NormalizedCacheObject,
 } from "@apollo/client";
 import { installNextNProgress } from "../lib/next-nprogress";
 import { getApolloClient } from "../lib/apolloClient";
 import { SessionDocument } from "../graphql-codegen";
-import { PageHeader } from "../components/PageHeader";
+import { PageLayout } from "../components/PageLayout";
 
 installNextNProgress({ showSpinner: false });
 
@@ -39,10 +39,9 @@ export default function MyApp(props: MyAppProps) {
   apolloClient = apolloClient || getApolloClient(undefined, initialApolloState);
   return (
     <ApolloProvider client={apolloClient}>
-      <main>
-        <PageHeader />
+      <PageLayout>
         <Component {...pageProps} />
-      </main>
+      </PageLayout>
     </ApolloProvider>
   );
 }
