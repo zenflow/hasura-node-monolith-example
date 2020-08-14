@@ -1,6 +1,5 @@
 import { NextPageContext } from "next";
 import { getApolloClient } from "../../../lib/apolloClient";
-import { apolloClientQuery } from "../../../lib/apollo-helpers";
 import { UserDetailsDocument, PostsDocument } from "../../../graphql-codegen";
 import { useUserDetailsQuery } from "../../../graphql/UserDetailsQuery";
 import { defaultPostsQueryVariables } from "../../../graphql/PostsQuery";
@@ -17,11 +16,11 @@ UserProfilePage.getInitialProps = async ({ req, query }: NextPageContext) => {
   }
   const apolloClient = getApolloClient(req);
   await Promise.all([
-    apolloClientQuery(apolloClient, {
+    apolloClient.query({
       query: UserDetailsDocument,
       variables: { id: userId },
     }),
-    apolloClientQuery(apolloClient, {
+    apolloClient.query({
       query: PostsDocument,
       variables: { ...defaultPostsQueryVariables, where: getWhere(userId) },
     }),

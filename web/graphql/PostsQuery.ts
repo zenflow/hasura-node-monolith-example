@@ -1,5 +1,4 @@
-import { QueryResult } from "@apollo/client";
-import { useQuery } from "../lib/apollo-helpers";
+import { QueryResult, useQuery } from "@apollo/client";
 import {
   Posts_Bool_Exp,
   PostsDocument,

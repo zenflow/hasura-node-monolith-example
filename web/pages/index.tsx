@@ -1,6 +1,5 @@
 import { NextPageContext } from "next";
 import { getApolloClient } from "../lib/apolloClient";
-import { apolloClientQuery } from "../lib/apollo-helpers";
 import { Posts_Bool_Exp, PostsDocument } from "../graphql-codegen";
 import { defaultPostsQueryVariables } from "../graphql/PostsQuery";
 import { PostForm } from "../components/PostForm";
@@ -10,7 +9,7 @@ const where: Posts_Bool_Exp = {};
 
 IndexPage.getInitialProps = async (ctx: NextPageContext) => {
   const apolloClient = getApolloClient(ctx.req);
-  await apolloClientQuery(apolloClient, {
+  await apolloClient.query({
     query: PostsDocument,
     variables: { ...defaultPostsQueryVariables, where },
   });

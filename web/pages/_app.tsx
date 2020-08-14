@@ -9,7 +9,6 @@ import {
 } from "@apollo/client";
 import { installNextNProgress } from "../lib/next-nprogress";
 import { getApolloClient } from "../lib/apolloClient";
-import { apolloClientQuery } from "../lib/apollo-helpers";
 import { SessionDocument } from "../graphql-codegen";
 import { PageHeader } from "../components/PageHeader";
 
@@ -25,7 +24,7 @@ MyApp.getInitialProps = async (ctx: AppContext): Promise<MyAppInitialProps> => {
   (apolloClient as any).toJSON = () => undefined; // prevent object from being serialized
   const [appProps] = await Promise.all([
     App.getInitialProps(ctx),
-    apolloClientQuery(apolloClient, { query: SessionDocument }),
+    apolloClient.query({ query: SessionDocument }),
   ]);
   const initialApolloState = process.browser
     ? undefined

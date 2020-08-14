@@ -1,5 +1,5 @@
-import { MutationResult } from "@apollo/client";
-import { useMutation, apolloCacheUpdateQuery } from "../lib/apollo-helpers";
+import { MutationResult, useMutation } from "@apollo/client";
+import { apolloCacheUpdateQuery } from "../lib/apollo-helpers";
 import {
   InsertPostDocument,
   Posts_Bool_Exp,
