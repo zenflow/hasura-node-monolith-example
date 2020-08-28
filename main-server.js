@@ -30,13 +30,18 @@ const [authPort, actionsPort, hasuraPort, webPort] = [8080, 8081, 8082, 8083];
 const hasuraHost = dev ? DOCKER_ENGINE_HOST : "localhost";
 const HASURA_GRAPHQL_ENDPOINT = `http://${hasuraHost}:${hasuraPort}`;
 
+/* Note we are unable to call the 'next' command directly since the production docker image from scratch
+doesn't seem to let us execute shell scripts. E.g. calling `/path/to/node_modules/.bin/next start` will error
+saying the `next` file is not found and `RUN chmod a+x /path/to/node_modules/.bin/next` does not seem to help. */
+const nextJsBin = "node node_modules/next/dist/bin/next";
+
 startCompositeService({
   services: {
     auth: {
       cwd: `${__dirname}/auth`,
       command: `${dev ? "nodemon" : "node"} server.js`,
       env: {
-        ...(dev ? process.env : {}), // Includes some env var(s) needed for nodemon to work properly
+        ...(dev ? process.env : {}), // Includes some env vars needed for nodemon to work properly
         PORT: authPort,
         HASURA_GRAPHQL_DATABASE_URL,
         NEXTAUTH_URL,
@@ -51,7 +56,7 @@ startCompositeService({
       cwd: `${__dirname}/actions`,
       command: `${dev ? "nodemon" : "node"} server.js`,
       env: {
-        ...(dev ? process.env : {}), // Includes some env var(s) needed for nodemon to work properly
+        ...(dev ? process.env : {}), // Includes some env vars needed for nodemon to work properly
         PORT: actionsPort,
         HASURA_GRAPHQL_DATABASE_URL,
       },
@@ -73,7 +78,7 @@ startCompositeService({
             hnme_hasura`
         : `graphql-engine serve`,
       env: {
-        ...process.env, // Includes env vars needed to run docker
+        ...(dev ? process.env : {}), // Includes some env vars needed to run docker
         HASURA_GRAPHQL_SERVER_PORT: hasuraPort,
         HASURA_GRAPHQL_DATABASE_URL,
         HASURA_GRAPHQL_ADMIN_SECRET,
@@ -89,13 +94,7 @@ startCompositeService({
     web: {
       dependencies: ["hasura"],
       cwd: `${__dirname}/web`,
-      /* Note we are unable to call the 'next' command directly here since
-        the production docker image from scratch doesn't seem to let us execute shell scripts.
-        E.g. calling `/path/to/node_modules/.bin/next start` will error saying the `next` file is not found
-        and `RUN chmod a+x /path/to/node_modules/.bin/next` does not seem to help. */
-      command: `node node_modules/next/dist/bin/next ${
-        dev ? "dev" : "start"
-      } --port ${webPort}`,
+      command: `${nextJsBin} ${dev ? "dev" : "start"} --port ${webPort}`,
       env: {
         HASURA_GRAPHQL_ENDPOINT,
       },
@@ -113,8 +112,9 @@ startCompositeService({
         ["/", { target: `http://localhost:${webPort}` }],
       ],
     }),
-    // dev-time services
-    console: dev && {
+
+    // services for dev-time only
+    "hasura-console": dev && {
       dependencies: ["hasura"],
       cwd: `${__dirname}/hasura`,
       command: `hasura console`,
@@ -123,7 +123,7 @@ startCompositeService({
         HASURA_GRAPHQL_ADMIN_SECRET,
       },
     },
-    codegen: dev && {
+    "graphql-codegen": dev && {
       dependencies: ["hasura"],
       cwd: `${__dirname}/web`,
       command: `graphql-codegen --watch`,

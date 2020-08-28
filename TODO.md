@@ -1,14 +1,17 @@
 # TODO
 
+- PWA
+- css modules
+- websockets fast
+- tests with cypress
+
+- try (main-server -> dev-server & prod-server)
+
 - test incompatible schemas for different roles
 - network error handling (test offline)
 - heroku no insecure sessions!
-- try (main-server -> dev-server & prod-server)
 
-- tests with cypress
-- react-admin wooo
-- css modules
-- websockets fast
+- react-admin?
 
 - about page
 - document
@@ -19,18 +22,12 @@
     - https://next-auth.js.org/getting-started/client#options
     - https://github.com/apollographql/apollo-cache-persist
     - client.clearStore()
-
-- https://github.com/dotansimha/graphql-typed-document-node
-    - apollo-client-3 demo broken
-        - https://the-guild.dev/blog/typed-document-node
-        - https://codesandbox.io/s/github/dotansimha/graphql-typed-document-node/tree/master/examples/apollo-client-3
 - next-auth
     - "User object" passed to `jwt` callback has wrong `id` property
     - log out action doesn't work (doesn't refresh page or session) when page is already on next-auth.callback-url
     - express-compatible handler
-    - fix "Edit this page" link
     - add postgres up.sql to docs
-        - schema for https://next-auth-docs-git-v3.iaincollins.vercel.app/schemas/postgres#verification-request
+        - schema for "verification_requests" table
         - next migration layer can set user.{name,email,photo} to non-nullable, and clean up frontend type assertions (e.g. UserBadge.ts)
 - hasura
     - 'Cache-Control': 'max-age=300' in Hasura auth hook response doesn't seem to work.
