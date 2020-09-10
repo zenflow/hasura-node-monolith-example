@@ -117,7 +117,7 @@ startCompositeService({
     "hasura-console": dev && {
       dependencies: ["hasura"],
       cwd: `${__dirname}/hasura`,
-      command: `hasura console`,
+      command: `hasura console --skip-update-check`,
       env: {
         HASURA_GRAPHQL_ENDPOINT,
         HASURA_GRAPHQL_ADMIN_SECRET,
