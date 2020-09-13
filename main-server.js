@@ -5,8 +5,18 @@ const {
   configureHttpGateway,
 } = require("composite-service");
 
+const dev = process.env.NODE_ENV !== "production";
+
+if (dev) {
+  // Load environment variables from local `.env` file
+  require("dotenv-expand")(require("dotenv").config());
+
+  // Before starting, make sure the last container created by this script has been removed
+  spawnSync("docker", ["rm", "--force", "hnme_hasura_1"]);
+}
+
 const {
-  NODE_ENV,
+  PATH,
   DOCKER_ENGINE_HOST,
   DOCKER_HOST_HOST,
   PORT,
@@ -17,13 +27,6 @@ const {
   GOOGLE_CLIENT_SECRET,
   AUTH_JWT_SECRET,
 } = process.env;
-
-const dev = NODE_ENV !== "production";
-
-if (dev) {
-  // Kill docker container in case it didn't receive a ctrl+c and therefore continues to run even though `docker run` exited
-  spawnSync("docker", ["kill", "hnme_hasura_1"], { stdio: "inherit" });
-}
 
 const [authPort, actionsPort, hasuraPort, webPort] = [8080, 8081, 8082, 8083];
 
@@ -36,12 +39,14 @@ saying the `next` file is not found and `RUN chmod a+x /path/to/node_modules/.bi
 const nextJsBin = "node node_modules/next/dist/bin/next";
 
 startCompositeService({
+  gracefulShutdown: !dev,
+  windowsCtrlCShutdown: true,
   services: {
     auth: {
       cwd: `${__dirname}/auth`,
       command: `${dev ? "nodemon" : "node"} server.js`,
       env: {
-        ...(dev ? process.env : {}), // Includes some env vars needed for nodemon to work properly
+        ...(dev ? { PATH } : {}), // nodemon needs PATH env var
         PORT: authPort,
         HASURA_GRAPHQL_DATABASE_URL,
         NEXTAUTH_URL,
@@ -56,7 +61,7 @@ startCompositeService({
       cwd: `${__dirname}/actions`,
       command: `${dev ? "nodemon" : "node"} server.js`,
       env: {
-        ...(dev ? process.env : {}), // Includes some env vars needed for nodemon to work properly
+        ...(dev ? { PATH } : {}), // nodemon needs PATH env var
         PORT: actionsPort,
         HASURA_GRAPHQL_DATABASE_URL,
       },
@@ -64,8 +69,8 @@ startCompositeService({
     },
     hasura: {
       dependencies: ["auth", "actions"],
-      command: dev // --tty
-        ? `docker run
+      command: dev
+        ? `docker-run-kill
             --name hnme_hasura_1
             --env HASURA_GRAPHQL_SERVER_PORT
             --env HASURA_GRAPHQL_DATABASE_URL
@@ -73,8 +78,6 @@ startCompositeService({
             --env HASURA_GRAPHQL_AUTH_HOOK
             --env ACTIONS_URL
             --publish ${hasuraPort}:${hasuraPort}
-            --rm
-            --interactive
             hnme_hasura`
         : `graphql-engine serve`,
       env: {

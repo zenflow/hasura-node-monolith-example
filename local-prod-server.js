@@ -14,18 +14,22 @@ const {
   configureHttpGateway,
 } = require("composite-service");
 
-// Kill docker container in case it didn't receive a ctrl+c and therefore continues to run even though `docker run` exited
-spawnSync("docker", ["kill", "hnme_app_1"], { stdio: "inherit" });
+// Load environment variables from local `.env` file
+require("dotenv-expand")(require("dotenv").config());
+
+// Before starting, make sure the last container created by this script has been removed
+spawnSync("docker", ["rm", "--force", "hnme_app_1"]);
 
 const { PORT, DOCKER_ENGINE_HOST } = process.env;
 
 startCompositeService({
+  windowsCtrlCShutdown: true,
   services: {
     app: {
-      // --tty
       command: `
-        docker run
+        docker-run-kill
           --name hnme_app_1
+          --signal SIGINT
           --publish ${PORT}:${PORT}
           --env PORT
           --env HASURA_GRAPHQL_DATABASE_URL
@@ -34,11 +38,8 @@ startCompositeService({
           --env GOOGLE_CLIENT_ID
           --env GOOGLE_CLIENT_SECRET
           --env AUTH_JWT_SECRET
-          --rm
-          --interactive
           hnme_app
       `,
-      env: process.env,
       ready: (ctx) => onceTcpPortUsed(PORT, DOCKER_ENGINE_HOST),
       onCrash: (ctx) => Promise.reject("Crash"),
     },
