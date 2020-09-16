@@ -5,7 +5,7 @@
     "dev-prepare": "concurrently \"docker build --tag hnme_hasura hasura\" \"cd auth && yarn --silent\" \"cd actions && yarn --silent\" \"cd web && yarn --silent\"",
     "dev-only": "dotenv -- node main-server.js",
     "dev": "yarn dev-prepare && yarn dev-only",
-    "lint": "eslint **/*.{js,ts,jsx,tsx}",
+    "lint": "eslint \"**/*.{js,ts,jsx,tsx}\"",
     "lint-fix": "yarn lint --fix",
     "start-prepare": "docker build --tag hnme_app .",
     "start-only": "dotenv -- node local-prod-server.js",
