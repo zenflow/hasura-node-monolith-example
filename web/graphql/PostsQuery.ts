@@ -14,7 +14,7 @@ export const defaultPostsQueryVariables = {
 };
 
 export function usePostsQuery(
-  where: Posts_Bool_Exp
+  where: Posts_Bool_Exp,
 ): QueryResult<PostsQuery, PostsQueryVariables> & {
   posts: NonNullable<PostsQuery["posts"]>;
   postCount: number;

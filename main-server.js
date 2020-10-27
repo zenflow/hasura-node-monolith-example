@@ -55,7 +55,7 @@ startCompositeService({
         AUTH_JWT_SECRET,
         DEBUG: dev ? "auth:*" : undefined,
       },
-      ready: (ctx) => onceTcpPortUsed(authPort),
+      ready: ctx => onceTcpPortUsed(authPort),
     },
     actions: {
       cwd: `${__dirname}/actions`,
@@ -65,7 +65,7 @@ startCompositeService({
         PORT: actionsPort,
         HASURA_GRAPHQL_DATABASE_URL,
       },
-      ready: (ctx) => onceTcpPortUsed(actionsPort),
+      ready: ctx => onceTcpPortUsed(actionsPort),
     },
     hasura: {
       dependencies: ["auth", "actions"],
@@ -92,7 +92,7 @@ startCompositeService({
           dev ? DOCKER_HOST_HOST : "localhost"
         }:${actionsPort}`,
       },
-      ready: (ctx) => onceTcpPortUsed(hasuraPort, hasuraHost),
+      ready: ctx => onceTcpPortUsed(hasuraPort, hasuraHost),
     },
     web: {
       dependencies: ["hasura"],
@@ -101,7 +101,7 @@ startCompositeService({
       env: {
         HASURA_GRAPHQL_ENDPOINT,
       },
-      ready: (ctx) => onceTcpPortUsed(webPort),
+      ready: ctx => onceTcpPortUsed(webPort),
     },
     gateway: configureHttpGateway({
       dependencies: ["hasura", "auth", "web"],

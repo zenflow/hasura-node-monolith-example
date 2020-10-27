@@ -2,12 +2,12 @@
   "private": true,
   "dependencies": {
     "cookie-parser": "^1.4.5",
-    "debug": "^4.1.1",
+    "debug": "^4.2.0",
     "express": "^4.17.1",
     "next-auth": "^3.0.0",
-    "pg": "^8.3.0"
+    "pg": "^8.4.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.6"
   }
 }

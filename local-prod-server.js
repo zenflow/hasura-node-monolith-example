@@ -40,8 +40,8 @@ startCompositeService({
           --env AUTH_JWT_SECRET
           hnme_app
       `,
-      ready: (ctx) => onceTcpPortUsed(PORT, DOCKER_ENGINE_HOST),
-      onCrash: (ctx) => Promise.reject("Crash"),
+      ready: ctx => onceTcpPortUsed(PORT, DOCKER_ENGINE_HOST),
+      onCrash: ctx => Promise.reject("Crash"),
     },
     gateway: configureHttpGateway({
       dependencies: ["app"],

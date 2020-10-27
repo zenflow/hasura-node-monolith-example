@@ -2,7 +2,7 @@ const debug = require("debug")("auth:hasura-auth-hook");
 const { getToken } = require("next-auth/jwt");
 
 module.exports = {
-  match: (req) => req.url === "/hasura-auth-hook",
+  match: req => req.url === "/hasura-auth-hook",
   async handle(req, res) {
     debug("headers: %o", req.headers);
     const token = await getToken({

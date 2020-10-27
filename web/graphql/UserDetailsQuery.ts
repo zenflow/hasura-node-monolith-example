@@ -6,7 +6,7 @@ import {
 } from "../graphql-codegen";
 
 export function useUserDetailsQuery(
-  id: number | undefined
+  id: number | undefined,
 ): QueryResult<UserDetailsQuery, UserDetailsQueryVariables> & {
   user: UserDetailsQuery["users_by_pk"];
   userUpvoteCount: number | null | undefined;

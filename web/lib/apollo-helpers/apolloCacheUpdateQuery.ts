@@ -10,7 +10,7 @@ export interface ApolloCacheUpdateQueryParams<Query, QueryVariables> {
 
 export function apolloCacheUpdateQuery<Query, QueryVariables>(
   cache: ApolloCache<any>,
-  params: ApolloCacheUpdateQueryParams<Query, QueryVariables>
+  params: ApolloCacheUpdateQueryParams<Query, QueryVariables>,
 ) {
   const { query, variables, update } = params;
   let queryResult: Query | null = null;

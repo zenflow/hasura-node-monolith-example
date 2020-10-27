@@ -6,7 +6,7 @@ const { pool } = require("../db");
 const baseUrl = "/api/auth/";
 
 module.exports = {
-  match: (req) => req.url.startsWith(baseUrl),
+  match: req => req.url.startsWith(baseUrl),
   handle(req, res) {
     // Fill in the "nextauth" [catch all route parameter](https://nextjs.org/docs/routing/dynamic-routes#catch-all-routes)
     req.query.nextauth = req.url

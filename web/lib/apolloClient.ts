@@ -12,7 +12,7 @@ let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 export function getApolloClient(
   req?: IncomingMessage,
-  initialState?: NormalizedCacheObject
+  initialState?: NormalizedCacheObject,
 ) {
   if (process.browser) {
     if (!globalApolloClient) {
@@ -39,7 +39,7 @@ const uri = `${baseUri}/v1/graphql`;
 
 function createApolloClient(
   req?: IncomingMessage,
-  initialState?: NormalizedCacheObject
+  initialState?: NormalizedCacheObject,
 ) {
   const headers = req?.headers.cookie ? { cookie: req.headers.cookie } : {};
   const client = new ApolloClient({
