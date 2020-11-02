@@ -1,5 +1,4 @@
 import "@exampledev/new.css";
-import "nprogress/nprogress.css";
 import "./global.css";
 import App, { AppContext, AppInitialProps, AppProps } from "next/app";
 import {

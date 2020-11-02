@@ -41,7 +41,7 @@ export const UserReference: FC<{
   }
   return (
     <span>
-      <Link href="/user/[id]/profile" as={`/user/${user.id}/profile`}>
+      <Link href={`/user/${user.id}`}>
         <a>{base}</a>
       </Link>
       <style jsx>{`

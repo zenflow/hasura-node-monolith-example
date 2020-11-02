@@ -1,3 +1,4 @@
+import "nprogress/nprogress.css";
 import NProgress, { NProgressOptions } from "nprogress";
 import Router from "next/router";
 
@@ -13,6 +14,8 @@ export function installNextNProgress(options: Partial<NProgressOptions>) {
   Router.events.on("routeChangeComplete", done);
   Router.events.on("routeChangeError", done);
 
+  // Wrap NProgress `start` & `done` methods to:
+  //  to prevent flicker of progress bar, skip actually starting if `done` is called immediately after
   // TODO: PR to nprogress to do the following
   let isStarted = false;
   function start() {

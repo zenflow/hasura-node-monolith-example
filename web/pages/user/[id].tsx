@@ -1,11 +1,11 @@
 import { NextPageContext } from "next";
-import { getApolloClient } from "../../../lib/apolloClient";
-import { UserDetailsDocument, PostsDocument } from "../../../graphql-codegen";
-import { useUserDetailsQuery } from "../../../graphql/UserDetailsQuery";
-import { defaultPostsQueryVariables } from "../../../graphql/PostsQuery";
-import { UserReference } from "../../../components/UserReference";
-import { TimestampReference } from "../../../components/TimestampReference";
-import { PostsList } from "../../../components/PostsList";
+import { getApolloClient } from "../../lib/apolloClient";
+import { UserDetailsDocument, PostsDocument } from "../../graphql-codegen";
+import { useUserDetailsQuery } from "../../graphql/UserDetailsQuery";
+import { defaultPostsQueryVariables } from "../../graphql/PostsQuery";
+import { UserReference } from "../../components/UserReference";
+import { TimestampReference } from "../../components/TimestampReference";
+import { PostsList } from "../../components/PostsList";
 
 const getWhere = (userId: number) => ({ user_id: { _eq: userId } });
 
