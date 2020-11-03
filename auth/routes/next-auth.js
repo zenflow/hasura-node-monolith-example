@@ -1,21 +1,22 @@
 const debug = require("debug")("auth:next-auth");
+const rescue = require("express-rescue");
 const NextAuth = require("next-auth").default;
 const Providers = require("next-auth/providers");
 const { pool } = require("../db");
 
 const baseUrl = "/api/auth/";
 
-module.exports = {
-  match: req => req.url.startsWith(baseUrl),
-  handle(req, res) {
-    // Fill in the "nextauth" [catch all route parameter](https://nextjs.org/docs/routing/dynamic-routes#catch-all-routes)
-    req.query.nextauth = req.url
-      .slice(baseUrl.length)
-      .replace(/\?.*/, "")
-      .split("/");
-    NextAuth(req, res, options);
-  },
-};
+module.exports = rescue(async (req, res, next) => {
+  if (!req.url.startsWith(baseUrl)) {
+    return next();
+  }
+  // Fill in the "nextauth" [catch all route parameter](https://nextjs.org/docs/routing/dynamic-routes#catch-all-routes)
+  req.query.nextauth = req.url // start with request url
+    .slice(baseUrl.length) // make relative to baseUrl
+    .replace(/\?.*/, "") // remove query part, use only path part
+    .split("/"); // as array of strings
+  NextAuth(req, res, options);
+});
 
 const options = {
   providers: [

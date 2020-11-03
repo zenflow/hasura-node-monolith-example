@@ -9,18 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-routes.forEach(({ match, handle }) => {
-  app.use(async (req, res, next) => {
-    if (!match(req)) {
-      return next();
-    }
-    try {
-      await handle(req, res);
-    } catch (error) {
-      next(error);
-    }
-  });
-});
+app.use(...routes);
 
 const server = app.listen(process.env.PORT, () => {
   console.log(`Listening @ http://localhost:${process.env.PORT}`);
