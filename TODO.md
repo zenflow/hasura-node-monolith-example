@@ -1,15 +1,10 @@
 # TODO
 
-- PWA
-- css modules
-- websockets fast
-- tests with cypress
-
-- try (main-server -> dev-server & prod-server)
-
+- Cypress + cucumber + (for apps using component library) visual snapshots
 - test incompatible schemas for different roles
 - network error handling (test offline)
 - heroku no insecure sessions!
+- heroku review apps (with isolated database & unique secret keys)
 
 - react-admin?
 
@@ -22,6 +17,29 @@
     - https://next-auth.js.org/getting-started/client#options
     - https://github.com/apollographql/apollo-cache-persist
     - client.clearStore()
+- composite-process
+    - colors :p
+    - Service output sometimes cut off when crashing & sometimes doesn't even register crash.
+
+        Why does that happen with both Hasura-based images but not with the following?
+        ```
+        const { startCompositeService } = require("composite-service");
+        startCompositeService({
+          services: {
+            main: {
+              command: [
+                "docker-run-kill",
+                "node:14.5.0",
+                "-e",
+                "throw new Error('ok')",
+              ],
+              env: process.env,
+              onCrash: () => Promise.reject(new Error("crash")),
+            },
+          },
+        });
+        ```
+
 - next-auth
     - "User object" passed to `jwt` callback has wrong `id` property
     - log out action doesn't work (doesn't refresh page or session) when page is already on next-auth.callback-url
