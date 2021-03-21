@@ -2,28 +2,22 @@
 
 Example of a monolithic web application using Hasura GraphQL Engine + Express.js + Next.js
 
-## Local development notes
+## Local development
 
-Requires Node.js v14, yarn package manager v1, Docker
+Requires [Node.js](https://nodejs.org/en/) >= v14, yarn package manager v1, & docker ( [Docker Desktop](https://docs.docker.com/desktop/) >= v3.2 for Windows & Mac, or [Docker Engine](https://docs.docker.com/engine/) >= v19.03 for Linux).
+
+Copy contents of [`.env.example`](./.env.example) to `.env` and fill in values.
 
 `yarn install`
 
-Copy contents of [`.env.example`](./.env.example) to `.env`, & if on Windows replace "local-only" variable values.
-The other values from `.env.example` work for a local dev environment.
+Start development db with `yarn db` (needs to be running for either of next two tasks)
 
-Start development db with `yarn db` (needs to be running for next two tasks)
+Start app in dev mode with `yarn dev`, *or* start app in production mode with `yarn start`.
 
-Start app in development mode with `yarn dev`.
-
-*or*
-
-Start app (locally) in production mode with `yarn start`.
-
-## Production deployment notes
+## Production deployment
 
 Use the Dockerfile in the project root
-and define the variables documented in [`.env.example`](./.env.example)
-(excluding the local-only section).
+and define the variables documented in [`.env.example`](./.env.example).
 
 With Heroku:
 
