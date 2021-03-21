@@ -19,7 +19,6 @@ const {
   PATH,
   PORT,
   HASURA_GRAPHQL_DATABASE_URL,
-  PGSSLMODE,
   HASURA_GRAPHQL_ADMIN_SECRET,
   NEXTAUTH_URL,
   GOOGLE_CLIENT_ID,
@@ -53,7 +52,7 @@ startCompositeService({
         ...(dev ? { PATH } : {}), // nodemon needs PATH env var
         PORT: authPort,
         HASURA_GRAPHQL_DATABASE_URL,
-        PGSSLMODE,
+        // PGSSLMODE: "no-verify",
         NEXTAUTH_URL,
         GOOGLE_CLIENT_ID,
         GOOGLE_CLIENT_SECRET,
@@ -69,7 +68,7 @@ startCompositeService({
         ...(dev ? { PATH } : {}), // nodemon needs PATH env var
         PORT: actionsPort,
         HASURA_GRAPHQL_DATABASE_URL,
-        PGSSLMODE,
+        // PGSSLMODE: "no-verify",
       },
       ready: ctx => ctx.onceTcpPortUsed(actionsPort),
     },
