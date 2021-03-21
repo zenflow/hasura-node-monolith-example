@@ -1,28 +1,29 @@
 {
   "private": true,
   "scripts": {
-    "db": "docker run --name hnme_postgres_1 --env POSTGRES_PASSWORD=postgrespassword --volume hnme_postgres_data:/var/lib/postgresql/data --publish 5432:5432 --rm --interactive --tty postgres:12",
-    "dev-prepare": "concurrently \"docker build --tag hnme_hasura hasura\" \"cd auth && yarn --silent\" \"cd actions && yarn --silent\" \"cd web && yarn --silent\"",
-    "dev-only": "node main-server.js",
-    "dev": "yarn dev-prepare && yarn dev-only",
+    "db": "docker run --name hnme_postgres_1 -it --rm --env POSTGRES_PASSWORD=postgrespassword --volume hnme_postgres_data:/var/lib/postgresql/data --publish 5432:5432 postgres:12",
+    "build-hasura": "docker build --tag hnme_hasura hasura",
+    "install-packages": "concurrently \"cd auth && yarn --silent\" \"cd actions && yarn --silent\" \"cd web && yarn --silent\"",
+    "dev-only": "node composite-service.js hnme_hasura hnme_hasura_1",
+    "dev": "yarn build-hasura && yarn install-packages && yarn dev-only",
     "lint": "eslint \"**/*.{js,ts,jsx,tsx}\"",
     "lint-fix": "yarn lint --fix",
-    "start-prepare": "docker build --tag hnme_app .",
-    "start-only": "node local-prod-server.js",
-    "start": "yarn start-prepare && yarn start-only",
-    "test": "yarn lint && yarn start-prepare"
+    "build": "docker build --tag hnme_app .",
+    "start-only": "docker run --name hnme_app_1 -it --rm --env-file ./.env --publish 3000:3000 hnme_app",
+    "start": "yarn build && yarn start-only",
+    "test": "yarn lint && yarn build"
   },
   "dependencies": {
-    "composite-service": "^0.8.0"
+    "composite-service": "^0.10.1",
+    "composite-service-http-gateway": "^0.1.1"
   },
   "devDependencies": {
-    "concurrently": "^5.2.0",
+    "concurrently": "^6.0.0",
     "docker-run-kill": "^1.0.2",
     "dotenv": "^8.2.0",
-    "dotenv-expand": "^5.1.0",
     "eslint": "^6.8.0",
     "eslint-config-tsdx": "^0.2.0",
-    "hasura-cli": "^1.3.2",
+    "hasura-cli": "1.3.3",
     "typescript": "^3.9.7"
   },
   "prettier": {

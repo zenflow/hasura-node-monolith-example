@@ -1,5 +1,13 @@
 # TODO
 
+upgrade deps
+  - eslint
+  - hasura
+  - nodejs
+  - next-auth
+  - eslint ignore graphql-codegen.ts
+
+- websocket demo
 - Cypress + cucumber + (for apps using component library) visual snapshots
 - test incompatible schemas for different roles
 - network error handling (test offline)

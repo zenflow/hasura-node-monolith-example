@@ -1,29 +1,29 @@
 # Import `node` runtime
-FROM astefanutti/scratch-node:14.5.0 as node-runtime
+FROM astefanutti/scratch-node:14.14.0 as node-runtime
 
 # Prepare main package
-FROM node:14.5.0 as main-package
+FROM node:14.14.0-slim as main-package
 WORKDIR /app
 ADD package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --prod
-ADD main-server.js ./
+ADD composite-service.js ./
 
 # Prepare auth package
-FROM node:14.5.0 as auth-package
+FROM node:14.14.0-slim as auth-package
 WORKDIR /app/auth
 ADD auth/package.json auth/yarn.lock ./
 RUN yarn install --frozen-lockfile --prod
 ADD auth/ ./
 
 # Prepare actions package
-FROM node:14.5.0 as actions-package
+FROM node:14.14.0-slim as actions-package
 WORKDIR /app/actions
 ADD actions/package.json actions/yarn.lock ./
 RUN yarn install --frozen-lockfile --prod
 ADD actions/ ./
 
 # Prepare web package
-FROM node:14.5.0 as web-package
+FROM node:14.14.0-slim as web-package
 WORKDIR /app/web
 ADD web/package.json web/yarn.lock ./
 RUN yarn install --frozen-lockfile
@@ -34,7 +34,7 @@ RUN yarn next build
 RUN yarn install --prod
 
 # Base this image on hasura graphql engine (CLI migrations version)
-FROM hasura/graphql-engine:v1.3.2.cli-migrations-v2
+FROM hasura/graphql-engine:v1.3.3.cli-migrations-v2
 
 # Install `node` runtime
 COPY --from=node-runtime /bin/node /bin/node
@@ -66,4 +66,4 @@ ENV ACTIONS_URL foo
 ENV NODE_ENV production
 
 # Start main server
-CMD node /app/main-server.js
+CMD node /app/composite-service.js

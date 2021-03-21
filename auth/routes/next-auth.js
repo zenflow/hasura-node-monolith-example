@@ -25,7 +25,10 @@ const options = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
-  database: process.env.HASURA_GRAPHQL_DATABASE_URL,
+  database: {
+    type: "postgres",
+    url: process.env.HASURA_GRAPHQL_DATABASE_URL,
+  },
   session: {
     jwt: true,
   },
