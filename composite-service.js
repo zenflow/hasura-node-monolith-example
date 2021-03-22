@@ -48,7 +48,6 @@ const HASURA_GRAPHQL_ENDPOINT = `http://localhost:${hasuraPort}`;
 const nextJsBin = "node node_modules/next/dist/bin/next";
 
 startCompositeService({
-  gracefulShutdown: !dev,
   windowsCtrlCShutdown: true,
   services: {
     auth: {
