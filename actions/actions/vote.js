@@ -15,5 +15,5 @@ module.exports = async (req, res) => {
       `,
     values: [user_id, post_id, value],
   });
-  res.json({ vote_id: vote.id });
+  return { vote_id: vote.id };
 };

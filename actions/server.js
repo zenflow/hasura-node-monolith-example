@@ -14,7 +14,7 @@ app.use(async (req, res, next) => {
     return res.status(400).send("Invalid action name");
   }
   try {
-    await actions[actionName](req, res);
+    res.json(await actions[actionName](req, res));
   } catch (error) {
     next(error);
   }
