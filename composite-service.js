@@ -1,6 +1,8 @@
 const { startCompositeService } = require("composite-service");
 const { configureHttpGateway } = require("composite-service-http-gateway");
 
+const [authPort, actionsPort, hasuraPort, webPort] = [8000, 8001, 8002, 8003];
+
 const dev = process.env.NODE_ENV !== "production";
 const [, , hasuraImageName, hasuraContainerName] = process.argv;
 
@@ -19,6 +21,7 @@ const {
   PATH,
   PORT,
   HASURA_GRAPHQL_DATABASE_URL,
+  NODE_PG_SSL_NO_VERIFY,
   HASURA_GRAPHQL_ADMIN_SECRET,
   NEXTAUTH_URL,
   GOOGLE_CLIENT_ID,
@@ -26,18 +29,21 @@ const {
   AUTH_JWT_SECRET,
 } = process.env;
 
-const [authPort, actionsPort, hasuraPort, webPort] = [8080, 8081, 8082, 8083];
+const nodePostgresEnv = {
+  HASURA_GRAPHQL_DATABASE_URL,
+  ...(NODE_PG_SSL_NO_VERIFY === "true" && { PGSSLMODE: "no-verify" }),
+};
 
-const HASURA_GRAPHQL_ENDPOINT = `http://localhost:${hasuraPort}`;
-
-const maybeDockerInternalHost = dev ? "host.docker.internal" : "localhost";
+const maybeDockerHost = dev ? "host.docker.internal" : "localhost";
 const hasuraEnv = {
   HASURA_GRAPHQL_SERVER_PORT: hasuraPort,
   HASURA_GRAPHQL_DATABASE_URL,
   HASURA_GRAPHQL_ADMIN_SECRET,
-  HASURA_GRAPHQL_AUTH_HOOK: `http://${maybeDockerInternalHost}:${authPort}/hasura-auth-hook`,
-  ACTIONS_URL: `http://${maybeDockerInternalHost}:${actionsPort}`,
+  HASURA_GRAPHQL_AUTH_HOOK: `http://${maybeDockerHost}:${authPort}/hasura-auth-hook`,
+  ACTIONS_URL: `http://${maybeDockerHost}:${actionsPort}`,
 };
+
+const HASURA_GRAPHQL_ENDPOINT = `http://localhost:${hasuraPort}`;
 
 const nextJsBin = "node node_modules/next/dist/bin/next";
 
@@ -51,7 +57,7 @@ startCompositeService({
       env: {
         ...(dev ? { PATH } : {}), // nodemon needs PATH env var
         PORT: authPort,
-        HASURA_GRAPHQL_DATABASE_URL,
+        ...nodePostgresEnv,
         NEXTAUTH_URL,
         GOOGLE_CLIENT_ID,
         GOOGLE_CLIENT_SECRET,
@@ -66,7 +72,7 @@ startCompositeService({
       env: {
         ...(dev ? { PATH } : {}), // nodemon needs PATH env var
         PORT: actionsPort,
-        HASURA_GRAPHQL_DATABASE_URL,
+        ...nodePostgresEnv,
       },
       ready: ctx => ctx.onceTcpPortUsed(actionsPort),
     },
