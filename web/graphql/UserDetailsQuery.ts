@@ -12,13 +12,10 @@ export function useUserDetailsQuery(
   userUpvoteCount: number | null | undefined;
   userDownvoteCount: number | null | undefined;
 } {
-  const queryResult = useQuery<UserDetailsQuery, UserDetailsQueryVariables>(
-    UserDetailsDocument,
-    {
-      variables: { id: id ?? 0 },
-      skip: !id,
-    },
-  );
+  const queryResult = useQuery<UserDetailsQuery, UserDetailsQueryVariables>(UserDetailsDocument, {
+    variables: { id: id ?? 0 },
+    skip: !id,
+  });
   const user = queryResult.data?.users_by_pk;
   const userUpvoteCount = user?.upvotes_aggregate.aggregate?.count;
   const userDownvoteCount = user?.downvotes_aggregate.aggregate?.count;

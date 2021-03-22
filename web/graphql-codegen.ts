@@ -1229,10 +1229,7 @@ export type PostsQuery = { __typename?: "query_root" } & {
   posts: Array<{ __typename?: "posts" } & PostInfoFragment>;
   posts_aggregate: { __typename?: "posts_aggregate" } & {
     aggregate?: Maybe<
-      { __typename?: "posts_aggregate_fields" } & Pick<
-        Posts_Aggregate_Fields,
-        "count"
-      >
+      { __typename?: "posts_aggregate_fields" } & Pick<Posts_Aggregate_Fields, "count">
     >;
   };
 };
@@ -1256,28 +1253,19 @@ export type UserDetailsQuery = { __typename?: "query_root" } & {
     { __typename?: "users" } & Pick<Users, "created_at"> & {
         upvotes_aggregate: { __typename?: "votes_aggregate" } & {
           aggregate?: Maybe<
-            { __typename?: "votes_aggregate_fields" } & Pick<
-              Votes_Aggregate_Fields,
-              "count"
-            >
+            { __typename?: "votes_aggregate_fields" } & Pick<Votes_Aggregate_Fields, "count">
           >;
         };
         downvotes_aggregate: { __typename?: "votes_aggregate" } & {
           aggregate?: Maybe<
-            { __typename?: "votes_aggregate_fields" } & Pick<
-              Votes_Aggregate_Fields,
-              "count"
-            >
+            { __typename?: "votes_aggregate_fields" } & Pick<Votes_Aggregate_Fields, "count">
           >;
         };
       } & UserInfoFragment
   >;
 };
 
-export type UserInfoFragment = { __typename?: "users" } & Pick<
-  Users,
-  "id" | "name" | "image"
->;
+export type UserInfoFragment = { __typename?: "users" } & Pick<Users, "id" | "name" | "image">;
 
 export type VoteMutationVariables = Exact<{
   post_id: Scalars["Int"];
@@ -1288,10 +1276,7 @@ export type VoteMutation = { __typename?: "mutation_root" } & {
   vote: { __typename: "VoteOutput" } & {
     vote?: Maybe<
       { __typename: "votes" } & {
-        post: { __typename: "posts" } & Pick<
-          Posts,
-          "id" | "vote_total" | "my_vote_value"
-        >;
+        post: { __typename: "posts" } & Pick<Posts, "id" | "vote_total" | "my_vote_value">;
       }
     >;
   };
@@ -1406,10 +1391,7 @@ export const PostInfoFragmentDoc: DocumentNode<PostInfoFragment, unknown> = {
     ...UserInfoFragmentDoc.definitions,
   ],
 };
-export const InsertPostDocument: DocumentNode<
-  InsertPostMutation,
-  InsertPostMutationVariables
-> = {
+export const InsertPostDocument: DocumentNode<InsertPostMutation, InsertPostMutationVariables> = {
   kind: "Document",
   definitions: [
     {
@@ -1647,10 +1629,7 @@ export const PostsDocument: DocumentNode<PostsQuery, PostsQueryVariables> = {
     ...PostInfoFragmentDoc.definitions,
   ],
 };
-export const SessionDocument: DocumentNode<
-  SessionQuery,
-  SessionQueryVariables
-> = {
+export const SessionDocument: DocumentNode<SessionQuery, SessionQueryVariables> = {
   kind: "Document",
   definitions: [
     {
@@ -1695,10 +1674,7 @@ export const SessionDocument: DocumentNode<
     ...UserInfoFragmentDoc.definitions,
   ],
 };
-export const UserDetailsDocument: DocumentNode<
-  UserDetailsQuery,
-  UserDetailsQueryVariables
-> = {
+export const UserDetailsDocument: DocumentNode<UserDetailsQuery, UserDetailsQueryVariables> = {
   kind: "Document",
   definitions: [
     {

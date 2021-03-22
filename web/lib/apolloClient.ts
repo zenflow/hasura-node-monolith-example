@@ -1,19 +1,11 @@
 import { IncomingMessage } from "http";
-import {
-  ApolloClient,
-  NormalizedCacheObject,
-  InMemoryCache,
-  HttpLink,
-} from "@apollo/client";
+import { ApolloClient, NormalizedCacheObject, InMemoryCache, HttpLink } from "@apollo/client";
 import { BatchHttpLink } from "@apollo/client/link/batch-http";
 import { offsetLimitPagination } from "@apollo/client/utilities";
 
 let globalApolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-export function getApolloClient(
-  req?: IncomingMessage,
-  initialState?: NormalizedCacheObject,
-) {
+export function getApolloClient(req?: IncomingMessage, initialState?: NormalizedCacheObject) {
   if (process.browser) {
     if (!globalApolloClient) {
       globalApolloClient = createApolloClient(undefined, initialState);
@@ -31,22 +23,15 @@ export function getApolloClient(
   }
 }
 
-const baseUri = process.browser
-  ? window.location.origin
-  : process.env.HASURA_GRAPHQL_ENDPOINT;
+const baseUri = process.browser ? window.location.origin : process.env.HASURA_GRAPHQL_ENDPOINT;
 
 const uri = `${baseUri}/v1/graphql`;
 
-function createApolloClient(
-  req?: IncomingMessage,
-  initialState?: NormalizedCacheObject,
-) {
+function createApolloClient(req?: IncomingMessage, initialState?: NormalizedCacheObject) {
   const headers = req?.headers.cookie ? { cookie: req.headers.cookie } : {};
   const client = new ApolloClient({
     ssrMode: !process.browser,
-    link: process.browser
-      ? new HttpLink({ uri, headers })
-      : new BatchHttpLink({ uri, headers }),
+    link: process.browser ? new HttpLink({ uri, headers }) : new BatchHttpLink({ uri, headers }),
     cache: new InMemoryCache({
       typePolicies: {
         Query: {

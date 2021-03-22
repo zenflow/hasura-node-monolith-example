@@ -23,8 +23,7 @@ function IndexPage() {
         <span role="img" aria-label="Info">
           ℹ
         </span>{" "}
-        Anonymous users can see everything & make anonymous posts, but cannot
-        vote. Sign in to vote.
+        Anonymous users can see everything & make anonymous posts, but cannot vote. Sign in to vote.
       </p>
       <h2>Submit Post</h2>
       <PostForm />

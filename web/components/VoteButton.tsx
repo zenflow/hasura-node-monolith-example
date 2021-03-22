@@ -15,10 +15,7 @@ export const VoteButton: FC<{
 
   return (
     <>
-      <button
-        className={isMyCurrentVote ? "is-active" : ""}
-        onClick={handleClick}
-      >
+      <button className={isMyCurrentVote ? "is-active" : ""} onClick={handleClick}>
         {value === 1 ? "+1" : "-1"}
       </button>
       <style jsx>{`

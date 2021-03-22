@@ -16,20 +16,8 @@ export const PostForm: FC<{}> = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        name="title"
-        placeholder="title"
-        aria-label="title"
-        type="text"
-        required
-      />
-      <input
-        name="url"
-        placeholder="url"
-        aria-label="url"
-        type="url"
-        required
-      />
+      <input name="title" placeholder="title" aria-label="title" type="text" required />
+      <input name="url" placeholder="url" aria-label="url" type="url" required />
       <button type="submit" disabled={loading}>
         Submit
       </button>

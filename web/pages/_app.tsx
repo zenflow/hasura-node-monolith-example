@@ -1,11 +1,7 @@
 import "@exampledev/new.css";
 import "./global.css";
 import App, { AppContext, AppInitialProps, AppProps } from "next/app";
-import {
-  ApolloClient,
-  ApolloProvider,
-  NormalizedCacheObject,
-} from "@apollo/client";
+import { ApolloClient, ApolloProvider, NormalizedCacheObject } from "@apollo/client";
 import { installNextNProgress } from "../lib/next-nprogress";
 import { getApolloClient } from "../lib/apolloClient";
 import { SessionDocument } from "../graphql-codegen";
@@ -25,9 +21,7 @@ MyApp.getInitialProps = async (ctx: AppContext): Promise<MyAppInitialProps> => {
     App.getInitialProps(ctx),
     apolloClient.query({ query: SessionDocument }),
   ]);
-  const initialApolloState = process.browser
-    ? undefined
-    : apolloClient.cache.extract();
+  const initialApolloState = process.browser ? undefined : apolloClient.cache.extract();
   return { ...appProps, apolloClient, initialApolloState };
 };
 

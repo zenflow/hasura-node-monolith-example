@@ -29,9 +29,7 @@ UserProfilePage.getInitialProps = async ({ req, query }: NextPageContext) => {
 };
 
 function UserProfilePage(props: { userId: number | undefined }) {
-  const { user, userUpvoteCount, userDownvoteCount } = useUserDetailsQuery(
-    props.userId,
-  );
+  const { user, userUpvoteCount, userDownvoteCount } = useUserDetailsQuery(props.userId);
   if (!props.userId || !user) {
     return <h3>No such user</h3>;
   }

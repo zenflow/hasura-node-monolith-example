@@ -7,7 +7,7 @@ export function installNextNProgress(options: Partial<NProgressOptions>) {
     return;
   }
   NProgress.configure(options);
-  Router.events.on("routeChangeStart", url => {
+  Router.events.on("routeChangeStart", (url) => {
     console.log(`Loading: ${url}`);
     start();
   });

@@ -3,15 +3,9 @@
     "**/node_modules"
   ],
   "extends": [
-    "tsdx"
+    "zenflow"
   ],
-  "settings": {
-    "react": {
-      "version": "16"
-    }
-  },
   "rules": {
-    "react/react-in-jsx-scope": "off",
     "jsx-a11y/anchor-is-valid": "off"
   }
 }

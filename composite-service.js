@@ -9,11 +9,7 @@ const [, , hasuraImageName, hasuraContainerName] = process.argv;
 if (dev) {
   require("assert").ok(hasuraImageName && hasuraContainerName);
   // Before starting, make sure the last container created by this script has been removed
-  require("child_process").spawnSync("docker", [
-    "rm",
-    "--force",
-    hasuraContainerName,
-  ]);
+  require("child_process").spawnSync("docker", ["rm", "--force", hasuraContainerName]);
   require("dotenv").config();
 }
 
@@ -63,7 +59,7 @@ startCompositeService({
         AUTH_JWT_SECRET,
         DEBUG: dev ? "auth:*" : undefined,
       },
-      ready: ctx => ctx.onceTcpPortUsed(authPort),
+      ready: (ctx) => ctx.onceTcpPortUsed(authPort),
     },
     actions: {
       cwd: `${__dirname}/actions`,
@@ -73,7 +69,7 @@ startCompositeService({
         PORT: actionsPort,
         ...nodePostgresEnv,
       },
-      ready: ctx => ctx.onceTcpPortUsed(actionsPort),
+      ready: (ctx) => ctx.onceTcpPortUsed(actionsPort),
     },
     hasura: {
       dependencies: ["auth", "actions"],
@@ -81,7 +77,7 @@ startCompositeService({
         ? `docker-run-kill
             --name ${hasuraContainerName}
             ${Object.keys(hasuraEnv)
-              .map(key => `--env ${key}`)
+              .map((key) => `--env ${key}`)
               .join(" ")}
             --publish ${hasuraPort}:${hasuraPort}
             ${
@@ -93,17 +89,13 @@ startCompositeService({
             ${hasuraImageName}`
         : `graphql-engine serve`,
       env: dev ? { ...process.env, ...hasuraEnv } : hasuraEnv,
-      ready: async ctx => {
+      ready: async (ctx) => {
         // TODO: ctx.onceUrlReady(`${HASURA_GRAPHQL_ENDPOINT}/healthz`)
         let isTempServer = false;
         ctx
-          .onceOutputLineIncludes(
-            "starting graphql engine temporarily on port ",
-          )
+          .onceOutputLineIncludes("starting graphql engine temporarily on port ")
           .then(() => (isTempServer = true));
-        const serverStarted = () =>
-          ctx.onceOutputLineIncludes('"message":"starting API server"');
-
+        const serverStarted = () => ctx.onceOutputLineIncludes('"message":"starting API server"');
         await serverStarted();
         if (isTempServer) await serverStarted();
       },
@@ -115,7 +107,7 @@ startCompositeService({
       env: {
         HASURA_GRAPHQL_ENDPOINT,
       },
-      ready: ctx => ctx.onceTcpPortUsed(webPort),
+      ready: (ctx) => ctx.onceTcpPortUsed(webPort),
     },
     gateway: configureHttpGateway({
       dependencies: ["hasura", "auth", "web"],

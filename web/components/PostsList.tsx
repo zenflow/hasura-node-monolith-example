@@ -10,14 +10,7 @@ export const PostsList: FC<{ where: Posts_Bool_Exp }> = ({ where }) => {
   const showAuthor = !where.user_id;
 
   const { user } = useSessionQuery();
-  const {
-    loading,
-    error,
-    data,
-    posts,
-    postCount,
-    loadMorePosts,
-  } = usePostsQuery(where);
+  const { loading, error, data, posts, postCount, loadMorePosts } = usePostsQuery(where);
 
   if (!data) {
     if (loading) return <div>Loading...</div>;

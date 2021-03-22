@@ -18,8 +18,7 @@ export const UserReference: FC<{
       </span>
     );
   }
-  if (!user.name || !user.image)
-    throw new Error("Expected name & image properties");
+  if (!user.name || !user.image) throw new Error("Expected name & image properties");
   const base = (
     <span>
       <img alt={user.name} src={user.image} /> <span>{user.name}</span>
