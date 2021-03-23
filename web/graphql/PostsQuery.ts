@@ -15,7 +15,7 @@ export function usePostsQuery(
   postCount: number;
   loadMorePosts: () => void;
 } {
-  const queryResult = useQuery<PostsQuery, PostsQueryVariables>(PostsDocument, {
+  const queryResult = useQuery(PostsDocument, {
     variables: { ...defaultPostsQueryVariables, where },
     notifyOnNetworkStatusChange: true,
   });

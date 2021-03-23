@@ -12,7 +12,7 @@ export function useUserDetailsQuery(
   userUpvoteCount: number | null | undefined;
   userDownvoteCount: number | null | undefined;
 } {
-  const queryResult = useQuery<UserDetailsQuery, UserDetailsQueryVariables>(UserDetailsDocument, {
+  const queryResult = useQuery(UserDetailsDocument, {
     variables: { id: id ?? 0 },
     skip: !id,
   });

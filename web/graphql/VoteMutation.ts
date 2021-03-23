@@ -1,21 +1,13 @@
 import { MutationResult, useMutation } from "@apollo/client";
 import { apolloCacheUpdateQuery } from "../lib/apollo-helpers";
-import {
-  PostInfoFragment,
-  UserDetailsDocument,
-  VoteMutation,
-  VoteMutationVariables,
-  VoteDocument,
-} from "../graphql-codegen";
+import { PostInfoFragment, UserDetailsDocument, VoteDocument } from "../graphql-codegen";
 import { useSessionQuery } from "./SessionQuery";
 
 export type VoteFunction = (post: PostInfoFragment, value: 0 | -1 | 1) => void;
 
 export function useVoteMutation(): [VoteFunction, MutationResult] {
   const { user } = useSessionQuery();
-  const [mutationFunction, mutationResult] = useMutation<VoteMutation, VoteMutationVariables>(
-    VoteDocument,
-  );
+  const [mutationFunction, mutationResult] = useMutation(VoteDocument);
   const voteFunction: VoteFunction = (post, value) => {
     const previousValue = (post.my_vote_value ?? 0) as 0 | 1 | -1;
     mutationFunction({

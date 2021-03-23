@@ -1,12 +1,6 @@
 import { MutationResult, useMutation } from "@apollo/client";
 import { apolloCacheUpdateQuery } from "../lib/apollo-helpers";
-import {
-  InsertPostMutation,
-  InsertPostMutationVariables,
-  InsertPostDocument,
-  Posts_Bool_Exp,
-  PostsDocument,
-} from "../graphql-codegen";
+import { InsertPostDocument, Posts_Bool_Exp, PostsDocument } from "../graphql-codegen";
 import { useSessionQuery } from "./SessionQuery";
 import { defaultPostsQueryVariables } from "./PostsQuery";
 
@@ -14,10 +8,7 @@ export type InsertPostFunction = (title: string, url: string) => void;
 
 export function useInsertPostMutation(): [InsertPostFunction, MutationResult] {
   const { user } = useSessionQuery();
-  const [mutationFunction, mutationResult] = useMutation<
-    InsertPostMutation,
-    InsertPostMutationVariables
-  >(InsertPostDocument);
+  const [mutationFunction, mutationResult] = useMutation(InsertPostDocument);
   const insertPostFunction: InsertPostFunction = (title, url) => {
     mutationFunction({
       variables: { title, url },
