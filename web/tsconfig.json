@@ -20,7 +20,6 @@
   },
   "include": [
     "next-env.d.ts",
-    "vendor.d.ts",
     "**/*.ts",
     "**/*.tsx"
   ],

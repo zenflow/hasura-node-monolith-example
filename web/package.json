@@ -17,6 +17,7 @@
     "@graphql-codegen/typescript": "^1.21.1",
     "@graphql-codegen/typescript-operations": "^1.17.15",
     "@graphql-typed-document-node/core": "^3.1.0",
+    "@types/next-auth": "^3.7.2",
     "@types/node": "^14.14.35",
     "@types/nprogress": "^0.2.0",
     "@types/react": "^17.0.3",
