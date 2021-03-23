@@ -1,29 +1,24 @@
 # Import `node` runtime
 FROM astefanutti/scratch-node:14.14.0 as node-runtime
 
-# Prepare main package
-FROM node:14.14.0-slim as main-package
+# Prepare packages
+FROM node:14.14.0-slim as node-build
+
 WORKDIR /app
 ADD package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --prod
 ADD composite-service.js ./
 
-# Prepare auth package
-FROM node:14.14.0-slim as auth-package
 WORKDIR /app/auth
 ADD auth/package.json auth/yarn.lock ./
 RUN yarn install --frozen-lockfile --prod
 ADD auth/ ./
 
-# Prepare actions package
-FROM node:14.14.0-slim as actions-package
 WORKDIR /app/actions
 ADD actions/package.json actions/yarn.lock ./
 RUN yarn install --frozen-lockfile --prod
 ADD actions/ ./
 
-# Prepare web package
-FROM node:14.14.0-slim as web-package
 WORKDIR /app/web
 ADD web/package.json web/yarn.lock ./
 RUN yarn install --frozen-lockfile
@@ -46,17 +41,8 @@ RUN cat /tmp/node_etc_passwd >> /etc/passwd
 COPY hasura/metadata /hasura-metadata/
 COPY hasura/migrations /hasura-migrations/
 
-# Copy main package
-COPY --from=main-package /app /app
-
-# Copy auth package
-COPY --from=auth-package /app/auth /app/auth
-
-# Copy actions package
-COPY --from=actions-package /app/actions /app/actions
-
-# Copy web package
-COPY --from=web-package /app/web /app/web
+# Copy packages
+COPY --from=node-build /app /app
 
 # Set env vars used in metadata, preventing errors on cli-migrations-v2 startup.
 # This env var is actually defined in main-server.js.
