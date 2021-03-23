@@ -2,7 +2,9 @@ import { FC } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { AuthSection } from "./AuthSection";
+import { signin, signout } from "next-auth/client";
+import { useSessionQuery } from "../graphql/SessionQuery";
+import { UserReference } from "./UserReference";
 
 export const PageLayout: FC<{}> = ({ children }) => {
   return (
@@ -35,16 +37,31 @@ const PageHeader: FC<{}> = () => {
         <Link href="/about">
           <a className={pathname === "/about" ? "is-active" : ""}>About</a>
         </Link>
-        <AuthSection />
       </nav>
+      <div>
+        <AuthSection />
+      </div>
       <style jsx>{`
         a {
           font-size: 120%;
         }
         a.is-active {
           text-decoration: none;
+          font-weight: bold;
         }
       `}</style>
     </header>
+  );
+};
+
+const AuthSection: FC<{}> = () => {
+  const { user } = useSessionQuery();
+  return user ? (
+    <>
+      <UserReference user={user} link />
+      <button onClick={() => signout()}>Sign out</button>
+    </>
+  ) : (
+    <button onClick={() => signin("google")}>Sign in with Google</button>
   );
 };
