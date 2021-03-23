@@ -1,8 +1,8 @@
 import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -1238,9 +1238,7 @@ export type SessionQueryVariables = Exact<{ [key: string]: never }>;
 
 export type SessionQuery = { __typename?: "query_root" } & {
   session?: Maybe<
-    { __typename?: "SessionOutput" } & {
-      user?: Maybe<{ __typename?: "users" } & UserInfoFragment>;
-    }
+    { __typename?: "SessionOutput" } & { user?: Maybe<{ __typename?: "users" } & UserInfoFragment> }
   >;
 };
 
@@ -1288,32 +1286,13 @@ export const UserInfoFragmentDoc: DocumentNode<UserInfoFragment, unknown> = {
     {
       kind: "FragmentDefinition",
       name: { kind: "Name", value: "UserInfo" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "users" },
-      },
-      directives: [],
+      typeCondition: { kind: "NamedType", name: { kind: "Name", value: "users" } },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "id" },
-            arguments: [],
-            directives: [],
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "name" },
-            arguments: [],
-            directives: [],
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "image" },
-            arguments: [],
-            directives: [],
-          },
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "name" } },
+          { kind: "Field", name: { kind: "Name", value: "image" } },
         ],
       },
     },
@@ -1325,66 +1304,24 @@ export const PostInfoFragmentDoc: DocumentNode<PostInfoFragment, unknown> = {
     {
       kind: "FragmentDefinition",
       name: { kind: "Name", value: "PostInfo" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "posts" },
-      },
-      directives: [],
+      typeCondition: { kind: "NamedType", name: { kind: "Name", value: "posts" } },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "id" },
-            arguments: [],
-            directives: [],
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "title" },
-            arguments: [],
-            directives: [],
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "url" },
-            arguments: [],
-            directives: [],
-          },
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "url" } },
           {
             kind: "Field",
             name: { kind: "Name", value: "user" },
-            arguments: [],
-            directives: [],
             selectionSet: {
               kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "UserInfo" },
-                  directives: [],
-                },
-              ],
+              selections: [{ kind: "FragmentSpread", name: { kind: "Name", value: "UserInfo" } }],
             },
           },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "created_at" },
-            arguments: [],
-            directives: [],
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "vote_total" },
-            arguments: [],
-            directives: [],
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "my_vote_value" },
-            arguments: [],
-            directives: [],
-          },
+          { kind: "Field", name: { kind: "Name", value: "created_at" } },
+          { kind: "Field", name: { kind: "Name", value: "vote_total" } },
+          { kind: "Field", name: { kind: "Name", value: "my_vote_value" } },
         ],
       },
     },
@@ -1401,33 +1338,21 @@ export const InsertPostDocument: DocumentNode<InsertPostMutation, InsertPostMuta
       variableDefinitions: [
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "title" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "title" } },
           type: {
             kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
+            type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
           },
-          directives: [],
         },
         {
           kind: "VariableDefinition",
           variable: { kind: "Variable", name: { kind: "Name", value: "url" } },
           type: {
             kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
+            type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
           },
-          directives: [],
         },
       ],
-      directives: [],
       selectionSet: {
         kind: "SelectionSet",
         selections: [
@@ -1444,33 +1369,20 @@ export const InsertPostDocument: DocumentNode<InsertPostMutation, InsertPostMuta
                     {
                       kind: "ObjectField",
                       name: { kind: "Name", value: "title" },
-                      value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "title" },
-                      },
+                      value: { kind: "Variable", name: { kind: "Name", value: "title" } },
                     },
                     {
                       kind: "ObjectField",
                       name: { kind: "Name", value: "url" },
-                      value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "url" },
-                      },
+                      value: { kind: "Variable", name: { kind: "Name", value: "url" } },
                     },
                   ],
                 },
               },
             ],
-            directives: [],
             selectionSet: {
               kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "PostInfo" },
-                  directives: [],
-                },
-              ],
+              selections: [{ kind: "FragmentSpread", name: { kind: "Name", value: "PostInfo" } }],
             },
           },
         ],
@@ -1489,45 +1401,29 @@ export const PostsDocument: DocumentNode<PostsQuery, PostsQueryVariables> = {
       variableDefinitions: [
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "where" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "where" } },
           type: {
             kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "posts_bool_exp" },
-            },
+            type: { kind: "NamedType", name: { kind: "Name", value: "posts_bool_exp" } },
           },
-          directives: [],
         },
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "limit" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "limit" } },
           type: {
             kind: "NonNullType",
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
-          directives: [],
         },
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "offset" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "offset" } },
           type: {
             kind: "NonNullType",
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
-          directives: [],
         },
       ],
-      directives: [],
       selectionSet: {
         kind: "SelectionSet",
         selections: [
@@ -1538,10 +1434,7 @@ export const PostsDocument: DocumentNode<PostsQuery, PostsQueryVariables> = {
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "where" },
-                },
+                value: { kind: "Variable", name: { kind: "Name", value: "where" } },
               },
               {
                 kind: "Argument",
@@ -1560,30 +1453,17 @@ export const PostsDocument: DocumentNode<PostsQuery, PostsQueryVariables> = {
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "limit" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "limit" },
-                },
+                value: { kind: "Variable", name: { kind: "Name", value: "limit" } },
               },
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "offset" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "offset" },
-                },
+                value: { kind: "Variable", name: { kind: "Name", value: "offset" } },
               },
             ],
-            directives: [],
             selectionSet: {
               kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "PostInfo" },
-                  directives: [],
-                },
-              ],
+              selections: [{ kind: "FragmentSpread", name: { kind: "Name", value: "PostInfo" } }],
             },
           },
           {
@@ -1593,31 +1473,18 @@ export const PostsDocument: DocumentNode<PostsQuery, PostsQueryVariables> = {
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "where" },
-                },
+                value: { kind: "Variable", name: { kind: "Name", value: "where" } },
               },
             ],
-            directives: [],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "aggregate" },
-                  arguments: [],
-                  directives: [],
                   selectionSet: {
                     kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "count" },
-                        arguments: [],
-                        directives: [],
-                      },
-                    ],
+                    selections: [{ kind: "Field", name: { kind: "Name", value: "count" } }],
                   },
                 },
               ],
@@ -1636,32 +1503,22 @@ export const SessionDocument: DocumentNode<SessionQuery, SessionQueryVariables> 
       kind: "OperationDefinition",
       operation: "query",
       name: { kind: "Name", value: "Session" },
-      variableDefinitions: [],
-      directives: [],
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
             kind: "Field",
             name: { kind: "Name", value: "session" },
-            arguments: [],
-            directives: [],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "user" },
-                  arguments: [],
-                  directives: [],
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "UserInfo" },
-                        directives: [],
-                      },
+                      { kind: "FragmentSpread", name: { kind: "Name", value: "UserInfo" } },
                     ],
                   },
                 },
@@ -1689,10 +1546,8 @@ export const UserDetailsDocument: DocumentNode<UserDetailsQuery, UserDetailsQuer
             kind: "NonNullType",
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
-          directives: [],
         },
       ],
-      directives: [],
       selectionSet: {
         kind: "SelectionSet",
         selections: [
@@ -1703,27 +1558,14 @@ export const UserDetailsDocument: DocumentNode<UserDetailsQuery, UserDetailsQuer
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "id" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "id" },
-                },
+                value: { kind: "Variable", name: { kind: "Name", value: "id" } },
               },
             ],
-            directives: [],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "UserInfo" },
-                  directives: [],
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "created_at" },
-                  arguments: [],
-                  directives: [],
-                },
+                { kind: "FragmentSpread", name: { kind: "Name", value: "UserInfo" } },
+                { kind: "Field", name: { kind: "Name", value: "created_at" } },
                 {
                   kind: "Field",
                   alias: { kind: "Name", value: "upvotes_aggregate" },
@@ -1753,25 +1595,15 @@ export const UserDetailsDocument: DocumentNode<UserDetailsQuery, UserDetailsQuer
                       },
                     },
                   ],
-                  directives: [],
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "aggregate" },
-                        arguments: [],
-                        directives: [],
                         selectionSet: {
                           kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "count" },
-                              arguments: [],
-                              directives: [],
-                            },
-                          ],
+                          selections: [{ kind: "Field", name: { kind: "Name", value: "count" } }],
                         },
                       },
                     ],
@@ -1806,25 +1638,15 @@ export const UserDetailsDocument: DocumentNode<UserDetailsQuery, UserDetailsQuer
                       },
                     },
                   ],
-                  directives: [],
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "aggregate" },
-                        arguments: [],
-                        directives: [],
                         selectionSet: {
                           kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "count" },
-                              arguments: [],
-                              directives: [],
-                            },
-                          ],
+                          selections: [{ kind: "Field", name: { kind: "Name", value: "count" } }],
                         },
                       },
                     ],
@@ -1849,33 +1671,21 @@ export const VoteDocument: DocumentNode<VoteMutation, VoteMutationVariables> = {
       variableDefinitions: [
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "post_id" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "post_id" } },
           type: {
             kind: "NonNullType",
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
-          directives: [],
         },
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "value" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "value" } },
           type: {
             kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "smallint" },
-            },
+            type: { kind: "NamedType", name: { kind: "Name", value: "smallint" } },
           },
-          directives: [],
         },
       ],
-      directives: [],
       selectionSet: {
         kind: "SelectionSet",
         selections: [
@@ -1886,76 +1696,35 @@ export const VoteDocument: DocumentNode<VoteMutation, VoteMutationVariables> = {
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "post_id" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "post_id" },
-                },
+                value: { kind: "Variable", name: { kind: "Name", value: "post_id" } },
               },
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "value" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "value" },
-                },
+                value: { kind: "Variable", name: { kind: "Name", value: "value" } },
               },
             ],
-            directives: [],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "__typename" },
-                  arguments: [],
-                  directives: [],
-                },
+                { kind: "Field", name: { kind: "Name", value: "__typename" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "vote" },
-                  arguments: [],
-                  directives: [],
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "__typename" },
-                        arguments: [],
-                        directives: [],
-                      },
+                      { kind: "Field", name: { kind: "Name", value: "__typename" } },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "post" },
-                        arguments: [],
-                        directives: [],
                         selectionSet: {
                           kind: "SelectionSet",
                           selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "__typename" },
-                              arguments: [],
-                              directives: [],
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                              arguments: [],
-                              directives: [],
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "vote_total" },
-                              arguments: [],
-                              directives: [],
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "my_vote_value" },
-                              arguments: [],
-                              directives: [],
-                            },
+                            { kind: "Field", name: { kind: "Name", value: "__typename" } },
+                            { kind: "Field", name: { kind: "Name", value: "id" } },
+                            { kind: "Field", name: { kind: "Name", value: "vote_total" } },
+                            { kind: "Field", name: { kind: "Name", value: "my_vote_value" } },
                           ],
                         },
                       },
