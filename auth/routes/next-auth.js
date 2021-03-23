@@ -2,7 +2,6 @@ const debug = require("debug")("auth:next-auth");
 const rescue = require("express-rescue");
 const NextAuth = require("next-auth").default;
 const Providers = require("next-auth/providers");
-const { pool } = require("../db");
 
 const baseUrl = "/api/auth/";
 
@@ -36,24 +35,10 @@ const options = {
   callbacks: {
     async jwt(token, user) {
       if (user) {
-        // TODO: replace next line with `token.id = user.id` once `user.id` is fixed
-        token.userId = await getUserIdByEmail(user.email);
+        debug("user logged in: %o", user);
+        token.userId = user.id;
       }
-      debug("jwt token: %o", token);
       return token;
     },
   },
 };
-
-async function getUserIdByEmail(email) {
-  const { rows } = await pool.query({
-    text: `
-      SELECT id
-      FROM users
-      WHERE email = $1
-      LIMIT 1
-    `,
-    values: [email],
-  });
-  return rows[0]?.id;
-}

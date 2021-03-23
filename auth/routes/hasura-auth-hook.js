@@ -6,7 +6,6 @@ module.exports = rescue(async (req, res, next) => {
   if (req.url !== "/hasura-auth-hook") {
     return next();
   }
-  debug("headers: %o", req.headers);
   const token = await getToken({
     req,
     secret: process.env.AUTH_JWT_SECRET,
@@ -17,5 +16,4 @@ module.exports = rescue(async (req, res, next) => {
     "X-Hasura-User-Id": token ? String(token.userId) : undefined,
   };
   res.json(response);
-  debug("response: %o", response);
 });
