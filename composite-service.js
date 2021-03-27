@@ -102,7 +102,7 @@ startCompositeService({
     },
     web: {
       dependencies: ["hasura"],
-      cwd: `${__dirname}/web`,
+      cwd: `${__dirname}/web-gqless`,
       command: `${nextJsBin} ${dev ? "dev" : "start"} --port ${webPort}`,
       env: {
         HASURA_GRAPHQL_ENDPOINT,
@@ -132,6 +132,7 @@ startCompositeService({
         HASURA_GRAPHQL_ADMIN_SECRET,
       },
     },
+    /*
     "graphql-codegen": dev && {
       dependencies: ["hasura"],
       cwd: `${__dirname}/web`,
@@ -141,5 +142,6 @@ startCompositeService({
         HASURA_GRAPHQL_ADMIN_SECRET,
       },
     },
+    */
   },
 });

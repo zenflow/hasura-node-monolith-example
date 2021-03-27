@@ -1,0 +1,21 @@
+div > span {
+  margin-right: 0.5rem;
+}
+
+form > input {
+  margin-right: 0.5rem;
+}
+
+a {
+  font-weight: 600;
+  /* Bump contrast ratio from 4.28 to >4.5 to satisfy lighthouse check (TODO: PR for new.css) */
+  color: var(--nc-lk-2);
+}
+
+button {
+  transition: all 0.3s;
+}
+
+button:active {
+  background-color: cornflowerblue;
+}

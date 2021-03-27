@@ -8,6 +8,7 @@
     "dev": "yarn build-hasura && yarn install-packages && yarn dev-only",
     "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
     "lint-fix": "yarn lint --fix",
+    "web-gqless-generate": "cd web-gqless && yarn gqless generate",
     "build": "docker build --tag hnme_app .",
     "start-only": "docker run --name hnme_app_1 -it --rm --env-file ./.env --publish 3000:3000 hnme_app",
     "start": "yarn build && yarn start-only",

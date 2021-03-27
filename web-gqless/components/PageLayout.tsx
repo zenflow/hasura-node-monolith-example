@@ -3,8 +3,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { signin, signout, useSession } from "next-auth/client";
-import { useSessionQuery } from "../graphql/SessionQuery";
-import { UserReference } from "./UserReference";
 
 export const PageLayout: FC<{}> = ({ children }) => {
   return (
@@ -34,13 +32,15 @@ const PageHeader: FC<{}> = () => {
           <a className={pathname === "/" ? "is-active" : ""}>Home</a>
         </Link>
         {" / "}
-        <Link href="/about">
-          <a className={pathname === "/about" ? "is-active" : ""}>About</a>
+        <Link href="/posts">
+          <a className={pathname === "/posts" ? "is-active" : ""}>Posts</a>
         </Link>
-      </nav>
-      <div>
+        {" / "}
+        <Link href="/users">
+          <a className={pathname === "/users" ? "is-active" : ""}>Users</a>
+        </Link>{" "}
         <AuthSection />
-      </div>
+      </nav>
       <style jsx>{`
         a {
           font-size: 120%;
@@ -55,12 +55,12 @@ const PageHeader: FC<{}> = () => {
 };
 
 const AuthSection: FC<{}> = () => {
-  const { user } = useSessionQuery();
-  return user ? (
-    <>
-      <UserReference user={user} link />
+  const [session] = useSession();
+  return session?.user?.email ? (
+    <div>
+      {session.user.name}
       <button onClick={() => signout()}>Sign out</button>
-    </>
+    </div>
   ) : (
     <button onClick={() => signin("google")}>Sign in with Google</button>
   );
