@@ -33,7 +33,9 @@ const nodePostgresEnv = {
 const maybeDockerHost = dev ? "host.docker.internal" : "localhost";
 const hasuraEnv = {
   HASURA_GRAPHQL_SERVER_PORT: hasuraPort,
-  HASURA_GRAPHQL_DATABASE_URL,
+  HASURA_GRAPHQL_DATABASE_URL: dev
+    ? HASURA_GRAPHQL_DATABASE_URL.replace(/@localhost:/, "@host.docker.internal:")
+    : HASURA_GRAPHQL_DATABASE_URL,
   HASURA_GRAPHQL_ADMIN_SECRET,
   HASURA_GRAPHQL_AUTH_HOOK: `http://${maybeDockerHost}:${authPort}/hasura-auth-hook`,
   ACTIONS_URL: `http://${maybeDockerHost}:${actionsPort}`,
