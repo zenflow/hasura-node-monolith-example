@@ -91,16 +91,7 @@ startCompositeService({
             ${hasuraImageName}`
         : `graphql-engine serve`,
       env: dev ? { ...process.env, ...hasuraEnv } : hasuraEnv,
-      ready: async (ctx) => {
-        // TODO: ctx.onceUrlReady(`${HASURA_GRAPHQL_ENDPOINT}/healthz`)
-        let isTempServer = false;
-        ctx
-          .onceOutputLineIncludes("starting graphql engine temporarily on port ")
-          .then(() => (isTempServer = true));
-        const serverStarted = () => ctx.onceOutputLineIncludes('"message":"starting API server"');
-        await serverStarted();
-        if (isTempServer) await serverStarted();
-      },
+      ready: (ctx) => ctx.onceHttpOk({ url: `${HASURA_GRAPHQL_ENDPOINT}/healthz` }),
     },
     web: {
       dependencies: ["hasura"],
@@ -121,6 +112,9 @@ startCompositeService({
         "/v1beta1": { proxy: { target: HASURA_GRAPHQL_ENDPOINT } },
         "/healthz": { proxy: { target: HASURA_GRAPHQL_ENDPOINT } },
         "/": { proxy: { target: `http://localhost:${webPort}` } },
+      },
+      onReady: () => {
+        if (dev) require("opener")(`http://localhost:${PORT}/`);
       },
     }),
 

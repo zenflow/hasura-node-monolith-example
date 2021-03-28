@@ -532,10 +532,10 @@ color-name@~1.1.4:
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
-composite-service-http-gateway@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/composite-service-http-gateway/-/composite-service-http-gateway-0.1.1.tgz#40555477764e4874ec5ffd10c379629f9307cc10"
-  integrity sha512-uM9kb2InD7CQe8mFxwmYGTbdqWTruWtBfHbf/vK50jeNyv2L3OLaeGEkLmnBP7JlUKRMGeQnKjmKEccca4PIdA==
+composite-service-http-gateway@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/composite-service-http-gateway/-/composite-service-http-gateway-0.2.0.tgz#00c86315c2590f6bf3416b4d3fe2904e86e6c53d"
+  integrity sha512-pyx1yZcvLsq2Jev3DtmWtfxX6wi0IhonuLp3hPzuYYuEq0/sRmj2HRH2STkZqDXTQXQ+IVXyTuDDySeQwoMVMA==
   dependencies:
     "@types/serve-static" "^1.13.9"
     connect "^3.7.0"
@@ -544,10 +544,10 @@ composite-service-http-gateway@^0.1.1:
     serialize-javascript "^5.0.1"
     serve-static "^1.14.1"
 
-composite-service@^0.10.1:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/composite-service/-/composite-service-0.10.1.tgz#093fc700ee43d4d60ec3cf091e587205d2813e96"
-  integrity sha512-ANn5BxrVHIeuNxJaT+tb0/+X/YW6u24Xn7qq4i0U2tbzAVK1oZwfLCmOExn9ZOCjw5KnOKiRevZyjDYH7EFN5w==
+composite-service@^0.11.1:
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/composite-service/-/composite-service-0.11.1.tgz#1693c05eebfb38044165ad34f7f7f870bf6d9b17"
+  integrity sha512-H3VzQVpM0CnlbMzh9yODnGxyGnOZxCFq3GRniTLSZVP527qupOzxpFs1wddqtJBDziCotEOz1sery2rctjF5GA==
   dependencies:
     cloneable-readable "^2.1.0"
     merge-stream "^2.0.0"
@@ -556,7 +556,7 @@ composite-service@^0.10.1:
     ts-interface-checker "^0.2.1"
     which "^2.0.2"
   optionalDependencies:
-    generate-ctrl-c-event "^1.0.0"
+    generate-ctrl-c-event "^1.2.1"
 
 concat-map@0.0.1:
   version "0.0.1"
@@ -1177,10 +1177,10 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
 
-generate-ctrl-c-event@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/generate-ctrl-c-event/-/generate-ctrl-c-event-1.0.0.tgz#f2674afdcf88a25542a38348797e9028c3bfeaf5"
-  integrity sha512-/8xWzJgispsfQPYtBHhOGVb/96GSC6a5YOBzT9sfpC0DY55hevOyMjBh92frJ4mrxmdUNcaDNryFwxBXqYl1Kw==
+generate-ctrl-c-event@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/generate-ctrl-c-event/-/generate-ctrl-c-event-1.2.1.tgz#601eed15a6bbd1c997aba05914973193b717834f"
+  integrity sha512-hCcc5R/THwssaXdsuNr6wM+r22abFi9VHGsCZ2oIoVwQYURGve14ij9KfLio1+znE59iiF+6TpOGLFPC2IgzAw==
   optionalDependencies:
     ffi-napi "^3.0.1"
 
@@ -1747,6 +1747,11 @@ once@^1.3.0:
   integrity sha1-WDsap3WWHUsROsF9nFC6753Xa9E=
   dependencies:
     wrappy "1"
+
+opener@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/opener/-/opener-1.5.2.tgz#5d37e1f35077b9dcac4301372271afdeb2a13598"
+  integrity sha512-ur5UIdyw5Y7yEj9wLzhqXiy6GZ3Mwx0yGI+5sMn2r0N0v3cKJvUmFH5yPP+WXh9e0xfyzyJX95D8l088DNFj7A==
 
 optionator@^0.9.1:
   version "0.9.1"
