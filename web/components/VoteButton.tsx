@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { PostFragment } from "../graphql-codegen";
+import { PostFragment } from "../graphql/generated";
 import { useVoteMutation } from "../graphql/mutations/Vote";
 
 export const VoteButton: FC<{

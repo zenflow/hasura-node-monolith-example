@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Link from "next/link";
-import { UserInfoFragment } from "../graphql-codegen";
+import { UserInfoFragment } from "../graphql/generated";
 
 export const UserRef: FC<{
   user: UserInfoFragment | null | undefined;

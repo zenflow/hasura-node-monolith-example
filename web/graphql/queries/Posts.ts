@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Posts_Bool_Exp, PostsDocument, PostsQuery } from "../../graphql-codegen";
+import { Posts_Bool_Exp, PostsDocument, PostsQuery } from "../generated";
 
 const postsQueryPageSize = 5;
 

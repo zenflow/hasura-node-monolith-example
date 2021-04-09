@@ -6,7 +6,7 @@ schema:
         X-Hasura-Role: user
 documents: "graphql/**/*.graphql"
 generates:
-  graphql-codegen.ts:
+  graphql/generated.ts:
     plugins:
       - "typescript"
       - "typescript-operations"

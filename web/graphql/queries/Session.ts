@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { SessionDocument } from "../../graphql-codegen";
+import { SessionDocument } from "../generated";
 
 export function useSessionQuery() {
   const queryResult = useQuery(SessionDocument, {

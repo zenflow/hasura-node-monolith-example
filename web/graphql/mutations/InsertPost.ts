@@ -1,6 +1,6 @@
 import { MutationResult, useMutation } from "@apollo/client";
 import { apolloCacheUpdateQuery } from "../../lib/apollo-immer";
-import { InsertPostDocument, Posts_Bool_Exp, PostsDocument } from "../../graphql-codegen";
+import { InsertPostDocument, Posts_Bool_Exp, PostsDocument } from "../generated";
 import { useSessionQuery } from "../queries/Session";
 import { defaultPostsQueryVariables } from "../queries/Posts";
 

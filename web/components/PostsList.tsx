@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Posts_Bool_Exp } from "../graphql-codegen";
+import { Posts_Bool_Exp } from "../graphql/generated";
 import { useSessionQuery } from "../graphql/queries/Session";
 import { usePostsQuery } from "../graphql/queries/Posts";
 import { UserRef } from "./UserRef";

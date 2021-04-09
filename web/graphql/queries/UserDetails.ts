@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { UserDetailsDocument } from "../../graphql-codegen";
+import { UserDetailsDocument } from "../generated";
 
 export function useUserDetailsQuery(id: number | undefined) {
   const queryResult = useQuery(UserDetailsDocument, {
