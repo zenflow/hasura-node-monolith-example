@@ -1,0 +1,5 @@
+mutation InsertPost($content: String!) {
+  insert_posts_one(object: { content: $content }) {
+    ...Post
+  }
+}

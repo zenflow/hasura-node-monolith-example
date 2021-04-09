@@ -1,9 +1,9 @@
 import { FC } from "react";
-import { PostInfoFragment } from "../graphql-codegen";
-import { useVoteMutation } from "../graphql/VoteMutation";
+import { PostFragment } from "../graphql-codegen";
+import { useVoteMutation } from "../graphql/mutations/Vote";
 
 export const VoteButton: FC<{
-  post: PostInfoFragment;
+  post: PostFragment;
   value: 1 | -1;
 }> = ({ post, value }) => {
   const [vote] = useVoteMutation();

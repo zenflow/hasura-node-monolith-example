@@ -14,7 +14,7 @@ module.exports = rescue(async (req, res, next) => {
     .slice(baseUrl.length) // make relative to baseUrl
     .replace(/\?.*/, "") // remove query part, use only path part
     .split("/"); // as array of strings
-  NextAuth(req, res, options);
+  await NextAuth(req, res, options);
 });
 
 const options = {

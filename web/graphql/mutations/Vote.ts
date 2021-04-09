@@ -1,9 +1,9 @@
 import { MutationResult, useMutation } from "@apollo/client";
-import { apolloCacheUpdateQuery } from "../lib/apollo-helpers";
-import { PostInfoFragment, UserDetailsDocument, VoteDocument } from "../graphql-codegen";
-import { useSessionQuery } from "./SessionQuery";
+import { apolloCacheUpdateQuery } from "../../lib/apollo-immer";
+import { PostFragment, UserDetailsDocument, VoteDocument } from "../../graphql-codegen";
+import { useSessionQuery } from "../queries/Session";
 
-export type VoteFunction = (post: PostInfoFragment, value: 0 | -1 | 1) => void;
+export type VoteFunction = (post: PostFragment, value: 0 | -1 | 1) => void;
 
 export function useVoteMutation(): [VoteFunction, MutationResult] {
   const { user } = useSessionQuery();

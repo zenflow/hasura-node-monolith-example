@@ -18,7 +18,3 @@ generates:
         smallint: number
         timestamptz: string
         uuid: string
-hooks:
-  afterOneFileWrite:
-    # TODO: write to graphql-codegen.ts *once* to avoid triggering next.js rebuild twice on every update
-    - eslint --fix

@@ -3,31 +3,24 @@ import NProgress, { NProgressOptions } from "nprogress";
 import Router from "next/router";
 
 export function installNextNProgress(options: Partial<NProgressOptions>) {
-  if (!process.browser) {
+  if (typeof window === "undefined") {
     return;
   }
   NProgress.configure(options);
-  Router.events.on("routeChangeStart", (url) => {
-    console.log(`Loading: ${url}`);
-    start();
-  });
-  Router.events.on("routeChangeComplete", done);
-  Router.events.on("routeChangeError", done);
+  Router.events.on("routeChangeStart", (url) => start());
+  Router.events.on("routeChangeComplete", () => done());
+  Router.events.on("routeChangeError", () => done());
 
-  // Wrap NProgress `start` & `done` methods to:
-  //  to prevent flicker of progress bar, skip actually starting if `done` is called immediately after
-  // TODO: PR to nprogress to do the following
-  let isStarted = false;
+  // Wrap NProgress `start` & `done` methods to prevent flicker of progress bar when route change is instant
+  let shouldStart = false;
   function start() {
-    isStarted = true;
+    shouldStart = true;
     setTimeout(() => {
-      if (isStarted) {
-        NProgress.start();
-      }
+      if (shouldStart) NProgress.start();
     });
   }
   function done() {
-    isStarted = false;
+    shouldStart = false;
     NProgress.done();
   }
 }

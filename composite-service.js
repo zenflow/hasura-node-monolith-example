@@ -15,6 +15,9 @@ if (dev) {
 
 const {
   PATH,
+  NODE_ENV,
+  DEBUG,
+  HASURA_GRAPHQL_ENABLED_LOG_TYPES,
   PORT,
   HASURA_GRAPHQL_DATABASE_URL,
   NODE_PG_SSL_NO_VERIFY,
@@ -25,17 +28,19 @@ const {
   AUTH_JWT_SECRET,
 } = process.env;
 
-const nodePostgresEnv = {
+const nodeEnv = {
+  ...(dev && { PATH }), // nodemon needs this
+  NODE_ENV,
+  DEBUG,
   HASURA_GRAPHQL_DATABASE_URL,
   ...(NODE_PG_SSL_NO_VERIFY === "true" && { PGSSLMODE: "no-verify" }),
 };
 
 const maybeDockerHost = dev ? "host.docker.internal" : "localhost";
 const hasuraEnv = {
+  HASURA_GRAPHQL_ENABLED_LOG_TYPES,
   HASURA_GRAPHQL_SERVER_PORT: hasuraPort,
-  HASURA_GRAPHQL_DATABASE_URL: dev
-    ? HASURA_GRAPHQL_DATABASE_URL.replace(/@localhost:/, "@host.docker.internal:")
-    : HASURA_GRAPHQL_DATABASE_URL,
+  HASURA_GRAPHQL_DATABASE_URL,
   HASURA_GRAPHQL_ADMIN_SECRET,
   HASURA_GRAPHQL_AUTH_HOOK: `http://${maybeDockerHost}:${authPort}/hasura-auth-hook`,
   ACTIONS_URL: `http://${maybeDockerHost}:${actionsPort}`,
@@ -52,14 +57,12 @@ startCompositeService({
       cwd: `${__dirname}/auth`,
       command: `${dev ? "nodemon" : "node"} server.js`,
       env: {
-        ...(dev ? { PATH } : {}), // nodemon needs PATH env var
+        ...nodeEnv,
         PORT: authPort,
-        ...nodePostgresEnv,
         NEXTAUTH_URL,
         GOOGLE_CLIENT_ID,
         GOOGLE_CLIENT_SECRET,
         AUTH_JWT_SECRET,
-        DEBUG: dev ? "auth:*" : undefined,
       },
       ready: (ctx) => ctx.onceTcpPortUsed(authPort),
     },
@@ -67,9 +70,8 @@ startCompositeService({
       cwd: `${__dirname}/actions`,
       command: `${dev ? "nodemon" : "node"} server.js`,
       env: {
-        ...(dev ? { PATH } : {}), // nodemon needs PATH env var
+        ...nodeEnv,
         PORT: actionsPort,
-        ...nodePostgresEnv,
       },
       ready: (ctx) => ctx.onceTcpPortUsed(actionsPort),
     },

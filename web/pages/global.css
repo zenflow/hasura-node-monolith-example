@@ -1,11 +1,3 @@
-div > span {
-  margin-right: 0.5rem;
-}
-
-form > input {
-  margin-right: 0.5rem;
-}
-
 a {
   font-weight: 600;
   /* Bump contrast ratio from 4.28 to >4.5 to satisfy lighthouse check (TODO: PR for new.css) */

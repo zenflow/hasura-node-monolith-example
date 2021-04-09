@@ -1,0 +1,10 @@
+query Users {
+  users(order_by: { name: asc }) {
+    ...UserInfo
+    posts_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}

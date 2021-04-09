@@ -2,7 +2,7 @@ import { FC } from "react";
 import Link from "next/link";
 import { UserInfoFragment } from "../graphql-codegen";
 
-export const UserReference: FC<{
+export const UserRef: FC<{
   user: UserInfoFragment | null | undefined;
   link?: boolean;
 }> = ({ user, link = false }) => {
@@ -40,7 +40,7 @@ export const UserReference: FC<{
   }
   return (
     <span>
-      <Link href={`/user/${user.id}`}>
+      <Link href={`/users/${user.id}`}>
         <a>{base}</a>
       </Link>
       <style jsx>{`

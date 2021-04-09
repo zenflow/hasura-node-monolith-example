@@ -1,7 +1,4 @@
 {
-  "ignorePatterns": [
-    "**/node_modules"
-  ],
   "extends": [
     "zenflow"
   ],

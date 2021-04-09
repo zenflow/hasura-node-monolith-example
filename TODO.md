@@ -1,23 +1,11 @@
 # TODO
 
-upgrade deps
-  - eslint ignore graphql-codegen.ts
-  - next-auth bugs fixed?
-
-- websocket demo
 - Cypress + cucumber + (for apps using component library) visual snapshots
-- test incompatible schemas for different roles
-- network error handling (test offline)
 - heroku no insecure sessions!
 - heroku review apps (with isolated database & unique secret keys)
 
 - react-admin?
 
-- about page
-- document
-- Github Template repositories let users generate new repositories with the same directory structure and file
-
-- optimize by prerendering pages without auth context
 - deal with scenario where user signed out (or signed in) in another tab
     - https://next-auth.js.org/getting-started/client#options
     - https://github.com/apollographql/apollo-cache-persist

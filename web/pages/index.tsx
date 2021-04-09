@@ -1,36 +1,38 @@
-import { NextPageContext } from "next";
-import { getApolloClient } from "../lib/apolloClient";
-import { Posts_Bool_Exp, PostsDocument } from "../graphql-codegen";
-import { defaultPostsQueryVariables } from "../graphql/PostsQuery";
-import { PostForm } from "../components/PostForm";
-import { PostsList } from "../components/PostsList";
+import Link from "next/link";
+import { withApollo } from "../apollo";
+import { PageLayout } from "../components/PageLayout";
 
-const where: Posts_Bool_Exp = {};
+const IndexPage = () => (
+  <PageLayout>
+    <h2>Welcome</h2>
+    <p>
+      This is a sample fullstack web application incorporating{" "}
+      <a href="https://hasura.io/docs/latest/graphql/core/index.html" target="_blank">
+        Hasura GraphQL Engine
+      </a>{" "}
+      and other technologies. Check out the{" "}
+      <a href="https://github.com/zenflow/hasura-node-monolith-example" target="_blank">
+        GitHub repo
+      </a>{" "}
+      for more details.
+    </p>
+    <p>
+      <strong>Fun fact!</strong> This page is served statically, while the rest use SSR!
+    </p>
+    <p className="footer-cta">
+      On to the{" "}
+      <Link href="/posts">
+        <a>Posts</a>
+      </Link>{" "}
+      page...
+    </p>
+    <style jsx>{`
+      .footer-cta {
+        font-style: italic;
+        font-size: 120%;
+      }
+    `}</style>
+  </PageLayout>
+);
 
-IndexPage.getInitialProps = async (ctx: NextPageContext) => {
-  const apolloClient = getApolloClient(ctx.req);
-  await apolloClient.query({
-    query: PostsDocument,
-    variables: { ...defaultPostsQueryVariables, where },
-  });
-  return { ok: true };
-};
-
-function IndexPage() {
-  return (
-    <>
-      <p>
-        <span role="img" aria-label="Info">
-          ℹ
-        </span>{" "}
-        Anonymous users can see everything & make anonymous posts, but cannot vote. Sign in to vote.
-      </p>
-      <h2>Submit Post</h2>
-      <PostForm />
-      <h2>Posts</h2>
-      <PostsList where={where} />
-    </>
-  );
-}
-
-export default IndexPage;
+export default withApollo({ preload: false }, IndexPage);

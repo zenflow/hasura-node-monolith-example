@@ -1,4 +1,4 @@
-CREATE TABLE "public"."posts"("id" serial NOT NULL, "user_id" integer, "title" text NOT NULL, "url" text NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), "updated_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") , FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON UPDATE restrict ON DELETE restrict);
+CREATE TABLE "public"."posts"("id" serial NOT NULL, "user_id" integer, "content" text NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), "updated_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") , FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON UPDATE restrict ON DELETE restrict);
 
 CREATE TRIGGER "set_public_posts_updated_at"
 BEFORE UPDATE ON "public"."posts"

@@ -1,6 +1,12 @@
 # hasura-node-monolith-example
 
-Example of a monolithic web application using Hasura GraphQL Engine + Express.js + Next.js
+This is a sample fullstack web application incorporating the following:
+
+- [Hasura GraphQL Engine](https://hasura.io/docs/latest/graphql/core/index.html) for a data backend
+- Node.js server to handle custom [GraphQL Engine Actions](https://hasura.io/docs/latest/graphql/core/actions/index.html)
+- Authentication server using [NextAuth.js](https://next-auth.js.org/) which also handles [GraphQL Engine's auth webhook](https://hasura.io/docs/latest/graphql/core/auth/authentication/webhook.html#configuring-webhook-mode), to define the authenticated user's id and role for GraphQL Engine
+- UI frontend using [Next.js](https://nextjs.org/), [Apollo \[GraphQL\] Client](https://www.apollographql.com/docs/react/), [TypeScript](https://www.typescriptlang.org/), and [GraphQL Code Generator](https://www.graphql-code-generator.com/)
+- _All rolled into a single dockerized service, for simplified deployment, using [composite-service](https://github.com/zenflow/composite-service)_
 
 ## Local development
 

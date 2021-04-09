@@ -2,7 +2,8 @@
 FROM astefanutti/scratch-node:14.14.0 as node-runtime
 
 # Prepare packages
-FROM node:14.14.0-slim as node-build
+FROM node:14.15.0-slim as node-build
+# Note: Using newer node version here to please "jest-worker@27.0.0-next.5"'s node version contraint
 
 WORKDIR /app
 ADD package.json yarn.lock ./
@@ -23,8 +24,7 @@ WORKDIR /app/web
 ADD web/package.json web/yarn.lock ./
 RUN yarn install --frozen-lockfile
 ADD web/ ./
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
 RUN yarn next build
 RUN yarn install --prod
 

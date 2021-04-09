@@ -40,8 +40,7 @@
     permission:
       check: {}
       columns:
-      - title
-      - url
+      - content
       backend_only: false
   - role: user
     permission:
@@ -49,18 +48,16 @@
       set:
         user_id: X-Hasura-User-Id
       columns:
-      - title
-      - url
+      - content
       backend_only: false
   select_permissions:
   - role: anonymous
     permission:
       columns:
+      - content
       - created_at
       - id
-      - title
       - updated_at
-      - url
       - user_id
       computed_fields:
       - my_vote_value
@@ -70,11 +67,10 @@
   - role: user
     permission:
       columns:
+      - content
       - created_at
       - id
-      - title
       - updated_at
-      - url
       - user_id
       computed_fields:
       - my_vote_value

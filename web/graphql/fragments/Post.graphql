@@ -1,11 +1,10 @@
-fragment PostInfo on posts {
+fragment Post on posts {
   id
-  title
-  url
+  created_at
   user {
     ...UserInfo
   }
-  created_at
+  content
   vote_total
   my_vote_value
 }

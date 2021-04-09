@@ -3,24 +3,15 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { signin, signout } from "next-auth/client";
-import { useSessionQuery } from "../graphql/SessionQuery";
-import { UserReference } from "./UserReference";
+import { useSessionQuery } from "../graphql/queries/Session";
+import { UserRef } from "./UserRef";
 
 export const PageLayout: FC<{}> = ({ children }) => {
   return (
-    <>
-      <Head>
-        <title>hasura-node-monolith-example</title>
-        <meta
-          name="description"
-          content="Example of a monolithic web application using Hasura GraphQL Engine + Express.js + Next.js"
-        />
-      </Head>
-      <main>
-        <PageHeader />
-        {children}
-      </main>
-    </>
+    <main>
+      <PageHeader />
+      {children}
+    </main>
   );
 };
 
@@ -28,25 +19,44 @@ const PageHeader: FC<{}> = () => {
   const { pathname } = useRouter();
   return (
     <header>
+      <Head>
+        <title>hasura-node-monolith-example</title>
+      </Head>
       <h1>hasura-node-monolith-example</h1>
       <nav>
         <Link href="/">
           <a className={pathname === "/" ? "is-active" : ""}>Home</a>
         </Link>
         {" / "}
-        <Link href="/about">
-          <a className={pathname === "/about" ? "is-active" : ""}>About</a>
+        <Link href="/posts">
+          <a className={pathname === "/posts" ? "is-active" : ""}>Posts</a>
         </Link>
-      </nav>
-      <div>
+        {" / "}
+        <Link href="/users">
+          <a
+            className={
+              pathname === "/users"
+                ? "is-active"
+                : pathname.startsWith("/users/")
+                ? "is-nested-active"
+                : ""
+            }
+          >
+            Users
+          </a>
+        </Link>
+        {" / "}
         <AuthSection />
-      </div>
+      </nav>
       <style jsx>{`
         a {
           font-size: 120%;
         }
         a.is-active {
           text-decoration: none;
+        }
+        a.is-active,
+        a.is-nested-active {
           font-weight: bold;
         }
       `}</style>
@@ -58,10 +68,17 @@ const AuthSection: FC<{}> = () => {
   const { user } = useSessionQuery();
   return user ? (
     <>
-      <UserReference user={user} link />
+      <UserRef user={user} link />
       <button onClick={() => signout()}>Sign out</button>
+      <style jsx>{`
+        button {
+          margin-left: 0.5rem;
+        }
+      `}</style>
     </>
   ) : (
-    <button onClick={() => signin("google")}>Sign in with Google</button>
+    <>
+      <button onClick={() => signin("google")}>Sign in with Google</button>
+    </>
   );
 };
