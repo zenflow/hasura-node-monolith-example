@@ -48,7 +48,8 @@ const hasuraEnv = {
 
 const HASURA_GRAPHQL_ENDPOINT = `http://localhost:${hasuraPort}`;
 
-const nextJsBin = "node node_modules/next/dist/bin/next";
+const nextJsBin = `node ${__dirname}/node_modules/next/dist/bin/next`;
+// node scripts can't be executed directly in the production Docker container for some reason
 
 startCompositeService({
   windowsCtrlCShutdown: true,

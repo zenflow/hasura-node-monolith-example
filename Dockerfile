@@ -4,29 +4,11 @@ FROM astefanutti/scratch-node:14.14.0 as node-runtime
 # Prepare packages
 FROM node:14.15.0-slim as node-build
 # Note: Using newer node version here to please "jest-worker@27.0.0-next.5"'s node version contraint
-
-WORKDIR /app
-ADD package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --prod
-ADD composite-service.js ./
-
-WORKDIR /app/auth
-ADD auth/package.json auth/yarn.lock ./
-RUN yarn install --frozen-lockfile --prod
-ADD auth/ ./
-
-WORKDIR /app/actions
-ADD actions/package.json actions/yarn.lock ./
-RUN yarn install --frozen-lockfile --prod
-ADD actions/ ./
-
-WORKDIR /app/web
-ADD web/package.json web/yarn.lock ./
-RUN yarn install --frozen-lockfile
-ADD web/ ./
+ADD . /app/
+RUN cd /app && yarn install --frozen-lockfile
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
-RUN yarn next build
-RUN yarn install --prod
+RUN cd /app/web && yarn next build
+RUN cd /app && yarn install --frozen-lockfile --prod
 
 # Base this image on hasura graphql engine (CLI migrations version)
 FROM hasura/graphql-engine:v1.3.3.cli-migrations-v2
@@ -44,12 +26,9 @@ COPY hasura/migrations /hasura-migrations/
 # Copy packages
 COPY --from=node-build /app /app
 
-# Set env vars used in metadata, preventing errors on cli-migrations-v2 startup.
-# This env var is actually defined in main-server.js.
-ENV ACTIONS_URL foo
-
-# Set env var to signal production mode
-ENV NODE_ENV production
+ENV NODE_ENV=production ACTIONS_URL=foo
+# "NODE_ENV=production" signals production mode
+# "ACTIONS_URL=foo" prevents errors in cli-migrations-v2 startup (ACTIONS_URL is actually defined in main-server.js)
 
 # Start main server
 CMD node /app/composite-service.js
