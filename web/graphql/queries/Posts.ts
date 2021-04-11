@@ -12,8 +12,6 @@ export function usePostsQuery(where: Posts_Bool_Exp) {
   const queryResult = useQuery(PostsDocument, {
     variables: { ...defaultPostsQueryVariables, where },
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: "cache-and-network",
-    nextFetchPolicy: "cache-only",
   });
   const posts: NonNullable<PostsQuery["posts"]> = queryResult.data?.posts ?? [];
   const postCount: number = queryResult.data?.posts_aggregate.aggregate?.count ?? 0;

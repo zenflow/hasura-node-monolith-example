@@ -8,7 +8,6 @@ const baseUri = isServer ? process.env.HASURA_GRAPHQL_ENDPOINT : window.location
 const uri = `${baseUri}/v1/graphql`;
 
 export const withApollo = createWithApollo({
-  // debug: true,
   link({ headers }) {
     return isServer
       ? new BatchHttpLink({ uri, headers: { cookie: headers!.cookie } })

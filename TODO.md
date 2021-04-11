@@ -1,15 +1,21 @@
 # TODO
 
+- rename "session" query action -> "auth"
+- notifyOnNetworkStatusChange for all query hooks?
+- TODOS
+- show upvoters/downvoters :D
+- documentation review
+- report back on Hasura issue
+- https://github.com/aaronhayes/awesome-hasura
+
+
+- use hasura 2 (& implement missing cli migrations) ?
 - Cypress + cucumber + (for apps using component library) visual snapshots
 - heroku no insecure sessions!
 - heroku review apps (with isolated database & unique secret keys)
 
-- react-admin?
 
 - deal with scenario where user signed out (or signed in) in another tab
-    - https://next-auth.js.org/getting-started/client#options
-    - https://github.com/apollographql/apollo-cache-persist
-    - client.clearStore()
 - next-auth
     - express-compatible handler
     - add postgres up.sql to docs
@@ -20,5 +26,3 @@
     Hook is run twice when executing `session` & `posts` graphql queries in parallel.
     - Can still access protected subscription (but not query) after role has been changed to anonymous? (using http auth hook)
     - Computed fields can be accessed by any user without being assigned that permission
-- outreach
-    - https://github.com/aaronhayes/awesome-hasura
