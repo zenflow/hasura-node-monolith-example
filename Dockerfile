@@ -4,11 +4,19 @@ FROM astefanutti/scratch-node:14.14.0 as node-runtime
 # Prepare packages
 FROM node:14.15.0-slim as node-build
 # Note: Using newer node version here to please "jest-worker@27.0.0-next.5"'s node version contraint
-ADD . /app/
-RUN cd /app && yarn install --frozen-lockfile
+WORKDIR /app
+ADD package.json yarn.lock ./
+ADD actions/package.json ./actions/
+ADD auth/package.json ./auth/
+ADD web/package.json ./web/
+RUN yarn install --frozen-lockfile
+ADD composite-service.js ./
+ADD actions/ ./actions/
+ADD auth/ ./auth/
+ADD web/ ./web/
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
-RUN cd /app/web && yarn next build
-RUN cd /app && yarn install --frozen-lockfile --prod
+RUN cd web && yarn next build && cd ..
+RUN yarn install --frozen-lockfile --prod
 
 # Base this image on hasura graphql engine (CLI migrations version)
 FROM hasura/graphql-engine:v1.3.3.cli-migrations-v2
