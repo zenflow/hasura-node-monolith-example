@@ -23,6 +23,9 @@ export const UserRef: FC<{
     <span>
       <img alt={user.name} src={user.image} /> <span>{user.name}</span>
       <style jsx>{`
+        span {
+          white-space: nowrap;
+        }
         img {
           vertical-align: middle;
           height: 2em;

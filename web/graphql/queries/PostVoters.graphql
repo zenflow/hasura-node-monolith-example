@@ -1,0 +1,16 @@
+query PostVoters($postId: Int!) {
+  posts_by_pk(id: $postId) {
+    id
+    vote_total
+    downvotes: votes(where: { value: { _eq: -1 } }, order_by: { updated_at: asc }) {
+      user {
+        ...UserInfo
+      }
+    }
+    upvotes: votes(where: { value: { _eq: 1 } }, order_by: { updated_at: asc }) {
+      user {
+        ...UserInfo
+      }
+    }
+  }
+}

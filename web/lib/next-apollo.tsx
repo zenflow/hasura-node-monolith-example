@@ -64,6 +64,8 @@ export function createWithApollo<TCache>(options: CreateWithApolloOptions<TCache
       apolloCache?: TCache;
     }
     const PageWithApollo: NextPage<PageWithApolloProps> = (props) => {
+      // TODO: Pages using `preload: false` should get fresh client on route
+      //   changes too, always, not just when arriving from another page.
       const apolloClient = useMemo(
         () => props.apolloClient || createClient(isServer, props.apolloCache),
         [props.apolloClient, props.apolloCache],

@@ -1,6 +1,6 @@
 import { MutationResult, useMutation } from "@apollo/client";
 import { apolloCacheUpdateQuery } from "../../lib/apollo-immer";
-import { PostFragment, UserDetailsDocument, VoteDocument } from "../generated";
+import { PostFragment, PostVotersDocument, UserDetailsDocument, VoteDocument } from "../generated";
 import { useSessionQuery } from "../queries/Session";
 
 export type VoteFunction = (post: PostFragment, value: 0 | -1 | 1) => void;
@@ -28,6 +28,22 @@ export function useVoteMutation(): [VoteFunction, MutationResult] {
       },
       update: (cache, { data }) => {
         if (!user || !data) return;
+        // update list of post voters
+        apolloCacheUpdateQuery(cache, {
+          query: PostVotersDocument,
+          variables: { postId: post.id },
+          update(query) {
+            for (const which of ["upvotes", "downvotes"] as const) {
+              query.posts_by_pk![which] = query.posts_by_pk![which].filter(
+                (vote) => vote.user.id !== user.id,
+              );
+            }
+            if (value !== 0) {
+              query.posts_by_pk![value === 1 ? "upvotes" : "downvotes"].push({ user });
+            }
+          },
+        });
+        // update user details -> "upvotes given" & "downvotes given"
         apolloCacheUpdateQuery(cache, {
           query: UserDetailsDocument,
           variables: { id: user.id },
