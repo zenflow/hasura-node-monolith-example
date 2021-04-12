@@ -10,13 +10,13 @@ ADD actions/package.json ./actions/
 ADD auth/package.json ./auth/
 ADD web/package.json ./web/
 RUN yarn install --frozen-lockfile
-ADD composite-service.js ./
-ADD actions/ ./actions/
-ADD auth/ ./auth/
 ADD web/ ./web/
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
 RUN cd web && yarn next build && cd ..
 RUN yarn install --frozen-lockfile --prod
+ADD actions/ ./actions/
+ADD auth/ ./auth/
+ADD composite-service.js ./
 
 # Base this image on hasura graphql engine (CLI migrations version)
 FROM hasura/graphql-engine:v1.3.3.cli-migrations-v2
