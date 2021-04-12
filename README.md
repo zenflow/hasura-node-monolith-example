@@ -5,14 +5,17 @@ This is a sample fullstack web application incorporating the following:
 - [Hasura GraphQL Engine](https://hasura.io/docs/latest/graphql/core/index.html) for a data backend
 - Node.js server to handle custom [GraphQL Engine Actions](https://hasura.io/docs/latest/graphql/core/actions/index.html)
 - Authentication server using [NextAuth.js](https://next-auth.js.org/), handles [GraphQL Engine's auth webhook](https://hasura.io/docs/latest/graphql/core/auth/authentication/webhook.html#configuring-webhook-mode) to define client's user id & role for GraphQL Engine
-- UI frontend using [Next.js](https://nextjs.org/), [Apollo \[GraphQL\] Client](https://www.apollographql.com/docs/react/), [TypeScript](https://www.typescriptlang.org/), and [GraphQL Code Generator](https://www.graphql-code-generator.com/)
+- UI frontend using [TypeScript](https://www.typescriptlang.org/), [Next.js](https://nextjs.org/), [Apollo \[GraphQL\] Client](https://www.apollographql.com/docs/react/), and [GraphQL Code Generator](https://www.graphql-code-generator.com/)
 - _All rolled into a single dockerized service, for simplified deployment, using [composite-service](https://github.com/zenflow/composite-service)_
+
+#### Check out my [Production Deployment on Heroku](https://hasura-node-monolith-example.herokuapp.com/) *(please be patient while it wakes up)*
 
 ## Architecture Notes
 
 - GraphQL Engine's auth webhook is used (as opposed to configuring GraphQL Engine to read JWT claims directly)
   because it allows the user's role to be dynamic.
   This way (supposing we had more roles in the app) users won't have to sign out & sign in when their role changes.
+  We can also easily implement user or token blocklists if required.
 
 ## Local development
 
