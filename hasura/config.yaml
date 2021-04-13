@@ -1,2 +1,5 @@
 version: 2
+endpoint: http://localhost:8002/
 metadata_directory: metadata
+migrations_directory: migrations
+seeds_directory: seeds
