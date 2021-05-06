@@ -1,13 +1,16 @@
+const path = require("path");
 const { startCompositeService } = require("composite-service");
 const { configureHttpGateway } = require("composite-service-http-gateway");
 
-const [authPort, actionsPort, hasuraPort, webPort] = [8000, 8001, 8002, 8003];
+const authPort = 8000;
+const actionsPort = 8001;
+const hasuraPort = 8002;
+const webPort = 8003;
 
 const dev = process.env.NODE_ENV !== "production";
-const [, , hasuraImageName, hasuraContainerName] = process.argv;
+const [, , hasuraContainerName] = process.argv;
 
 if (dev) {
-  require("assert").ok(hasuraImageName && hasuraContainerName);
   // Before starting, make sure the last container created by this script has been removed
   require("child_process").spawnSync("docker", ["rm", "--force", hasuraContainerName]);
   require("dotenv").config();
@@ -28,7 +31,7 @@ const {
   AUTH_JWT_SECRET,
 } = process.env;
 
-const nodeEnv = {
+const commonBackendEnv = {
   ...(dev && { PATH }), // nodemon needs this
   NODE_ENV,
   DEBUG,
@@ -58,7 +61,7 @@ startCompositeService({
       cwd: `${__dirname}/auth`,
       command: `${dev ? "nodemon" : "node"} server.js`,
       env: {
-        ...nodeEnv,
+        ...commonBackendEnv,
         PORT: authPort,
         NEXTAUTH_URL,
         GOOGLE_CLIENT_ID,
@@ -71,7 +74,7 @@ startCompositeService({
       cwd: `${__dirname}/actions`,
       command: `${dev ? "nodemon" : "node"} server.js`,
       env: {
-        ...nodeEnv,
+        ...commonBackendEnv,
         PORT: actionsPort,
       },
       ready: (ctx) => ctx.onceTcpPortUsed(actionsPort),
@@ -91,7 +94,9 @@ startCompositeService({
                 ? "--add-host=host.docker.internal:host-gateway"
                 : ""
             }
-            ${hasuraImageName}`
+            -v ${path.join(__dirname, "hasura", "metadata")}:/hasura-metadata
+            -v ${path.join(__dirname, "hasura", "migrations")}:/hasura-migrations
+            hasura/graphql-engine:v1.3.3.cli-migrations-v2`
         : `graphql-engine serve`,
       env: dev ? { ...process.env, ...hasuraEnv } : hasuraEnv,
       ready: (ctx) => ctx.onceHttpOk({ url: `${HASURA_GRAPHQL_ENDPOINT}/healthz` }),
