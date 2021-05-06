@@ -26,7 +26,7 @@ const options = {
   ],
   database: {
     type: "postgres",
-    url: process.env.HASURA_GRAPHQL_DATABASE_URL,
+    url: process.env.DATABASE_URL,
   },
   session: {
     jwt: true,

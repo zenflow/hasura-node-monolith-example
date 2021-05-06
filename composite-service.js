@@ -35,7 +35,9 @@ const commonBackendEnv = {
   ...(dev && { PATH }), // nodemon needs this
   NODE_ENV,
   DEBUG,
-  HASURA_GRAPHQL_DATABASE_URL,
+  DATABASE_URL: dev
+    ? HASURA_GRAPHQL_DATABASE_URL.replace("@host.docker.internal:", "@localhost:")
+    : HASURA_GRAPHQL_DATABASE_URL,
   ...(NODE_PG_SSL_NO_VERIFY === "true" && { PGSSLMODE: "no-verify" }),
 };
 
