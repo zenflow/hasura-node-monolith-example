@@ -11,13 +11,11 @@ export type Scalars = {
   Int: number;
   Float: number;
   bigint: number;
-  json: any;
   smallint: number;
   timestamptz: string;
-  uuid: string;
 };
 
-/** expression to compare columns of type Int. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
   _eq?: Maybe<Scalars['Int']>;
   _gt?: Maybe<Scalars['Int']>;
@@ -32,50 +30,52 @@ export type Int_Comparison_Exp = {
 
 export type SessionOutput = {
   __typename?: 'SessionOutput';
-  role?: Maybe<Scalars['String']>;
-  user?: Maybe<Users>;
-  user_id?: Maybe<Scalars['Int']>;
+  role: Scalars['String'];
+  /** An object relationship */
+  user: Users;
+  user_id: Scalars['Int'];
 };
 
-/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type String_Comparison_Exp = {
   _eq?: Maybe<Scalars['String']>;
   _gt?: Maybe<Scalars['String']>;
   _gte?: Maybe<Scalars['String']>;
+  /** does the column match the given case-insensitive pattern */
   _ilike?: Maybe<Scalars['String']>;
   _in?: Maybe<Array<Scalars['String']>>;
+  /** does the column match the given POSIX regular expression, case insensitive */
+  _iregex?: Maybe<Scalars['String']>;
   _is_null?: Maybe<Scalars['Boolean']>;
+  /** does the column match the given pattern */
   _like?: Maybe<Scalars['String']>;
   _lt?: Maybe<Scalars['String']>;
   _lte?: Maybe<Scalars['String']>;
   _neq?: Maybe<Scalars['String']>;
+  /** does the column NOT match the given case-insensitive pattern */
   _nilike?: Maybe<Scalars['String']>;
   _nin?: Maybe<Array<Scalars['String']>>;
+  /** does the column NOT match the given POSIX regular expression, case insensitive */
+  _niregex?: Maybe<Scalars['String']>;
+  /** does the column NOT match the given pattern */
   _nlike?: Maybe<Scalars['String']>;
+  /** does the column NOT match the given POSIX regular expression, case sensitive */
+  _nregex?: Maybe<Scalars['String']>;
+  /** does the column NOT match the given SQL regular expression */
   _nsimilar?: Maybe<Scalars['String']>;
+  /** does the column match the given POSIX regular expression, case sensitive */
+  _regex?: Maybe<Scalars['String']>;
+  /** does the column match the given SQL regular expression */
   _similar?: Maybe<Scalars['String']>;
 };
 
 export type VoteOutput = {
   __typename?: 'VoteOutput';
-  vote?: Maybe<Votes>;
+  /** An object relationship */
+  vote: Votes;
   vote_id: Scalars['Int'];
 };
 
-
-
-/** expression to compare columns of type json. All fields are combined with logical 'AND'. */
-export type Json_Comparison_Exp = {
-  _eq?: Maybe<Scalars['json']>;
-  _gt?: Maybe<Scalars['json']>;
-  _gte?: Maybe<Scalars['json']>;
-  _in?: Maybe<Array<Scalars['json']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['json']>;
-  _lte?: Maybe<Scalars['json']>;
-  _neq?: Maybe<Scalars['json']>;
-  _nin?: Maybe<Array<Scalars['json']>>;
-};
 
 /** mutation root */
 export type Mutation_Root = {
@@ -84,7 +84,6 @@ export type Mutation_Root = {
   insert_posts?: Maybe<Posts_Mutation_Response>;
   /** insert a single row into the table: "posts" */
   insert_posts_one?: Maybe<Posts>;
-  /** perform the action: "vote" */
   vote: VoteOutput;
 };
 
@@ -109,17 +108,17 @@ export type Mutation_RootVoteArgs = {
 
 /** column ordering options */
 export enum Order_By {
-  /** in the ascending order, nulls last */
+  /** in ascending order, nulls last */
   Asc = 'asc',
-  /** in the ascending order, nulls first */
+  /** in ascending order, nulls first */
   AscNullsFirst = 'asc_nulls_first',
-  /** in the ascending order, nulls last */
+  /** in ascending order, nulls last */
   AscNullsLast = 'asc_nulls_last',
-  /** in the descending order, nulls first */
+  /** in descending order, nulls first */
   Desc = 'desc',
-  /** in the descending order, nulls first */
+  /** in descending order, nulls first */
   DescNullsFirst = 'desc_nulls_first',
-  /** in the descending order, nulls last */
+  /** in descending order, nulls last */
   DescNullsLast = 'desc_nulls_last'
 }
 
@@ -137,9 +136,9 @@ export type Posts = {
   user_id?: Maybe<Scalars['Int']>;
   /** A computed field, executes function "get_post_vote_total" */
   vote_total?: Maybe<Scalars['bigint']>;
-  /** An array relationship */
+  /** fetch data from the table: "votes" */
   votes: Array<Votes>;
-  /** An aggregated array relationship */
+  /** An aggregate relationship */
   votes_aggregate: Votes_Aggregate;
 };
 
@@ -174,7 +173,7 @@ export type Posts_Aggregate = {
 export type Posts_Aggregate_Fields = {
   __typename?: 'posts_aggregate_fields';
   avg?: Maybe<Posts_Avg_Fields>;
-  count?: Maybe<Scalars['Int']>;
+  count: Scalars['Int'];
   max?: Maybe<Posts_Max_Fields>;
   min?: Maybe<Posts_Min_Fields>;
   stddev?: Maybe<Posts_Stddev_Fields>;
@@ -208,11 +207,6 @@ export type Posts_Aggregate_Order_By = {
   variance?: Maybe<Posts_Variance_Order_By>;
 };
 
-/** input type for inserting array relation for remote table "posts" */
-export type Posts_Arr_Rel_Insert_Input = {
-  data: Array<Posts_Insert_Input>;
-};
-
 /** aggregate avg on columns */
 export type Posts_Avg_Fields = {
   __typename?: 'posts_avg_fields';
@@ -228,9 +222,9 @@ export type Posts_Avg_Order_By = {
 
 /** Boolean expression to filter rows from the table "posts". All fields are combined with a logical 'AND'. */
 export type Posts_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Posts_Bool_Exp>>>;
+  _and?: Maybe<Array<Posts_Bool_Exp>>;
   _not?: Maybe<Posts_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Posts_Bool_Exp>>>;
+  _or?: Maybe<Array<Posts_Bool_Exp>>;
   content?: Maybe<String_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
@@ -286,18 +280,13 @@ export type Posts_Min_Order_By = {
 /** response of any mutation on the table "posts" */
 export type Posts_Mutation_Response = {
   __typename?: 'posts_mutation_response';
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Posts>;
 };
 
-/** input type for inserting object relation for remote table "posts" */
-export type Posts_Obj_Rel_Insert_Input = {
-  data: Posts_Insert_Input;
-};
-
-/** ordering options when selecting data from "posts" */
+/** Ordering options when selecting data from "posts". */
 export type Posts_Order_By = {
   content?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
@@ -306,11 +295,6 @@ export type Posts_Order_By = {
   user?: Maybe<Users_Order_By>;
   user_id?: Maybe<Order_By>;
   votes_aggregate?: Maybe<Votes_Aggregate_Order_By>;
-};
-
-/** primary key columns input for table: "posts" */
-export type Posts_Pk_Columns_Input = {
-  id: Scalars['Int'];
 };
 
 /** select columns of table "posts" */
@@ -418,16 +402,14 @@ export type Posts_Variance_Order_By = {
   user_id?: Maybe<Order_By>;
 };
 
-/** query root */
 export type Query_Root = {
   __typename?: 'query_root';
-  /** fetch data from the table: "posts" */
+  /** An array relationship */
   posts: Array<Posts>;
-  /** fetch aggregated fields from the table: "posts" */
+  /** An aggregate relationship */
   posts_aggregate: Posts_Aggregate;
   /** fetch data from the table: "posts" using primary key columns */
   posts_by_pk?: Maybe<Posts>;
-  /** perform the action: "session" */
   session?: Maybe<SessionOutput>;
   /** fetch data from the table: "users" */
   users: Array<Users>;
@@ -437,14 +419,13 @@ export type Query_Root = {
   users_by_pk?: Maybe<Users>;
   /** fetch data from the table: "votes" */
   votes: Array<Votes>;
-  /** fetch aggregated fields from the table: "votes" */
+  /** An aggregate relationship */
   votes_aggregate: Votes_Aggregate;
   /** fetch data from the table: "votes" using primary key columns */
   votes_by_pk?: Maybe<Votes>;
 };
 
 
-/** query root */
 export type Query_RootPostsArgs = {
   distinct_on?: Maybe<Array<Posts_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -454,7 +435,6 @@ export type Query_RootPostsArgs = {
 };
 
 
-/** query root */
 export type Query_RootPosts_AggregateArgs = {
   distinct_on?: Maybe<Array<Posts_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -464,13 +444,11 @@ export type Query_RootPosts_AggregateArgs = {
 };
 
 
-/** query root */
 export type Query_RootPosts_By_PkArgs = {
   id: Scalars['Int'];
 };
 
 
-/** query root */
 export type Query_RootUsersArgs = {
   distinct_on?: Maybe<Array<Users_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -480,7 +458,6 @@ export type Query_RootUsersArgs = {
 };
 
 
-/** query root */
 export type Query_RootUsers_AggregateArgs = {
   distinct_on?: Maybe<Array<Users_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -490,13 +467,11 @@ export type Query_RootUsers_AggregateArgs = {
 };
 
 
-/** query root */
 export type Query_RootUsers_By_PkArgs = {
   id: Scalars['Int'];
 };
 
 
-/** query root */
 export type Query_RootVotesArgs = {
   distinct_on?: Maybe<Array<Votes_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -506,7 +481,6 @@ export type Query_RootVotesArgs = {
 };
 
 
-/** query root */
 export type Query_RootVotes_AggregateArgs = {
   distinct_on?: Maybe<Array<Votes_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -516,13 +490,12 @@ export type Query_RootVotes_AggregateArgs = {
 };
 
 
-/** query root */
 export type Query_RootVotes_By_PkArgs = {
   id: Scalars['Int'];
 };
 
 
-/** expression to compare columns of type smallint. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "smallint". All fields are combined with logical 'AND'. */
 export type Smallint_Comparison_Exp = {
   _eq?: Maybe<Scalars['smallint']>;
   _gt?: Maybe<Scalars['smallint']>;
@@ -535,17 +508,14 @@ export type Smallint_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['smallint']>>;
 };
 
-/** subscription root */
 export type Subscription_Root = {
   __typename?: 'subscription_root';
-  /** fetch data from the table: "posts" */
+  /** An array relationship */
   posts: Array<Posts>;
-  /** fetch aggregated fields from the table: "posts" */
+  /** An aggregate relationship */
   posts_aggregate: Posts_Aggregate;
   /** fetch data from the table: "posts" using primary key columns */
   posts_by_pk?: Maybe<Posts>;
-  /** perform the action: "session" */
-  session?: Maybe<SessionOutput>;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -554,14 +524,13 @@ export type Subscription_Root = {
   users_by_pk?: Maybe<Users>;
   /** fetch data from the table: "votes" */
   votes: Array<Votes>;
-  /** fetch aggregated fields from the table: "votes" */
+  /** An aggregate relationship */
   votes_aggregate: Votes_Aggregate;
   /** fetch data from the table: "votes" using primary key columns */
   votes_by_pk?: Maybe<Votes>;
 };
 
 
-/** subscription root */
 export type Subscription_RootPostsArgs = {
   distinct_on?: Maybe<Array<Posts_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -571,7 +540,6 @@ export type Subscription_RootPostsArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootPosts_AggregateArgs = {
   distinct_on?: Maybe<Array<Posts_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -581,13 +549,11 @@ export type Subscription_RootPosts_AggregateArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootPosts_By_PkArgs = {
   id: Scalars['Int'];
 };
 
 
-/** subscription root */
 export type Subscription_RootUsersArgs = {
   distinct_on?: Maybe<Array<Users_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -597,7 +563,6 @@ export type Subscription_RootUsersArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootUsers_AggregateArgs = {
   distinct_on?: Maybe<Array<Users_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -607,13 +572,11 @@ export type Subscription_RootUsers_AggregateArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootUsers_By_PkArgs = {
   id: Scalars['Int'];
 };
 
 
-/** subscription root */
 export type Subscription_RootVotesArgs = {
   distinct_on?: Maybe<Array<Votes_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -623,7 +586,6 @@ export type Subscription_RootVotesArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootVotes_AggregateArgs = {
   distinct_on?: Maybe<Array<Votes_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -633,13 +595,12 @@ export type Subscription_RootVotes_AggregateArgs = {
 };
 
 
-/** subscription root */
 export type Subscription_RootVotes_By_PkArgs = {
   id: Scalars['Int'];
 };
 
 
-/** expression to compare columns of type timestamptz. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
   _eq?: Maybe<Scalars['timestamptz']>;
   _gt?: Maybe<Scalars['timestamptz']>;
@@ -663,12 +624,12 @@ export type Users = {
   name?: Maybe<Scalars['String']>;
   /** An array relationship */
   posts: Array<Posts>;
-  /** An aggregated array relationship */
+  /** An aggregate relationship */
   posts_aggregate: Posts_Aggregate;
   updated_at: Scalars['timestamptz'];
-  /** An array relationship */
+  /** fetch data from the table: "votes" */
   votes: Array<Votes>;
-  /** An aggregated array relationship */
+  /** An aggregate relationship */
   votes_aggregate: Votes_Aggregate;
 };
 
@@ -723,7 +684,7 @@ export type Users_Aggregate = {
 export type Users_Aggregate_Fields = {
   __typename?: 'users_aggregate_fields';
   avg?: Maybe<Users_Avg_Fields>;
-  count?: Maybe<Scalars['Int']>;
+  count: Scalars['Int'];
   max?: Maybe<Users_Max_Fields>;
   min?: Maybe<Users_Min_Fields>;
   stddev?: Maybe<Users_Stddev_Fields>;
@@ -742,37 +703,17 @@ export type Users_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "users" */
-export type Users_Aggregate_Order_By = {
-  avg?: Maybe<Users_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Users_Max_Order_By>;
-  min?: Maybe<Users_Min_Order_By>;
-  stddev?: Maybe<Users_Stddev_Order_By>;
-  stddev_pop?: Maybe<Users_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Users_Stddev_Samp_Order_By>;
-  sum?: Maybe<Users_Sum_Order_By>;
-  var_pop?: Maybe<Users_Var_Pop_Order_By>;
-  var_samp?: Maybe<Users_Var_Samp_Order_By>;
-  variance?: Maybe<Users_Variance_Order_By>;
-};
-
 /** aggregate avg on columns */
 export type Users_Avg_Fields = {
   __typename?: 'users_avg_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
-/** order by avg() on columns of table "users" */
-export type Users_Avg_Order_By = {
-  id?: Maybe<Order_By>;
-};
-
 /** Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'. */
 export type Users_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Users_Bool_Exp>>>;
+  _and?: Maybe<Array<Users_Bool_Exp>>;
   _not?: Maybe<Users_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Users_Bool_Exp>>>;
+  _or?: Maybe<Array<Users_Bool_Exp>>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   email?: Maybe<String_Comparison_Exp>;
   email_verified?: Maybe<Timestamptz_Comparison_Exp>;
@@ -796,17 +737,6 @@ export type Users_Max_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** order by max() on columns of table "users" */
-export type Users_Max_Order_By = {
-  created_at?: Maybe<Order_By>;
-  email?: Maybe<Order_By>;
-  email_verified?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  image?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
-};
-
 /** aggregate min on columns */
 export type Users_Min_Fields = {
   __typename?: 'users_min_fields';
@@ -819,18 +749,7 @@ export type Users_Min_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** order by min() on columns of table "users" */
-export type Users_Min_Order_By = {
-  created_at?: Maybe<Order_By>;
-  email?: Maybe<Order_By>;
-  email_verified?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  image?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
-};
-
-/** ordering options when selecting data from "users" */
+/** Ordering options when selecting data from "users". */
 export type Users_Order_By = {
   created_at?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
@@ -841,11 +760,6 @@ export type Users_Order_By = {
   posts_aggregate?: Maybe<Posts_Aggregate_Order_By>;
   updated_at?: Maybe<Order_By>;
   votes_aggregate?: Maybe<Votes_Aggregate_Order_By>;
-};
-
-/** primary key columns input for table: "users" */
-export type Users_Pk_Columns_Input = {
-  id: Scalars['Int'];
 };
 
 /** select columns of table "users" */
@@ -872,20 +786,10 @@ export type Users_Stddev_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev() on columns of table "users" */
-export type Users_Stddev_Order_By = {
-  id?: Maybe<Order_By>;
-};
-
 /** aggregate stddev_pop on columns */
 export type Users_Stddev_Pop_Fields = {
   __typename?: 'users_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "users" */
-export type Users_Stddev_Pop_Order_By = {
-  id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -894,20 +798,10 @@ export type Users_Stddev_Samp_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_samp() on columns of table "users" */
-export type Users_Stddev_Samp_Order_By = {
-  id?: Maybe<Order_By>;
-};
-
 /** aggregate sum on columns */
 export type Users_Sum_Fields = {
   __typename?: 'users_sum_fields';
   id?: Maybe<Scalars['Int']>;
-};
-
-/** order by sum() on columns of table "users" */
-export type Users_Sum_Order_By = {
-  id?: Maybe<Order_By>;
 };
 
 /** aggregate var_pop on columns */
@@ -916,20 +810,10 @@ export type Users_Var_Pop_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_pop() on columns of table "users" */
-export type Users_Var_Pop_Order_By = {
-  id?: Maybe<Order_By>;
-};
-
 /** aggregate var_samp on columns */
 export type Users_Var_Samp_Fields = {
   __typename?: 'users_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "users" */
-export type Users_Var_Samp_Order_By = {
-  id?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
@@ -937,12 +821,6 @@ export type Users_Variance_Fields = {
   __typename?: 'users_variance_fields';
   id?: Maybe<Scalars['Float']>;
 };
-
-/** order by variance() on columns of table "users" */
-export type Users_Variance_Order_By = {
-  id?: Maybe<Order_By>;
-};
-
 
 /** columns and relationships of "votes" */
 export type Votes = {
@@ -970,7 +848,7 @@ export type Votes_Aggregate = {
 export type Votes_Aggregate_Fields = {
   __typename?: 'votes_aggregate_fields';
   avg?: Maybe<Votes_Avg_Fields>;
-  count?: Maybe<Scalars['Int']>;
+  count: Scalars['Int'];
   max?: Maybe<Votes_Max_Fields>;
   min?: Maybe<Votes_Min_Fields>;
   stddev?: Maybe<Votes_Stddev_Fields>;
@@ -1023,9 +901,9 @@ export type Votes_Avg_Order_By = {
 
 /** Boolean expression to filter rows from the table "votes". All fields are combined with a logical 'AND'. */
 export type Votes_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Votes_Bool_Exp>>>;
+  _and?: Maybe<Array<Votes_Bool_Exp>>;
   _not?: Maybe<Votes_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Votes_Bool_Exp>>>;
+  _or?: Maybe<Array<Votes_Bool_Exp>>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
   post?: Maybe<Posts_Bool_Exp>;
@@ -1078,7 +956,7 @@ export type Votes_Min_Order_By = {
   value?: Maybe<Order_By>;
 };
 
-/** ordering options when selecting data from "votes" */
+/** Ordering options when selecting data from "votes". */
 export type Votes_Order_By = {
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
@@ -1088,11 +966,6 @@ export type Votes_Order_By = {
   user?: Maybe<Users_Order_By>;
   user_id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
-};
-
-/** primary key columns input for table: "votes" */
-export type Votes_Pk_Columns_Input = {
-  id: Scalars['Int'];
 };
 
 /** select columns of table "votes" */
@@ -1267,13 +1140,13 @@ export type VoteMutation = (
   { __typename?: 'mutation_root' }
   & { vote: (
     { __typename: 'VoteOutput' }
-    & { vote?: Maybe<(
+    & { vote: (
       { __typename: 'votes' }
       & { post: (
         { __typename: 'posts' }
         & Pick<Posts, 'id' | 'vote_total' | 'my_vote_value'>
       ) }
-    )> }
+    ) }
   ) }
 );
 
@@ -1331,10 +1204,10 @@ export type SessionQuery = (
   { __typename?: 'query_root' }
   & { session?: Maybe<(
     { __typename?: 'SessionOutput' }
-    & { user?: Maybe<(
+    & { user: (
       { __typename?: 'users' }
       & UserInfoFragment
-    )> }
+    ) }
   )> }
 );
 

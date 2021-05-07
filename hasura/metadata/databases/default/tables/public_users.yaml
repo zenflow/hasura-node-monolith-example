@@ -1,0 +1,57 @@
+table:
+  name: users
+  schema: public
+array_relationships:
+- name: accounts
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: accounts
+        schema: public
+- name: posts
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: posts
+        schema: public
+- name: sessions
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: sessions
+        schema: public
+- name: votes
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: votes
+        schema: public
+select_permissions:
+- permission:
+    allow_aggregations: true
+    columns:
+    - created_at
+    - email
+    - email_verified
+    - id
+    - image
+    - name
+    - updated_at
+    filter: {}
+  role: anonymous
+- permission:
+    allow_aggregations: true
+    columns:
+    - created_at
+    - email
+    - email_verified
+    - id
+    - image
+    - name
+    - updated_at
+    filter: {}
+  role: user

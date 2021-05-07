@@ -1,0 +1,33 @@
+table:
+  name: votes
+  schema: public
+object_relationships:
+- name: post
+  using:
+    foreign_key_constraint_on: post_id
+- name: user
+  using:
+    foreign_key_constraint_on: user_id
+select_permissions:
+- permission:
+    allow_aggregations: true
+    columns:
+    - id
+    - created_at
+    - updated_at
+    - user_id
+    - post_id
+    - value
+    filter: {}
+  role: anonymous
+- permission:
+    allow_aggregations: true
+    columns:
+    - value
+    - id
+    - post_id
+    - user_id
+    - created_at
+    - updated_at
+    filter: {}
+  role: user

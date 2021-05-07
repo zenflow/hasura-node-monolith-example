@@ -22,6 +22,7 @@ custom_types:
         schema: public
         name: users
       name: user
+      source: default
       type: object
       field_mapping:
         user_id: id
@@ -31,6 +32,7 @@ custom_types:
         schema: public
         name: votes
       name: vote
+      source: default
       type: object
       field_mapping:
         vote_id: id

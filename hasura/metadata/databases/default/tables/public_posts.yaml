@@ -1,0 +1,72 @@
+table:
+  name: posts
+  schema: public
+object_relationships:
+- name: user
+  using:
+    foreign_key_constraint_on: user_id
+array_relationships:
+- name: votes
+  using:
+    foreign_key_constraint_on:
+      column: post_id
+      table:
+        name: votes
+        schema: public
+computed_fields:
+- comment: ""
+  definition:
+    function:
+      name: get_post_my_vote_value
+      schema: public
+    session_argument: hasura_session
+    table_argument: post_row
+  name: my_vote_value
+- comment: ""
+  definition:
+    function:
+      name: get_post_vote_total
+      schema: public
+  name: vote_total
+insert_permissions:
+- permission:
+    backend_only: false
+    check: {}
+    columns:
+    - content
+  role: anonymous
+- permission:
+    backend_only: false
+    check: {}
+    columns:
+    - content
+    set:
+      user_id: X-Hasura-User-Id
+  role: user
+select_permissions:
+- permission:
+    allow_aggregations: true
+    columns:
+    - content
+    - created_at
+    - id
+    - updated_at
+    - user_id
+    computed_fields:
+    - my_vote_value
+    - vote_total
+    filter: {}
+  role: anonymous
+- permission:
+    allow_aggregations: true
+    columns:
+    - content
+    - created_at
+    - id
+    - updated_at
+    - user_id
+    computed_fields:
+    - my_vote_value
+    - vote_total
+    filter: {}
+  role: user
