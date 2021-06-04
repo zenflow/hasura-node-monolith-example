@@ -19,7 +19,7 @@ ADD auth/ ./auth/
 ADD composite-service.js ./
 
 # Base this image on hasura graphql engine (CLI migrations version)
-FROM hasura/graphql-engine:v1.3.3.cli-migrations-v2
+FROM hasura/graphql-engine:v2.0.0-beta.1.cli-migrations-v3
 
 # Install `node` runtime
 COPY --from=node-runtime /bin/node /bin/node

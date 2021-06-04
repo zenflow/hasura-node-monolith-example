@@ -98,7 +98,7 @@ startCompositeService({
             }
             -v ${path.join(__dirname, "hasura", "metadata")}:/hasura-metadata
             -v ${path.join(__dirname, "hasura", "migrations")}:/hasura-migrations
-            hasura/graphql-engine:v1.3.3.cli-migrations-v2`
+            hasura/graphql-engine:v2.0.0-beta.1.cli-migrations-v3`
         : `graphql-engine serve`,
       env: dev ? { ...process.env, ...hasuraEnv } : hasuraEnv,
       ready: (ctx) => ctx.onceHttpOk({ url: `${HASURA_GRAPHQL_ENDPOINT}/healthz` }),
