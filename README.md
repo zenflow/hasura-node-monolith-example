@@ -29,15 +29,17 @@ Start development db with `yarn db` (needs to be running for either of next two 
 
 Start app in dev mode with `yarn dev`, *or* start app in production mode with `yarn start`.
 
-When the app is started in dev mode,
-the [Hasura Console](https://hasura.io/docs/latest/graphql/core/hasura-cli/hasura_console.html)
+When the app is started in dev mode:
+
+- The [Hasura Console](https://hasura.io/docs/latest/graphql/core/hasura-cli/hasura_console.html)
 (Hasura's web UI) will be opened in a browser tab along with the Next.js web app.
-Changes made via the Hasura Console will be reflected in changes in
+- Changes made via the Hasura Console will be reflected in changes in
 `hasura/migrations/` & `hasura/metadata/` which can be committed to Git.
 These migrations & metadata are applied whenever the app starts, for both dev mode & production,
 using Hasura's [cli-migrations image](https://hasura.io/docs/latest/graphql/core/migrations/advanced/auto-apply-migrations.html).
-
-You can execute other [hasura-cli](https://hasura.io/docs/latest/graphql/core/hasura-cli/index.html)
+- The TypeScript types for GraphQL queries/mutations/fragments (in `web/graphql/generated.ts`)
+will be regenerated whenever there are edits to a `.graphql` file.
+- You can execute other [hasura-cli](https://hasura.io/docs/latest/graphql/core/hasura-cli/index.html)
 commands with `yarn _hasura`, e.g. `yarn _hasura seed apply` or `yarn _hasura --help`.
 
 ## Production deployment
@@ -48,9 +50,9 @@ and define the variables documented in [`.env.example`](./.env.example).
 ### With Heroku
 
 - This project is ready to deploy without code changes (i.e. includes [heroku.yml](./heroku.yml))
-- Heroku Postgres will define the `DATABASE_URL` environment variable. Be sure to copy it to `HASURA_GRAPHQL_ADMIN_SECRET`
+- Heroku Postgres will define the `DATABASE_URL` environment variable. Be sure to copy it to `HASURA_GRAPHQL_DATABASE_URL`
 - Create app in Heroku web ui, and **before connecting to repo**,
-run `heroku stack:set container -a your-app-name-here` (in any unrelated directory),
-then (in Heroku web ui) connect app to repo (under "Deploy" tab -> "Deployment method").
+run (in any directory) `heroku stack:set container -a your-app-name-here`.
+Then you can (in Heroku web ui) connect app to repo (under "Deploy" tab -> "Deployment method").
 - Set environment variable `HASURA_GRAPHQL_CLI_ENVIRONMENT=default` as per
 [hasura/graphql-engine#4651](https://github.com/hasura/graphql-engine/issues/4651#issuecomment-623414531)
