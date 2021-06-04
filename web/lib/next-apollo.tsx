@@ -3,8 +3,8 @@ import { NextPage } from "next";
 import { RouterContext } from "next/dist/next-server/lib/router-context";
 import { ApolloClient, ApolloLink, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { getMarkupFromTree } from "@apollo/client/react/ssr";
-import { useEffect, useMemo } from "react";
-import { NextRouter } from "next/router";
+import { useEffect, useMemo, useContext } from "react";
+import { NextRouter, useRouter as nextUseRouter } from "next/router";
 
 export type ApolloLinkFactoryParams = {
   headers: IncomingHttpHeaders | undefined;
@@ -125,4 +125,11 @@ export function createWithApollo<TCache>(options: CreateWithApolloOptions<TCache
   }
 
   return withApollo;
+}
+
+// TODO: Why does Next.js's `useRouter()` suddenly (after upgrading deps) not return the RouterContext.Provider value defined above? (returning null instead)
+export function useRouter() {
+  const a = nextUseRouter();
+  const b = useContext(RouterContext);
+  return a || b;
 }

@@ -1,7 +1,7 @@
 const debug = require("debug")("auth:next-auth");
 const rescue = require("express-rescue");
 const NextAuth = require("next-auth").default;
-const Providers = require("next-auth/providers");
+const Providers = require("next-auth/providers").default;
 
 const baseUrl = "/api/auth/";
 
