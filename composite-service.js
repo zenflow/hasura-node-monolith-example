@@ -53,9 +53,6 @@ const hasuraEnv = {
 
 const HASURA_GRAPHQL_ENDPOINT = `http://localhost:${hasuraPort}`;
 
-const nextJsBin = `node ${__dirname}/node_modules/next/dist/bin/next`;
-// node scripts can't be executed directly in the production Docker container for some reason
-
 startCompositeService({
   windowsCtrlCShutdown: true,
   services: {
@@ -99,14 +96,14 @@ startCompositeService({
             -v ${path.join(__dirname, "hasura", "metadata")}:/hasura-metadata
             -v ${path.join(__dirname, "hasura", "migrations")}:/hasura-migrations
             hasura/graphql-engine:v2.0.0-beta.1.cli-migrations-v3`
-        : `graphql-engine serve`,
+        : `/bin/graphql-engine serve`,
       env: dev ? { ...process.env, ...hasuraEnv } : hasuraEnv,
       ready: (ctx) => ctx.onceHttpOk({ url: `${HASURA_GRAPHQL_ENDPOINT}/healthz` }),
     },
     web: {
       dependencies: ["hasura"],
       cwd: `${__dirname}/web`,
-      command: `${nextJsBin} ${dev ? "dev" : "start"} --port ${webPort}`,
+      command: `next ${dev ? "dev" : "start"} --port ${webPort}`,
       env: {
         HASURA_GRAPHQL_ENDPOINT,
       },
