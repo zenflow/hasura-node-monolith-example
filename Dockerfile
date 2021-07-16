@@ -1,5 +1,5 @@
 # Prepare packages
-FROM node:14.17.0-slim as node-build
+FROM node:14.17.2-slim as node-build
 WORKDIR /app
 ADD package.json yarn.lock ./
 ADD actions/package.json ./actions/
@@ -15,12 +15,12 @@ ADD auth/ ./auth/
 ADD composite-service.js ./
 
 # Base this image on hasura graphql engine (CLI migrations version)
-FROM hasura/graphql-engine:v2.0.0-beta.1.cli-migrations-v3
+FROM hasura/graphql-engine:v2.0.2.cli-migrations-v3
 
 # Install Node.js
 RUN apt-get -y install curl gnupg2 \
   && curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
-  && apt-get -y install nodejs=14.17.0-1nodesource1 \
+  && apt-get -y install nodejs=14.17.2-1nodesource1 \
   && apt-get -y remove curl gnupg2 \
   && apt-get -y auto-remove \
   && apt-get -y clean \

@@ -2,6 +2,7 @@ const path = require("path");
 const { startCompositeService } = require("composite-service");
 const { configureHttpGateway } = require("composite-service-http-gateway");
 
+const hasuraImageTag = "v2.0.2.cli-migrations-v3";
 const authPort = 8000;
 const actionsPort = 8001;
 const hasuraPort = 8002;
@@ -95,7 +96,7 @@ startCompositeService({
             }
             -v ${path.join(__dirname, "hasura", "metadata")}:/hasura-metadata
             -v ${path.join(__dirname, "hasura", "migrations")}:/hasura-migrations
-            hasura/graphql-engine:v2.0.0-beta.1.cli-migrations-v3`
+            hasura/graphql-engine:${hasuraImageTag}`
         : `/bin/graphql-engine serve`,
       env: dev ? { ...process.env, ...hasuraEnv } : hasuraEnv,
       ready: (ctx) => ctx.onceHttpOk({ url: `${HASURA_GRAPHQL_ENDPOINT}/healthz` }),
@@ -103,8 +104,9 @@ startCompositeService({
     web: {
       dependencies: ["hasura"],
       cwd: `${__dirname}/web`,
-      command: `next ${dev ? "dev" : "start"} --port ${webPort}`,
+      command: `next ${dev ? "dev" : "start"}`,
       env: {
+        PORT: webPort,
         HASURA_GRAPHQL_ENDPOINT,
       },
       ready: (ctx) => ctx.onceTcpPortUsed(webPort),

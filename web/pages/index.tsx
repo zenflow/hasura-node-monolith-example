@@ -7,11 +7,19 @@ const IndexPage = () => (
     <h2>Welcome</h2>
     <p>
       This is a sample fullstack web application incorporating{" "}
-      <a href="https://hasura.io/docs/latest/graphql/core/index.html" target="_blank">
+      <a
+        href="https://hasura.io/docs/latest/graphql/core/index.html"
+        target="_blank"
+        rel="noreferrer"
+      >
         Hasura GraphQL Engine
       </a>{" "}
       and other technologies. Check out the{" "}
-      <a href="https://github.com/zenflow/hasura-node-monolith-example" target="_blank">
+      <a
+        href="https://github.com/zenflow/hasura-node-monolith-example"
+        target="_blank"
+        rel="noreferrer"
+      >
         GitHub repo
       </a>{" "}
       for more details.

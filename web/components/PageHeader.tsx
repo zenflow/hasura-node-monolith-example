@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Head from "next/head";
-import { useRouter } from "../lib/next-apollo";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { AuthSection } from "./AuthSection";
 

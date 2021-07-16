@@ -24,12 +24,12 @@
   "devDependencies": {
     "docker-run-kill": "^1.0.2",
     "dotenv": "^10.0.0",
-    "eslint": "^7.27.0",
+    "eslint": "^7.30.0",
     "eslint-config-zenflow": "^3.0.0",
-    "hasura-cli": "2.0.0-beta.1",
-    "nodemon": "^2.0.7",
+    "hasura-cli": "2.0.2",
+    "nodemon": "^2.0.12",
     "opener": "^1.5.2",
-    "typescript": "^4.3.2"
+    "typescript": "^4.3.5"
   },
   "prettier": {
     "printWidth": 100,
