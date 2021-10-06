@@ -1,6 +1,6 @@
 import { IncomingHttpHeaders } from "http";
 import { NextPage } from "next";
-import { RouterContext } from "next/dist/next-server/lib/router-context";
+import { RouterContext } from "next/dist/shared/lib/router-context";
 import { ApolloClient, ApolloLink, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { getMarkupFromTree } from "@apollo/client/react/ssr";
 import { useEffect, useMemo } from "react";

@@ -3,7 +3,7 @@ const { startCompositeService } = require("composite-service");
 const { configureHttpGateway } = require("composite-service-http-gateway");
 
 const hasuraContainerName = "hnme_hasura_1"; // dev only
-const hasuraImageTag = "v2.0.2.cli-migrations-v3"; // dev only
+const hasuraImageTag = "v2.0.9.cli-migrations-v3"; // dev only
 const authPort = 8000;
 const actionsPort = 8001;
 const hasuraPort = 8002;

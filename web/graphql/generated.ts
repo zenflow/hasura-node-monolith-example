@@ -307,9 +307,11 @@ export type Posts_Order_By = {
   content?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  my_vote_value?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   user?: Maybe<Users_Order_By>;
   user_id?: Maybe<Order_By>;
+  vote_total?: Maybe<Order_By>;
   votes_aggregate?: Maybe<Votes_Aggregate_Order_By>;
 };
 

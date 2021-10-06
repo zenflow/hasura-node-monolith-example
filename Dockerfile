@@ -15,7 +15,7 @@ ADD auth/ ./auth/
 ADD composite-service.js ./
 
 # Base this image on hasura graphql engine (CLI migrations version)
-FROM hasura/graphql-engine:v2.0.2.cli-migrations-v3
+FROM hasura/graphql-engine:v2.0.9.cli-migrations-v3
 
 # Install Node.js
 RUN apt-get -y install curl gnupg2 \
