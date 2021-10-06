@@ -8,7 +8,7 @@
   "scripts": {
     "db": "docker run --name hnme_postgres_1 -it --rm --env POSTGRES_PASSWORD=postgrespassword --volume hnme_postgres_data:/var/lib/postgresql/data --publish 5432:5432 postgres:12",
     "clean-db": "docker volume rm hnme_postgres_data",
-    "dev": "node composite-service.js hnme_hasura_1",
+    "dev": "node composite-service.js",
     "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
     "lint-fix": "yarn lint --fix",
     "_hasura": "hasura --project hasura --envfile ../.env --skip-update-check",
