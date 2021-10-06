@@ -59,7 +59,7 @@ startCompositeService({
   services: {
     auth: {
       cwd: `${__dirname}/auth`,
-      command: `${dev ? "nodemon" : "node"} server.js`,
+      command: `${dev ? "nodemon --quiet" : "node"} server.js`,
       env: {
         ...commonBackendEnv,
         PORT: authPort,
@@ -72,7 +72,7 @@ startCompositeService({
     },
     actions: {
       cwd: `${__dirname}/actions`,
-      command: `${dev ? "nodemon" : "node"} server.js`,
+      command: `${dev ? "nodemon --quiet" : "node"} server.js`,
       env: {
         ...commonBackendEnv,
         PORT: actionsPort,
