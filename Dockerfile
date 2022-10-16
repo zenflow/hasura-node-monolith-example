@@ -18,7 +18,8 @@ ADD composite-service.js ./
 FROM hasura/graphql-engine:v2.0.9.cli-migrations-v3
 
 # Install Node.js
-RUN apt-get -y install curl gnupg2 \
+RUN apt-get update \
+  && apt-get -y install curl gnupg2 \
   && curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
   && apt-get -y install nodejs \
   && apt-get -y remove curl gnupg2 \
