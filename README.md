@@ -50,9 +50,9 @@ and define the variables documented in [`.env.example`](./.env.example).
 ### With Heroku
 
 - This project is ready to deploy without code changes (i.e. includes [heroku.yml](./heroku.yml))
-- Heroku Postgres will define the `DATABASE_URL` environment variable. Be sure to copy it to `HASURA_GRAPHQL_DATABASE_URL`
 - Create app in Heroku web ui, and **before connecting to repo**,
 run (in any directory) `heroku stack:set container -a your-app-name-here`.
 Then you can (in Heroku web ui) connect app to repo (under "Deploy" tab -> "Deployment method").
+- Heroku Postgres will define the `DATABASE_URL` environment variable. Be sure to copy it to `HASURA_GRAPHQL_DATABASE_URL`
 - Set environment variable `HASURA_GRAPHQL_CLI_ENVIRONMENT=default` as per
 [hasura/graphql-engine#4651](https://github.com/hasura/graphql-engine/issues/4651#issuecomment-623414531)
