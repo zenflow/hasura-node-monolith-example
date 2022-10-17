@@ -8,7 +8,7 @@ This is a sample fullstack web application incorporating the following:
 - UI frontend using [TypeScript](https://www.typescriptlang.org/), [Next.js](https://nextjs.org/), [Apollo \[GraphQL\] Client](https://www.apollographql.com/docs/react/), and [GraphQL Code Generator](https://www.graphql-code-generator.com/)
 - _All rolled into a single dockerized service, for simplified deployment, using [composite-service](https://github.com/zenflow/composite-service)_
 
-#### Check out my [Production Deployment on Heroku](https://hasura-node-monolith-example.herokuapp.com/) *(please be patient while it wakes up)*
+#### Check out my [Production Deployment](https://hasura-node-monolith-example.matthewbrunetti.com/)
 
 ## Architecture Notes
 
