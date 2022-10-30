@@ -7,7 +7,7 @@
     "@apollo/react-ssr": "^4.0.0",
     "graphql": "^15.5.0",
     "immer": "^9.0.6",
-    "next": "^11.1.2",
+    "next": "^12.1.0",
     "next-auth": "^3.29.0",
     "nprogress": "^0.2.0",
     "react": "^17.0.2",
