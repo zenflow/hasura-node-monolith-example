@@ -24,8 +24,8 @@
   "devDependencies": {
     "docker-run-kill": "^1.0.2",
     "dotenv": "^10.0.0",
-    "eslint": "^7.32.0",
-    "eslint-config-zenflow": "^3.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-zenflow": "^4.0.0",
     "hasura-cli": "2.0.9",
     "nodemon": "^2.0.13",
     "opener": "^1.5.2",
